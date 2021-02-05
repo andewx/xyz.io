@@ -1,7 +1,7 @@
 # XYZ Recipes
 ## Overview
 xyzRecipes is a standalone web application we are using to demonstrate
-a fully functioning weekly meal/recipe planner. This is mean't to be a
+a functioning weekly meal/recipe planner.
 
 ## API Overview - Gradle Modules
 (P) Feature; (E) **Extension
