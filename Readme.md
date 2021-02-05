@@ -11,7 +11,7 @@ the Gradle Build system. This project is treated as a multiproject
 build allowing for decoupling of components and modularity in the java 
 code. 
 ### xyz.webkit 
-## #depends on {dbkit, modelkit}
+### depends on {dbkit, modelkit}
 Contains and manages the following services:
 - User Session / Permissions (P)
 - API Endpoint Routing (GraphQL Index Endpoint Request) (E)
