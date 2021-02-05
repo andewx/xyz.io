@@ -11,7 +11,7 @@ the Gradle Build system. This project is treated as a multiproject
 build allowing for decoupling of components and modularity in the java 
 code. 
 ### xyz.webkit 
-###depends on {dbkit, modelkit}
+## #depends on {dbkit, modelkit}
 Contains and manages the following services:
 - User Session / Permissions (P)
 - API Endpoint Routing (GraphQL Index Endpoint Request) (E)
@@ -20,7 +20,7 @@ Contains and manages the following services:
 - Open Java Server Listens http:// requests feeds (P)
 
 ### xyz.dbkit
-###depends on {modelkit}
+### depends on {modelkit}
 - Hosts application Database via ID (K,V) Store (P)
 - Writes / Reads Database to (K,V) JSON Store (P)
 - Write Database Query's to JSON Objetct (P)
@@ -28,7 +28,7 @@ Contains and manages the following services:
 - Writes / Reads / Query Database in GraphQL (E)
 
 ### xyz.modelkit
-####depends on {}
+#### depends on {}
 - Presents Model interface - Writes to K,V Maps
 - Writes/Reads Models in K,V Map Stores
 - Writes/Reads JSON Format
