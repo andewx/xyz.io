@@ -1,11 +1,15 @@
 # XYZ Recipes
 ## Overview
 xyzRecipes is a standalone web application we are using to demonstrate
-a fully functioning weekly meal/recipe planner. This is mean't to be a 
-common productivity tool. 
+a fully functioning weekly meal/recipe planner. This is mean't to be a
 
-## API Overview
-(P) primary feature; (E) Extension feature planned
+## API Overview - Gradle Modules
+(P) Feature; (E) **Extension
+
+project xyzRecipes builds as a Java project using SDK 15 via
+the Gradle Build system. This project is treated as a multiproject
+build allowing for decoupling of components and modularity in the java 
+code. 
 ### xyz.webkit 
 ###depends on {dbkit, modelkit}
 Contains and manages the following services:
@@ -29,6 +33,12 @@ Contains and manages the following services:
 - Writes/Reads Models in K,V Map Stores
 - Writes/Reads JSON Format
 - Manages ID / Parent ID / Relational Properties
+
+## graphql
+- Antlr4 Generated Parse Grammar - Available For Future Extensions
+- Includes Pre - Post token entry parse handlers allow building of lexical tree
+- We can write JSON parse grammar with antlr or use javax.json api
+
 
 
 
