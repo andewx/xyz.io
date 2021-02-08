@@ -19,69 +19,63 @@ public class ModelTest {
         i3 = new Item();
 
 
-        i0.Title = "Mozarella";
+        i0.Name = "Mozarella";
         i0.Description = "Softened";
         i0.Unit = ".oz";
         i0.Amount = 4;
 
-        i1.Title = "Dough";
+        i1.Name = "Dough";
         i1.Description ="White Flour";
         i1.Unit = ".oz";
         i1.Amount = 6;
 
-        i2.Title = "Marinara";
+        i2.Name = "Marinara";
         i2.Description = "Tomato & Herbs";
         i2.Unit = ".oz";
         i2.Amount = 4;
 
-        i3.Title = "Pizza";
+        i3.Name = "Pizza";
         i3.Description = "Mozarella & Red Herb Sauce";
         i3.Unit = "";
         i3.Amount = 1;
 
+        //Update all keys
+
         i3.addModel(i0);
         i3.addModel(i1);
         i3.addModel(i2);
+
+        i0.update();
+        i1.update();
+        i2.update();
+        i3.update();
 
         myItems.add(i0);
         myItems.add(i1);
         myItems.add(i2);
         myItems.add(i3);
 
-        for (Model i : myItems){
-            i.syncModel(false); //Sync Property Lists
-        }
     }
 
     @Test
     public void TestProperty(){
-          Item Pizza = (Item)myItems.get(3); //Pizza should have all items
-          Item Mozarella = (Item)myItems.get(0);
-          assertEquals(Pizza.Title.compareTo(Pizza.getProperty("Title")),0);
+        ModelObject pizza = (ModelObject)myItems.get(3);
+        ModelObject dough = (ModelObject)myItems.get(1);
+        assertEquals(i3.getName(), (String)pizza.get("Name"));
+
     }
 
     @Test
     public void TestGetModelUID() {
-
-        Item Pizza = (Item) myItems.get(3); //Pizza should have all items
-        Item Mozarella = (Item) myItems.get(0);
-        //Get Model By UID
-        Item PMozz = (Item) Pizza.getModel(Mozarella.UID);
-        assertEquals(0, PMozz.Title.compareTo("Mozarella"));
-        assertEquals(0, PMozz.UID.compareTo(Mozarella.UID));
+        ModelObject pizza = (ModelObject)myItems.get(3);
+        ModelObject dough = (ModelObject)pizza.getModel(i1.UID);
+        assertEquals( i1.UID,(String)dough.get("UID"));
     }
 
     @Test
-    public void TestAllItemsExist(){
-        //Get Model Listing
-        Item Pizza = (Item) myItems.get(3); //Pizza should have all items
-        Item Mozarella = (Item) myItems.get(0);
-        ArrayList<Model> PizzaItems = Pizza.hasModels("Item");
-        int index = 0;
-        for(Model item : PizzaItems){
-            Item myItem = (Item)item;
-            assertEquals(0,myItem.getProperty("Title").compareTo(myItem.Title));
-        }
+    public void TestJSONOut(){
+        ModelObject pizza = (ModelObject)myItems.get(3);
+        System.out.println(pizza.toString());
     }
 
 

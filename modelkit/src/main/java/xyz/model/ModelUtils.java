@@ -4,17 +4,17 @@ import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashFunction;
 
-import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Random;
 
-import java.nio.IntBuffer;
 
 
 
 
-public final class ModelHandler { //Static Model Methods
+
+public final class ModelUtils { //Static Model Methods
 
     public static String genUID(){
         //Generate sha256 Hash
@@ -33,9 +33,16 @@ public final class ModelHandler { //Static Model Methods
         return UID.toString();
     }
 
+    public static ModelObject decode(String jsonString){
+        return new ModelObject(jsonString);
+    }
 
-    public static String toJSON(Model model) {return null;}
-    public static Model fromJSON(String jsonString){ return null; }
+    public static ArrayList<String> ModelKeys(){
+        //Add all model types to this set
+        ArrayList<String> keySet = new ArrayList<String>();
+        keySet.add("Item");
+        return keySet;
+    }
 
 
 }

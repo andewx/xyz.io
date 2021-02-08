@@ -1,6 +1,7 @@
 package xyz.model;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
 
 
@@ -13,23 +14,25 @@ import java.util.HashMap;
 
 public interface Model {
 
-
-    //Model ID Types
-    public String getUID(); //Gets Model Id
-    public String getName(); //Model Class Name
+    //Getters/Setters
+    public String getModelName();
+    public String getName();
+    public String getUID();
 
     //Model Property Methods
-    public void setProperty(String propKey, String propValue); //This may mirror internal attributes (reflection case)
-    public String getProperty(String propKey); //Get Property Key Value
-    public String getPropertyType(String propKey); //Switch case method for casting types
+    public JSONObject getJSON();
+    public Object updateKey(String key, Object value);
+    public void removeKey(String key);
+    public void update();
 
-    //Model Internal Recursion (K - Tree)
-    public ArrayList<Model> hasModels(String name); //Nodal References to other Model Objects
-    public void addModel(Model m);
+    //Child Handlers
+    public ArrayList<Model> getModels(String name); //Nodal References to other Model Objects
+    public HashMap<String,Model> getChildren();
     public Model getModel(String uid);
+    public void addModel(Model m);
 
-    //Model Property Reflection
-    public void syncModel(boolean syncAll); //Synchronize Property Lists And Model Lists Recursively (cycle risk)
+    public String toString();
+
 
 }
 
