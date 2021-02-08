@@ -13,8 +13,6 @@ import java.util.HashMap;
 
 public interface Model {
 
-    //Model Factory Methods
-    public Model createModel(String unique); //Initialization basis for a model
 
     //Model ID Types
     public String getUID(); //Gets Model Id
@@ -22,16 +20,16 @@ public interface Model {
 
     //Model Property Methods
     public void setProperty(String propKey, String propValue); //This may mirror internal attributes (reflection case)
-    public String getProperty(String propKey, String propValue); //Get Property Key Value
+    public String getProperty(String propKey); //Get Property Key Value
     public String getPropertyType(String propKey); //Switch case method for casting types
 
     //Model Internal Recursion (K - Tree)
-    public ArrayList<Model> hasModels(); //Nodal References to other Model Objects
+    public ArrayList<Model> hasModels(String name); //Nodal References to other Model Objects
     public void addModel(Model m);
     public Model getModel(String uid);
 
     //Model Property Reflection
-    public void syncModel(boolean syncInternal); //Synchronize Property Lists And Model Lists Recursively (cycle risk)
+    public void syncModel(boolean syncAll); //Synchronize Property Lists And Model Lists Recursively (cycle risk)
 
 }
 

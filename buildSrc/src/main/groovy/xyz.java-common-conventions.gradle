@@ -28,4 +28,14 @@ dependencies {
 tasks.named('test') {
     // Use junit platform for unit tests.
     useJUnitPlatform()
+    //Log Tests
+    afterTest { desc, result ->
+        logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+    }
+
+    afterSuite { desc, result ->
+        println('\n' + ('-'* 50) + '\n')
+        logger.quiet "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} passed, ${result.failedTestCount} failed, ${result.skippedTestCount} skipped)"
+        println('\n' + ('-'* 50) + '\n')
+    }
 }
