@@ -4,14 +4,13 @@ import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashFunction;
 
-import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.Random;
 
-import java.nio.IntBuffer;
-
-
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 public final class ModelHandler { //Static Model Methods
@@ -34,8 +33,16 @@ public final class ModelHandler { //Static Model Methods
     }
 
 
-    public static String toJSON(Model model) {return null;}
-    public static Model fromJSON(String jsonString){ return null; }
+    public static String toJSON(Model model) {
+        JSONObject jPropMap = new JSONObject(model.getPropertyMap());
+        return jPropMap.toString();
+    }
+    public static Model fromJSON(String jsonString) {
+        JSONObject myObject = new JSONObject(jsonString);
+        ModelBase myModel = new ModelBase();
+        myModel.mPropertyMap = (HashMap)myObject.toMap();
+        return myModel;
+    }
 
 
 }

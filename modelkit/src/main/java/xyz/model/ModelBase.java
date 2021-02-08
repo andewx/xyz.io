@@ -2,13 +2,12 @@ package xyz.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.lang.reflect.*;
 
 public class ModelBase implements Model { //Basic Model Object
 
     public String UID;
     public String Name;
-    public HashMap<String,String> mPropertyMap;
+    public HashMap<String,Object> mPropertyMap;
     public HashMap<String,String> mTypeMap;
 
     public HashMap<String,Model> mModelUID; //Linked Model By ID
@@ -19,7 +18,7 @@ public class ModelBase implements Model { //Basic Model Object
         Name = "Model";
         UID = ModelHandler.genUID();
 
-        mPropertyMap = new HashMap<String,String>();
+        mPropertyMap = new HashMap<String,Object>();
         mTypeMap = new HashMap<String,String>();
         mModelUID = new HashMap<String,Model>();
         mModelLists = new HashMap<String, ArrayList<Model>>();
@@ -51,13 +50,16 @@ public class ModelBase implements Model { //Basic Model Object
 
     @Override
     public String getProperty(String propKey) {
-        return mPropertyMap.get(propKey);
+        return (String)mPropertyMap.get(propKey);
     }
 
     @Override
     public String getPropertyType(String propKey) {
         return mTypeMap.get(propKey);
     }
+
+    @Override
+    public HashMap<String,Object> getPropertyMap(){ return mPropertyMap; }
 
     @Override
     public ArrayList<Model> hasModels(String name) {

@@ -22,11 +22,14 @@ public interface Model {
     public void setProperty(String propKey, String propValue); //This may mirror internal attributes (reflection case)
     public String getProperty(String propKey); //Get Property Key Value
     public String getPropertyType(String propKey); //Switch case method for casting types
+    public HashMap<String,Object> getPropertyMap();
 
     //Model Internal Recursion (K - Tree)
     public ArrayList<Model> hasModels(String name); //Nodal References to other Model Objects
     public void addModel(Model m);
     public Model getModel(String uid);
+
+
 
     //Model Property Reflection
     public void syncModel(boolean syncAll); //Synchronize Property Lists And Model Lists Recursively (cycle risk)
