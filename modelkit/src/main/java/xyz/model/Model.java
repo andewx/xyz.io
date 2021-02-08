@@ -11,7 +11,6 @@ import java.util.HashMap;
  * model nodes available for tree structures. Presents relational database specifiers like Unique ID, Parent ID,
  and a model Name for unique database identification.* </p>
  */
-
 public interface Model {
 
     //Getters/Setters

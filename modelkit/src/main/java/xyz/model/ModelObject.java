@@ -13,7 +13,6 @@ public class ModelObject extends JSONObject implements Model {
     public String Name;
     public HashMap<String,Model> Children;
 
-
     public ModelObject(){
         super();
         UID = ModelUtils.genUID();

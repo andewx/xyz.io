@@ -26,7 +26,6 @@ public final class ModelUtils { //Static Model Methods
             int randInt = myRandom.nextInt();
             intStore[i] = randInt;
         }
-
         String hashString = intStore.toString();
         HashFunction f =  Hashing.murmur3_128();
         HashCode UID = f.hashString(hashString, Charset.defaultCharset());

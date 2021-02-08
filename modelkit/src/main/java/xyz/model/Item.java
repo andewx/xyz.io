@@ -8,7 +8,6 @@ public class Item extends ModelObject {
     public String Unit;
     public int Amount;
 
-
     public Item() {
         super();
         ClassName = "Item";
