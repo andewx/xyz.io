@@ -68,7 +68,7 @@ public class ModelTest {
     @Test
     public void TestGetModelUID() {
         ModelObject pizza = (ModelObject)myItems.get(3);
-        ModelObject dough = (ModelObject)pizza.getModel(i1.UID);
+        ModelObject dough = (ModelObject)pizza.getModel(i1.getModelName(), i1.UID);
         assertEquals( i1.UID,(String)dough.get("UID"));
     }
 
@@ -76,6 +76,24 @@ public class ModelTest {
     public void TestJSONOut(){
         ModelObject pizza = (ModelObject)myItems.get(3);
         System.out.println(pizza.toString());
+    }
+
+    @Test
+    public void TestIngestJSON(){
+        ModelObject pizza = (ModelObject)myItems.get(3);
+        String jsonPizza = pizza.toString();
+        ModelObject ingestPizza = new ModelObject(jsonPizza);
+        assertEquals(ingestPizza.get("UID"), pizza.get("UID"));
+    }
+
+    @Test
+    public void TestIngestInternalJSON(){
+        ModelObject pizza = (ModelObject)myItems.get(3);
+        ModelObject dough = (ModelObject)myItems.get(1);
+        String jsonPizza = pizza.toString();
+        ModelObject ingestPizza = new ModelObject(jsonPizza);
+        ModelObject ingestDough = (ModelObject)ingestPizza.getModel("Item", dough.UID);
+        assertEquals(ingestDough.UID,dough.UID);
     }
 
 
