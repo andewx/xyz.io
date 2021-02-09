@@ -159,6 +159,12 @@ public class ModelObject extends JSONObject implements Model {
     public String toString() {
         return super.toString();
     }
+
+    @Override
+    public String toJson() {
+        return super.toString();
+    }
+
     @Override
     public void update(){
         put("UID", UID);

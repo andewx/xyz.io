@@ -31,6 +31,7 @@ public interface Model {
     public HashMap<String,Model> getModels(String mClass);
 
     public String toString();
+    public String toJson();
 
 
 }
