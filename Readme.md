@@ -26,7 +26,9 @@ The idea is that you can handle your tasks and complete tests independently in e
 System requirements phase will go over these modules. 
 
 ---
-See ## ``NOTES.md`` for git version control. 
+See 
+
+## ``NOTES.md`` for git version control. 
 
 Familiarize yourself with using the build system by cloning the repository. Checking into the development repository. Creating a module-branch in git. Creating your own working commit. And merging with your module-branch for practice. 
 
