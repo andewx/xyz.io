@@ -14,7 +14,7 @@ import java.util.Random;
 
 
 
-public final class ModelUtils { //Static Model Methods
+public final class ModelKeys { //Static Model Methods
 
     public static String genUID(){
         //Generate sha256 Hash

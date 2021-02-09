@@ -25,10 +25,10 @@ public interface Model {
     public void update();
 
     //Child Handlers
-    public ArrayList<Model> getModels(String name); //Nodal References to other Model Objects
-    public HashMap<String,Model> getChildren();
-    public Model getModel(String uid);
+    public HashMap<String,HashMap<String,Model>> getChildren();
+    public Model getModel(String mClass, String uid);
     public void addModel(Model m);
+    public HashMap<String,Model> getModels(String mClass);
 
     public String toString();
 
