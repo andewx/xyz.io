@@ -17,7 +17,11 @@ And then Open & Import the root directory in your IDE. It may take several minut
 
 Gradle Builds supports multiple build modules. Each of theses modules should be recognized by your IDE. In each ``main`` folder for your module, i.e. ``modelkit/main`` you will see a ``gradle.build`` file. This is essentially a sub-component build settings file and imports some high-level build settings from the ``buildSrc`` folder. 
 
-The modules we build are: #### ``xyz.app`` ``xyz.webkit`` ``xyz.modelkit`` ``xyz.dbkit`` ``xyz.utilities``
+The modules we build are: 
+
+### ``xyz.app`` ``xyz.webkit`` ``xyz.modelkit`` ``xyz.dbkit`` ``xyz.utilities``
+
+The idea is that you can handle your tasks and complete tests independently in each module and then ask to merge.
 
 System requirements phase will go over these modules. 
 
