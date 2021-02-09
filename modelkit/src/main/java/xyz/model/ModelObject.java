@@ -4,7 +4,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.lang.reflect.*;
 
 public class ModelObject extends JSONObject implements Model {
 
