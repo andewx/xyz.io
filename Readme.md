@@ -1,39 +1,31 @@
 # XYZ Recipes
 ## Overview
-xyzRecipes is a standalone web application we are using to demonstrate
-a functioning weekly meal/recipe planner.
+Web framework that supports a Recipe productivity planning tool in Java.
 
-## API Overview - Gradle Modules
+## ``Gradle System Build``
 
-project xyzRecipes builds as a Java project using SDK 15 via
-the Gradle Build system. This project is treated as a multiproject
-build allowing for decoupling of components and modularity in the java 
-code. 
-### xyz.webkit 
-### depends on {dbkit, modelkit}
-Contains and manages the following services:
-- User Session / Permissions
-- API Endpoint Routing (URL Index Based)
-- View / Template HTML5 Return 
+To compile and build the project in your respective IDE please download and install gradle. This can be done through
+```brew install gradle``` command in bash. 
 
-### xyz.dbkit
-### depends on {modelkit}
-- Hosts application Database via ID (K,V) Store 
-- Writes / Reads Database to (K,V) JSON Store 
-- Write Database Query's to JSON Objetct 
-- Writes Models in Static Memory to ID (K,V) Store -> JSON 
+Additionally most modern IDE's support or come installed with native Gradle handling. You can clone this project with
+```git clone https://github.com/andewx/xyzRecipes```
 
-### xyz.modelkit
-#### depends on {}
-- Presents Model interface - Writes to K,V Maps
-- Writes/Reads Models in K,V Map Stores
-- Writes/Reads JSON Format
-- Manages ID / Parent ID / Relational Properties
+And then Open & Import the root directory in your IDE. It may take several minutes to index your files and download dependencies. 
 
-## graphql
-- Antlr4 Generated Parse Grammar - Available For Future Extensions
-- Includes Pre - Post token entry parse handlers allow building of lexical tree
-- We can write JSON parse grammar with antlr or use javax.json api
+---
+### ``Module Concepts``
+
+Gradle Builds supports multiple build modules. Each of theses modules should be recognized by your IDE. In each ``main`` folder for your module, i.e. ``modelkit/main`` you will see a ``gradle.build`` file. This is essentially a sub-component build settings file and imports some high-level build settings from the ``buildSrc`` folder. 
+
+The modules we build are: #### ``xyz.app`` ``xyz.webkit`` ``xyz.modelkit`` ``xyz.dbkit`` ``xyz.utilities``
+
+System requirements phase will go over these modules. 
+
+---
+See ## ``NOTES.md`` for git version control. 
+
+Familiarize yourself with using the build system by cloning the repository. Checking into the development repository. Creating a module-branch in git. Creating your own working commit. And merging with your module-branch for practice. 
+
 
 
 
