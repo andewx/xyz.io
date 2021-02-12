@@ -1,25 +1,13 @@
 # USAGE NOTES
 
-## GIT MANAGEMENT
+## GIT MANAGEMENT (NOTE YOU MAY USE YOUR IDE TO USE GIT FUNCTIONALITY)
 - Sync Scheduled Releases to master
-  
 
 - Minimal branching ```(master -> development -> module/domain)```
-  
 
-- Update local repo with git pull regularly. Especially prior to any commit.
-  
+- Update local repo with git pull regularly. Especially prior to any commit. use git pull.
 
 - If you current repo is ready for merging with the upstream development branch annotate 
-  
-```[READY FOR SYNC -> BRANCH:development]```
-- Once all modules are ready for syncing we can merge.
-
-
-- You can continue working with extensions by branching off your local.
-
-
-- If your module is ready for syncing keep developing and running more expansive tests.
 
 ### ``git pull``
 
@@ -28,18 +16,32 @@ the immediate remote tracked branch. (The one you branched from)
 
 So before you decide to create a branch you should run
 ```
-git pull
+git checkout mybranch
+git pull origin development
 ```
-This ensures that your current local working branch has been updated with the latest tracking branches.
+This ensures that your current local working branch has been updated with the latest tracking branches on the development repository
+
+After you pull. Immediately push your locally integrated branch back to the git server
+```
+git commit -m "Branch Updated"
+git push -u origin branchname
+```
+Once everything is in place in your branch and you're ready to have your branch ready to push
+```
+git pull origin development
+git commit -m "updated my branch etc..."
+git push -u origin branchname
+```
+
+The git manager will then be responsible for ensuring the development builds are correct and merging into the master
 
 ### ``git merge``
-git pull, a combination of git fetch + git merge, updates some parts of your local repository with changes from the remote repository.
-
-To understand what is and isn't affected by git pull, you need to first understand the concept of remote tracking branches.
-
-When you clone a repository, you clone one working branch, master, and all of the remote tracking branches. git fetch updates the remote tracking branches. git merge will update your current branch with any new commits on the remote tracking branch.
-
-For more information on essential git actions you can visit https://github.com/git-guides/git-pull
+``git merge`` will update the upstream remote branch and merge the specified branches into itself. For our usage this will look like. 
+```
+git checkout development
+git merge user-branch
+git branch -d user-branch //deletes user branch
+```
 
 
 ---
