@@ -9,6 +9,22 @@
 
 - If you current repo is ready for merging with the upstream development branch annotate 
 
+### Create a new branch
+When you create a new branch you are often branching in your local repo context. So for example 
+```
+git checkout development
+git branch my-branch
+```
+Creates a branch that only is forked from the local development branch. But on the remote git server ``my-branch`` doesn't exist yet. You need to set the upstream branch. 
+```
+git push --set-upstream origin my-branch
+```
+Now your branch exists on the remote repository. And with you simply executre
+```
+git push origin
+```
+You are pushing your changes to the server record that everyone has access to! Which is what we need. 
+
 ### ``git pull``
 
 ``git pull`` in general will sync your local working branch, and all remote tracking branches. Note that ``git fetch`` is a similar command that syncs with
