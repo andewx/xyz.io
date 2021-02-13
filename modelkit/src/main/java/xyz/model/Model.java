@@ -19,11 +19,12 @@ public interface Model {
     public void update();
 
     //Child Handlers
-    public HashMap<String,HashMap<String,Model>> getChildren();
-    public Model getModel(String mClass, String uid);
-    public void addModel(Model m);
-    public HashMap<String,Model> getModels(String mClass);
+    public HashMap<String,HashMap<String,ModelObject>> getChildren();
+    public ModelObject getModel(String mClass, String uid);
+    public void addModel(ModelObject m);
+    public HashMap<String,ModelObject> getModels(String mClass);
     public boolean Remove(String mClass, String uid);
+    public ModelIterator getIterator();
 
     public String toString();
     public String toJson();

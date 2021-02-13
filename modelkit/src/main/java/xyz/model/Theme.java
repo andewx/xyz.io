@@ -1,9 +1,9 @@
 package xyz.model;
 
-public class ThemeCSS extends ModelObject{
+public class Theme extends ModelObject{
     public String InnerCSS;
 
-    public ThemeCSS(String name){
+    public Theme(String name){
         super();
         ClassName = "ThemeCSS";
         Name = name;
