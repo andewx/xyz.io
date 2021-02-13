@@ -13,6 +13,8 @@ public class Item extends ModelObject {
         ClassName = "Item";
         Name = "UniqueItem";
 
+        put("ClassName", ClassName);
+        put("Name", Name);
         put("Description", Description);
         put("Unit", Unit);
         put("Amount", Amount);
@@ -23,6 +25,19 @@ public class Item extends ModelObject {
         super();
         ClassName = "Item";
         Name = name;
+
+        put("Description", Description);
+        put("Unit", Unit);
+        put("Amount", Amount);
+    }
+
+    public Item(String name, String descrip, String unit, int amount){
+        super();
+        ClassName = "Item";
+        Name = name;
+        Description = descrip;
+        Unit = unit;
+        Amount = amount;
 
         put("Description", Description);
         put("Unit", Unit);
