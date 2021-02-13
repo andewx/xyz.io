@@ -40,6 +40,11 @@ public final class ModelKeys { //Static Model Methods
         //Add all model types to this set
         ArrayList<String> keySet = new ArrayList<String>();
         keySet.add("Item");
+        keySet.add("Recipe");
+        keySet.add("Group");
+        keySet.add("User");
+        keySet.add("Notification");
+        keySet.add("ThemeCSS");
         return keySet;
     }
 

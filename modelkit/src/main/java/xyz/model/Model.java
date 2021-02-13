@@ -13,7 +13,7 @@ public interface Model {
     public String getUID();
 
     //Model Property Methods
-    public JSONObject getJSON();
+    public JSONObject getJson();
     public Object updateKey(String key, Object value);
     public void removeKey(String key);
     public void update();
@@ -23,6 +23,7 @@ public interface Model {
     public Model getModel(String mClass, String uid);
     public void addModel(Model m);
     public HashMap<String,Model> getModels(String mClass);
+    public boolean Remove(String mClass, String uid);
 
     public String toString();
     public String toJson();

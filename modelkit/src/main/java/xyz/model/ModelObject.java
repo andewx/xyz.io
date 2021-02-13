@@ -18,7 +18,6 @@ public class ModelObject extends JSONObject implements Model {
         UID = ModelKeys.genUID();
         ClassName = "ModelBase";
         Name = "ModelBase";
-        HashMap<String,Model> multiModel = new HashMap<String,Model>();
         Children = new HashMap<String,HashMap<String,Model>>();
 
         put("UID", UID);
@@ -30,7 +29,6 @@ public class ModelObject extends JSONObject implements Model {
     public ModelObject(JSONObject jObj){
 
         super();
-        HashMap<String,Model> multiModel = new HashMap<String,Model>();
         Children = new HashMap<String,HashMap<String,Model>>();
 
         try { //Assumes jObj is a ModelObject internally
@@ -57,7 +55,6 @@ public class ModelObject extends JSONObject implements Model {
         UID = (String)get("UID");
         ClassName = (String)get("ClassName");
         Name = (String)get("Name");
-        HashMap<String,Model> multiModel = new HashMap<String,Model>();
         Children = new HashMap<String,HashMap<String,Model>>();
 
 
@@ -80,7 +77,6 @@ public class ModelObject extends JSONObject implements Model {
         UID = ModelKeys.genUID();
         ClassName = "ModelBase";
         Name = "ModelBase";
-        HashMap<String,Model> multiModel = new HashMap<String,Model>();
         Children = new HashMap<String,HashMap<String,Model>>();
         put("UID", UID);
         put("ClassName", ClassName);
@@ -124,7 +120,7 @@ public class ModelObject extends JSONObject implements Model {
     }
 
     @Override
-    public JSONObject getJSON() {
+    public JSONObject getJson() {
         return (JSONObject)this;
     }
 
@@ -151,8 +147,23 @@ public class ModelObject extends JSONObject implements Model {
     }
 
     @Override
+    public boolean Remove(String mClass, String uid){
+        HashMap<String, Model> internal = Children.get(mClass);
+
+        if (internal == null){
+            return false;
+        }
+
+        Model val = internal.remove(uid);
+        if (val == null){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public HashMap<String,Model> getModels(String mClass) {
-      return  (HashMap<String,Model>)get(mClass);
+      return (HashMap<String,Model>)Children.get(mClass);
     }
 
     @Override
