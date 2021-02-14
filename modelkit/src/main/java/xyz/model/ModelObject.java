@@ -3,6 +3,7 @@ package xyz.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,33 +12,38 @@ public class ModelObject extends JSONObject implements Model {
     public String UID;
     public String ClassName;
     public String Name;
-    public HashMap<String,HashMap<String, Model>> Children; // Stores Classes of Models followed by UID Keys
+    public String Modified;
+    public HashMap<String,HashMap<String, ModelObject>> Children; // Stores Classes of Models followed by UID Keys
 
     public ModelObject(){
         super();
         UID = ModelKeys.genUID();
         ClassName = "ModelBase";
+        Modified = Instant.now().toString();
         Name = "ModelBase";
-        Children = new HashMap<String,HashMap<String,Model>>();
+        Children = new HashMap<String,HashMap<String,ModelObject>>();
 
         put("UID", UID);
         put("ClassName", ClassName);
         put("Name", Name);
+        put("Modified", Modified);
 
     }
 
     public ModelObject(JSONObject jObj){
 
         super();
-        Children = new HashMap<String,HashMap<String,Model>>();
+        Children = new HashMap<String,HashMap<String,ModelObject>>();
 
         try { //Assumes jObj is a ModelObject internally
             UID = (String) jObj.get("UID");
             ClassName = (String) jObj.get("ClassName");
             Name = (String) jObj.get("Name");
+            Modified = (String) jObj.get("Modified");
             put("UID", UID);
             put("ClassName", ClassName);
             put("Name", Name);
+            put("Modified", Modified);
 
         }catch(JSONException e){
             for (String key : jObj.keySet()){
@@ -55,7 +61,8 @@ public class ModelObject extends JSONObject implements Model {
         UID = (String)get("UID");
         ClassName = (String)get("ClassName");
         Name = (String)get("Name");
-        Children = new HashMap<String,HashMap<String,Model>>();
+        Modified = (String)get("Modified");
+        Children = new HashMap<String,HashMap<String,ModelObject>>();
 
 
         ArrayList<String> Keys = ModelKeys.ModelKeys();
@@ -77,18 +84,20 @@ public class ModelObject extends JSONObject implements Model {
         UID = ModelKeys.genUID();
         ClassName = "ModelBase";
         Name = "ModelBase";
-        Children = new HashMap<String,HashMap<String,Model>>();
+        Modified = Instant.now().toString();
+        Children = new HashMap<String,HashMap<String,ModelObject>>();
         put("UID", UID);
         put("ClassName", ClassName);
         put("Name", Name);
+        put("Modified", Modified);
     }
 
     @Override
-    public void addModel(Model m) {
-        HashMap<String,Model> internal = Children.get(m.getModelName());
+    public void addModel(ModelObject m) {
+        HashMap<String,ModelObject> internal = Children.get(m.getModelName());
 
         if (internal == null){
-            HashMap<String,Model> refHashMap = new HashMap<String,Model>();
+            HashMap<String,ModelObject> refHashMap = new HashMap<String,ModelObject>();
             refHashMap.put(m.getUID(), m);
             Children.put(m.getModelName(), refHashMap);
             put(m.getModelName(), refHashMap);
@@ -97,10 +106,12 @@ public class ModelObject extends JSONObject implements Model {
             put(m.getModelName(), internal);
         }
 
+        Modified = Instant.now().toString();
+
     }
 
     @Override
-    public HashMap<String,HashMap<String,Model>> getChildren() {
+    public HashMap<String,HashMap<String,ModelObject>> getChildren() {
         return Children;
     }
 
@@ -135,8 +146,8 @@ public class ModelObject extends JSONObject implements Model {
     }
 
     @Override
-    public Model getModel(String mClass, String uid) {
-        HashMap<String, Model> internal = Children.get(mClass);
+    public ModelObject getModel(String mClass, String uid) {
+        HashMap<String, ModelObject> internal = Children.get(mClass);
         ModelObject mObj = (ModelObject)internal.get(uid);
 
         if (mObj == null){
@@ -148,8 +159,7 @@ public class ModelObject extends JSONObject implements Model {
 
     @Override
     public boolean Remove(String mClass, String uid){
-        HashMap<String, Model> internal = Children.get(mClass);
-
+        HashMap<String, ModelObject> internal = Children.get(mClass);
         if (internal == null){
             return false;
         }
@@ -158,12 +168,15 @@ public class ModelObject extends JSONObject implements Model {
         if (val == null){
             return false;
         }
+
+        Modified = Instant.now().toString();
+
         return true;
     }
 
     @Override
-    public HashMap<String,Model> getModels(String mClass) {
-      return (HashMap<String,Model>)Children.get(mClass);
+    public HashMap<String,ModelObject> getModels(String mClass) {
+      return (HashMap<String,ModelObject>)Children.get(mClass);
     }
 
     @Override
@@ -177,9 +190,16 @@ public class ModelObject extends JSONObject implements Model {
     }
 
     @Override
+    public ModelIterator getIterator(){
+        ModelIterator myIter = new ModelIterator(this);
+        return myIter;
+    }
+
+    @Override
     public void update(){
         put("UID", UID);
         put("ClassName", ClassName);
         put("Name", Name);
+        put("Modified", Modified);
     }
 }

@@ -16,7 +16,7 @@ public class Group extends ModelObject {
         AccessDescription = Description;
         AccessLevel = AccessSpecifier;
 
-        put("UID", GroupIDName);
+        put("UID", GroupID);
         put("GroupID", GroupID);
         put("Name",  Name);
         put("ClassName", ClassName);
