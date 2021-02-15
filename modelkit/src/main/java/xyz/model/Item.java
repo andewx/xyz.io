@@ -39,6 +39,7 @@ public class Item extends ModelObject {
         Unit = unit;
         Amount = amount;
 
+        updateKey("ClassName", ClassName);
         put("Description", Description);
         put("Unit", Unit);
         put("Amount", Amount);
@@ -46,9 +47,9 @@ public class Item extends ModelObject {
 
     public void update(){
         super.update();
-        put("Description", Description);
-        put("Unit", Unit);
-        put("Amount", Amount);
+        updateKey("Description", Description);
+        updateKey("Unit", Unit);
+        updateKey("Amount", Amount);
     }
 
 

@@ -8,14 +8,14 @@ public class Theme extends ModelObject{
         ClassName = "ThemeCSS";
         Name = name;
         InnerCSS = "";
-        put("Name", Name);
-        put("ClassName", ClassName);
+        updateKey("Name", Name);
+        updateKey("ClassName", ClassName);
         put("InnerCSS", InnerCSS);
 
     }
 
     public void update(){
         super.update();
-        put("InnerCSS", InnerCSS);
+        updateKey("InnerCSS", InnerCSS);
     }
 }

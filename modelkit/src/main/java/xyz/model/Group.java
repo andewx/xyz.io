@@ -16,10 +16,10 @@ public class Group extends ModelObject {
         AccessDescription = Description;
         AccessLevel = AccessSpecifier;
 
-        put("UID", GroupID);
+        updateKey("UID", GroupID);
         put("GroupID", GroupID);
-        put("Name",  Name);
-        put("ClassName", ClassName);
+        updateKey("Name",  Name);
+        updateKey("ClassName", ClassName);
         put("AccessDescription", AccessDescription);
         put("AccessLevel", AccessLevel);
 
@@ -28,11 +28,11 @@ public class Group extends ModelObject {
 
     public void update(){
         super.update();
-        put("GroupID", GroupID);
-        put("Name",  Name);
-        put("ClassName", ClassName);
-        put("AccessDescription", AccessDescription);
-        put("AccessLevel", AccessLevel);
+        updateKey("GroupID", GroupID);
+        updateKey("Name",  Name);
+        updateKey("ClassName", ClassName);
+        updateKey("AccessDescription", AccessDescription);
+        updateKey("AccessLevel", AccessLevel);
     }
 
 

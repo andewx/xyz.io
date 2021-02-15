@@ -1,8 +1,9 @@
+import org.json.JSONException;
 import xyz.model.*;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 public class ModelTest {
 
     ArrayList<Model> myItems;
@@ -88,12 +89,18 @@ public class ModelTest {
 
     @Test
     public void TestIngestInternalJSON(){
-        ModelObject pizza = (ModelObject)myItems.get(3);
-        ModelObject dough = (ModelObject)myItems.get(1);
-        String jsonPizza = pizza.toString();
-        ModelObject ingestPizza = new ModelObject(jsonPizza);
-        ModelObject ingestDough = (ModelObject)ingestPizza.getModel("Item", dough.UID);
-        assertEquals(ingestDough.UID,dough.UID);
+        try {
+            ModelObject pizza = (ModelObject) myItems.get(3);
+            ModelObject dough = (ModelObject) myItems.get(1);
+            String jsonPizza = pizza.toString();
+            ModelObject ingestPizza = new ModelObject(jsonPizza);
+            ModelObject ingestDough = (ModelObject) ingestPizza.getModel("Item", dough.UID);
+            assertEquals(ingestDough.UID,dough.UID);
+        }catch(JSONException e){
+            System.out.println("Internal (Item) of ingestPizza not found\nPrinting Stack Trace\n");
+
+        }
+
     }
 
 

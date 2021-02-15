@@ -13,7 +13,6 @@ public class ModelObject extends JSONObject implements Model {
     public String ClassName;
     public String Name;
     public String Modified;
-    public HashMap<String,HashMap<String, ModelObject>> Children; // Stores Classes of Models followed by UID Keys
 
     public ModelObject(){
         super();
@@ -21,7 +20,6 @@ public class ModelObject extends JSONObject implements Model {
         ClassName = "ModelBase";
         Modified = Instant.now().toString();
         Name = "ModelBase";
-        Children = new HashMap<String,HashMap<String,ModelObject>>();
 
         put("UID", UID);
         put("ClassName", ClassName);
@@ -33,7 +31,6 @@ public class ModelObject extends JSONObject implements Model {
     public ModelObject(JSONObject jObj){
 
         super();
-        Children = new HashMap<String,HashMap<String,ModelObject>>();
 
         try { //Assumes jObj is a ModelObject internally
             UID = (String) jObj.get("UID");
@@ -58,25 +55,15 @@ public class ModelObject extends JSONObject implements Model {
 
     public ModelObject(String json){
         super(json);
+
         UID = (String)get("UID");
         ClassName = (String)get("ClassName");
         Name = (String)get("Name");
         Modified = (String)get("Modified");
-        Children = new HashMap<String,HashMap<String,ModelObject>>();
 
 
-        ArrayList<String> Keys = ModelKeys.ModelKeys();
-        for (String key : keySet()){ //New item groups have "995edf..key" -> JSON
-           for(String k : Keys){
-               if (k.compareTo(key) == 0){
-                   JSONObject obj= (JSONObject)get(key);
-                   for (String internalKey : obj.keySet()) {
-                       ModelObject myObj = new ModelObject((JSONObject)obj.get(internalKey));
-                       addModel(myObj);
-                   }
-               }
-           }
-        }
+
+
     }
 
     public ModelObject(int size){
@@ -85,34 +72,51 @@ public class ModelObject extends JSONObject implements Model {
         ClassName = "ModelBase";
         Name = "ModelBase";
         Modified = Instant.now().toString();
-        Children = new HashMap<String,HashMap<String,ModelObject>>();
         put("UID", UID);
         put("ClassName", ClassName);
         put("Name", Name);
         put("Modified", Modified);
     }
 
-    @Override
-    public void addModel(ModelObject m) {
-        HashMap<String,ModelObject> internal = Children.get(m.getModelName());
-
-        if (internal == null){
-            HashMap<String,ModelObject> refHashMap = new HashMap<String,ModelObject>();
-            refHashMap.put(m.getUID(), m);
-            Children.put(m.getModelName(), refHashMap);
-            put(m.getModelName(), refHashMap);
-        }else{
-            internal.put(m.getUID(), m);
-            put(m.getModelName(), internal);
+    public JSONObject getChildren(String Pluralized){ //Expects the Plura
+        try {
+            JSONObject childMap = (JSONObject)get(Pluralized);
+            return childMap;
+        }catch(JSONException e){
+            return null;
+        }catch(ClassCastException e){ //Returned JSON Object
+                return null;
         }
+    }
 
-        Modified = Instant.now().toString();
+    public String plural(){
+        return getModelName() + "s";
+    }
 
+    public String pluralize(String str){
+        int index = str.lastIndexOf(str);
+        char c = str.charAt(index);
+        if (c != 's'){
+            return str + "s";
+        }
+        return str;
     }
 
     @Override
-    public HashMap<String,HashMap<String,ModelObject>> getChildren() {
-        return Children;
+    public void addModel(ModelObject m) {
+        JSONObject internal = getChildren(m.plural());
+        if (internal == null){ //We are duplicating
+             put(m.plural(), new JSONObject());
+             internal = getChildren(m.plural());
+             internal.put(m.getUID(), m);
+        }else{
+            internal.put(m.getUID(), m);
+            updateKey(m.plural(), internal);
+        }
+
+        Modified = Instant.now().toString();
+        update();
+
     }
 
     @Override
@@ -147,36 +151,42 @@ public class ModelObject extends JSONObject implements Model {
 
     @Override
     public ModelObject getModel(String mClass, String uid) {
-        HashMap<String, ModelObject> internal = Children.get(mClass);
-        ModelObject mObj = (ModelObject)internal.get(uid);
-
-        if (mObj == null){
+        JSONObject internal = getChildren(mClass +"s");
+        if(internal == null){
             throw new JSONException("Model not found");
         }
+        try {
+            ModelObject mObj = (ModelObject) internal.get(uid);
+            return mObj;
+        }catch(ClassCastException e){
+            JSONObject jObj = (JSONObject)internal.get(uid);
+            return new ModelObject(jObj);
+        }
 
-        return mObj;
     }
 
     @Override
     public boolean Remove(String mClass, String uid){
-        HashMap<String, ModelObject> internal = Children.get(mClass);
+        String collection = pluralize(mClass);
+        JSONObject internal = getChildren(collection);
         if (internal == null){
             return false;
         }
 
-        Model val = internal.remove(uid);
+        ModelObject val = (ModelObject)internal.remove(uid);
         if (val == null){
             return false;
         }
 
         Modified = Instant.now().toString();
+        updateKey("Modified", Modified);
 
         return true;
     }
 
     @Override
-    public HashMap<String,ModelObject> getModels(String mClass) {
-      return (HashMap<String,ModelObject>)Children.get(mClass);
+    public JSONObject getModels(String mClass) {
+      return getChildren(pluralize(mClass));
     }
 
     @Override
@@ -197,9 +207,11 @@ public class ModelObject extends JSONObject implements Model {
 
     @Override
     public void update(){
-        put("UID", UID);
-        put("ClassName", ClassName);
-        put("Name", Name);
-        put("Modified", Modified);
+
+        updateKey("UID", UID);
+        updateKey("ClassName", ClassName);
+        updateKey("Name", Name);
+        updateKey("Modified", Modified);
+
     }
 }
