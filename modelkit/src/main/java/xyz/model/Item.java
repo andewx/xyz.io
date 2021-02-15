@@ -13,8 +13,8 @@ public class Item extends ModelObject {
         ClassName = "Item";
         Name = "UniqueItem";
 
-        put("ClassName", ClassName);
-        put("Name", Name);
+        updateKey("ClassName", ClassName);
+        updateKey("Name", Name);
         put("Description", Description);
         put("Unit", Unit);
         put("Amount", Amount);
@@ -25,7 +25,7 @@ public class Item extends ModelObject {
         super();
         ClassName = "Item";
         Name = name;
-
+        updateKey("Name", Name);
         put("Description", Description);
         put("Unit", Unit);
         put("Amount", Amount);
@@ -39,6 +39,7 @@ public class Item extends ModelObject {
         Unit = unit;
         Amount = amount;
 
+        updateKey("Name", Name);
         updateKey("ClassName", ClassName);
         put("Description", Description);
         put("Unit", Unit);

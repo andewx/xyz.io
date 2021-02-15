@@ -4,8 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ModelObject extends JSONObject implements Model {
 
@@ -90,7 +90,7 @@ public class ModelObject extends JSONObject implements Model {
     }
 
     public String plural(){
-        return getModelName() + "s";
+        return pluralize(getModelName());
     }
 
     public String pluralize(String str){
@@ -105,10 +105,10 @@ public class ModelObject extends JSONObject implements Model {
     @Override
     public void addModel(ModelObject m) {
         JSONObject internal = getChildren(m.plural());
-        if (internal == null){ //We are duplicating
-             put(m.plural(), new JSONObject());
-             internal = getChildren(m.plural());
+        if (internal == null){
+             internal = new JSONObject();
              internal.put(m.getUID(), m);
+             put(m.plural(),internal);
         }else{
             internal.put(m.getUID(), m);
             updateKey(m.plural(), internal);
@@ -151,12 +151,15 @@ public class ModelObject extends JSONObject implements Model {
 
     @Override
     public ModelObject getModel(String mClass, String uid) {
-        JSONObject internal = getChildren(mClass +"s");
+        JSONObject internal = getChildren(pluralize(mClass));
         if(internal == null){
             throw new JSONException("Model not found");
         }
         try {
             ModelObject mObj = (ModelObject) internal.get(uid);
+            if(mObj == null){
+                throw new JSONException("Model: "+mClass+ "[ " + uid + "] not found\n");
+            }
             return mObj;
         }catch(ClassCastException e){
             JSONObject jObj = (JSONObject)internal.get(uid);
