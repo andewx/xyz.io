@@ -20,6 +20,8 @@ public class App {
         Javalin app = Javalin.create().start(8080);
         DBMain myDB = new DBMain("xyzDatabase");
         myDB.CreateNode("Users", "user.keys");
+        myDB.CreateNode("Recipes", "recipe.keys");
+        myDB.CreateNode("Groups", "group.keys");
         BaseController BaseEndpoint = new BaseController(myDB);
         IndexController IndexEndpoint = new IndexController(myDB);
         UserController userController = new UserController(myDB);
