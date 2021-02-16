@@ -31,10 +31,15 @@ public class App {
         routerGet.Register("/", IndexController::Index);
         routerPost.Register("/user/create", userController::CreateUser);
 
-        //Add Get Routes
+        //Add Routing to Javalin
         for (String key : routerGet.RouteMethods.keySet()){
             Handler method = routerGet.getHandler(key);
             app.get(key, method);
+        }
+
+        for (String key : routerPost.RouteMethods.keySet()){
+            Handler method = routerPost.getHandler(key);
+            app.post(key, method);
         }
 
 
