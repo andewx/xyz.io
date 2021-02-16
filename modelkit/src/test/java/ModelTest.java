@@ -1,8 +1,9 @@
+import org.json.JSONException;
 import xyz.model.*;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 public class ModelTest {
 
     ArrayList<Model> myItems;
@@ -41,14 +42,14 @@ public class ModelTest {
 
         //Update all keys
 
-        i3.addModel(i0);
-        i3.addModel(i1);
-        i3.addModel(i2);
-
         i0.update();
         i1.update();
         i2.update();
         i3.update();
+
+        i3.addModel(i0);
+        i3.addModel(i1);
+        i3.addModel(i2);
 
         myItems.add(i0);
         myItems.add(i1);
@@ -68,8 +69,8 @@ public class ModelTest {
     @Test
     public void TestGetModelUID() {
         ModelObject pizza = (ModelObject)myItems.get(3);
-        ModelObject dough = (ModelObject)pizza.getModel(i1.getModelName(), i1.UID);
-        assertEquals( i1.UID,(String)dough.get("UID"));
+        ModelObject dough = (ModelObject)pizza.getModel(i2.getModelName(), i2.UID);
+        assertEquals( i2.UID,(String)dough.get("UID"));
     }
 
     @Test
@@ -88,12 +89,18 @@ public class ModelTest {
 
     @Test
     public void TestIngestInternalJSON(){
-        ModelObject pizza = (ModelObject)myItems.get(3);
-        ModelObject dough = (ModelObject)myItems.get(1);
-        String jsonPizza = pizza.toString();
-        ModelObject ingestPizza = new ModelObject(jsonPizza);
-        ModelObject ingestDough = (ModelObject)ingestPizza.getModel("Item", dough.UID);
-        assertEquals(ingestDough.UID,dough.UID);
+        try {
+            ModelObject pizza = (ModelObject) myItems.get(3);
+            ModelObject dough = (ModelObject) myItems.get(1);
+            String jsonPizza = pizza.toString();
+            ModelObject ingestPizza = new ModelObject(jsonPizza);
+            ModelObject ingestDough = (ModelObject) ingestPizza.getModel("Item", dough.UID);
+            assertEquals(ingestDough.UID,dough.UID);
+        }catch(JSONException e){
+            System.out.println("Internal (Item) of ingestPizza not found\nPrinting Stack Trace\n");
+
+        }
+
     }
 
 

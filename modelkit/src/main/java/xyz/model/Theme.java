@@ -1,21 +1,21 @@
 package xyz.model;
 
-public class ThemeCSS extends ModelObject{
+public class Theme extends ModelObject{
     public String InnerCSS;
 
-    public ThemeCSS(String name){
+    public Theme(String name){
         super();
         ClassName = "ThemeCSS";
         Name = name;
         InnerCSS = "";
-        put("Name", Name);
-        put("ClassName", ClassName);
+        updateKey("Name", Name);
+        updateKey("ClassName", ClassName);
         put("InnerCSS", InnerCSS);
 
     }
 
     public void update(){
         super.update();
-        put("InnerCSS", InnerCSS);
+        updateKey("InnerCSS", InnerCSS);
     }
 }

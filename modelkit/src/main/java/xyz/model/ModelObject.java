@@ -3,41 +3,44 @@ package xyz.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.time.Instant;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ModelObject extends JSONObject implements Model {
 
     public String UID;
     public String ClassName;
     public String Name;
-    public HashMap<String,HashMap<String, Model>> Children; // Stores Classes of Models followed by UID Keys
+    public String Modified;
 
     public ModelObject(){
         super();
         UID = ModelKeys.genUID();
         ClassName = "ModelBase";
+        Modified = Instant.now().toString();
         Name = "ModelBase";
-        Children = new HashMap<String,HashMap<String,Model>>();
 
         put("UID", UID);
         put("ClassName", ClassName);
         put("Name", Name);
+        put("Modified", Modified);
 
     }
 
     public ModelObject(JSONObject jObj){
 
         super();
-        Children = new HashMap<String,HashMap<String,Model>>();
 
         try { //Assumes jObj is a ModelObject internally
             UID = (String) jObj.get("UID");
             ClassName = (String) jObj.get("ClassName");
             Name = (String) jObj.get("Name");
+            Modified = (String) jObj.get("Modified");
             put("UID", UID);
             put("ClassName", ClassName);
             put("Name", Name);
+            put("Modified", Modified);
 
         }catch(JSONException e){
             for (String key : jObj.keySet()){
@@ -52,24 +55,15 @@ public class ModelObject extends JSONObject implements Model {
 
     public ModelObject(String json){
         super(json);
+
         UID = (String)get("UID");
         ClassName = (String)get("ClassName");
         Name = (String)get("Name");
-        Children = new HashMap<String,HashMap<String,Model>>();
+        Modified = (String)get("Modified");
 
 
-        ArrayList<String> Keys = ModelKeys.ModelKeys();
-        for (String key : keySet()){ //New item groups have "995edf..key" -> JSON
-           for(String k : Keys){
-               if (k.compareTo(key) == 0){
-                   JSONObject obj= (JSONObject)get(key);
-                   for (String internalKey : obj.keySet()) {
-                       ModelObject myObj = new ModelObject((JSONObject)obj.get(internalKey));
-                       addModel(myObj);
-                   }
-               }
-           }
-        }
+
+
     }
 
     public ModelObject(int size){
@@ -77,31 +71,52 @@ public class ModelObject extends JSONObject implements Model {
         UID = ModelKeys.genUID();
         ClassName = "ModelBase";
         Name = "ModelBase";
-        Children = new HashMap<String,HashMap<String,Model>>();
+        Modified = Instant.now().toString();
         put("UID", UID);
         put("ClassName", ClassName);
         put("Name", Name);
+        put("Modified", Modified);
+    }
+
+    public JSONObject getChildren(String Pluralized){ //Expects the Plura
+        try {
+            JSONObject childMap = (JSONObject)get(Pluralized);
+            return childMap;
+        }catch(JSONException e){
+            return null;
+        }catch(ClassCastException e){ //Returned JSON Object
+                return null;
+        }
+    }
+
+    public String plural(){
+        return pluralize(getModelName());
+    }
+
+    public String pluralize(String str){
+        int index = str.lastIndexOf(str);
+        char c = str.charAt(index);
+        if (c != 's'){
+            return str + "s";
+        }
+        return str;
     }
 
     @Override
-    public void addModel(Model m) {
-        HashMap<String,Model> internal = Children.get(m.getModelName());
-
+    public void addModel(ModelObject m) {
+        JSONObject internal = getChildren(m.plural());
         if (internal == null){
-            HashMap<String,Model> refHashMap = new HashMap<String,Model>();
-            refHashMap.put(m.getUID(), m);
-            Children.put(m.getModelName(), refHashMap);
-            put(m.getModelName(), refHashMap);
+             internal = new JSONObject();
+             internal.put(m.getUID(), m);
+             put(m.plural(),internal);
         }else{
             internal.put(m.getUID(), m);
-            put(m.getModelName(), internal);
+            updateKey(m.plural(), internal);
         }
 
-    }
+        Modified = Instant.now().toString();
+        update();
 
-    @Override
-    public HashMap<String,HashMap<String,Model>> getChildren() {
-        return Children;
     }
 
     @Override
@@ -135,35 +150,46 @@ public class ModelObject extends JSONObject implements Model {
     }
 
     @Override
-    public Model getModel(String mClass, String uid) {
-        HashMap<String, Model> internal = Children.get(mClass);
-        ModelObject mObj = (ModelObject)internal.get(uid);
-
-        if (mObj == null){
+    public ModelObject getModel(String mClass, String uid) {
+        JSONObject internal = getChildren(pluralize(mClass));
+        if(internal == null){
             throw new JSONException("Model not found");
         }
+        try {
+            ModelObject mObj = (ModelObject) internal.get(uid);
+            if(mObj == null){
+                throw new JSONException("Model: "+mClass+ "[ " + uid + "] not found\n");
+            }
+            return mObj;
+        }catch(ClassCastException e){
+            JSONObject jObj = (JSONObject)internal.get(uid);
+            return new ModelObject(jObj);
+        }
 
-        return mObj;
     }
 
     @Override
     public boolean Remove(String mClass, String uid){
-        HashMap<String, Model> internal = Children.get(mClass);
-
+        String collection = pluralize(mClass);
+        JSONObject internal = getChildren(collection);
         if (internal == null){
             return false;
         }
 
-        Model val = internal.remove(uid);
+        ModelObject val = (ModelObject)internal.remove(uid);
         if (val == null){
             return false;
         }
+
+        Modified = Instant.now().toString();
+        updateKey("Modified", Modified);
+
         return true;
     }
 
     @Override
-    public HashMap<String,Model> getModels(String mClass) {
-      return (HashMap<String,Model>)Children.get(mClass);
+    public JSONObject getModels(String mClass) {
+      return getChildren(pluralize(mClass));
     }
 
     @Override
@@ -177,9 +203,18 @@ public class ModelObject extends JSONObject implements Model {
     }
 
     @Override
+    public ModelIterator getIterator(){
+        ModelIterator myIter = new ModelIterator(this);
+        return myIter;
+    }
+
+    @Override
     public void update(){
-        put("UID", UID);
-        put("ClassName", ClassName);
-        put("Name", Name);
+
+        updateKey("UID", UID);
+        updateKey("ClassName", ClassName);
+        updateKey("Name", Name);
+        updateKey("Modified", Modified);
+
     }
 }

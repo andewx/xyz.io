@@ -30,8 +30,8 @@ public class Notification extends ModelObject{
         ClassA = NotifierClass;
         ClassB = SubscriberClass;
 
-        put("ClassName", ClassName);
-        put("Name", Name);
+        updateKey("ClassName", ClassName);
+        updateKey("Name", Name);
         put("Message", Message);
         put("Sent", Sent);
         put("Read", Read);
@@ -43,7 +43,7 @@ public class Notification extends ModelObject{
 
     public void update(){
         super.update();
-        put("DateRead", DateRead);
-        put("Message", Message);
+        updateKey("DateRead", DateRead);
+        updateKey("Message", Message);
     }
 }

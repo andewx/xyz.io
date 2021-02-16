@@ -3,10 +3,47 @@
  */
 package xyz.app;
 
+import io.javalin.Javalin;
+import io.javalin.http.Handler;
+import xyz.controllers.BaseController;
+import xyz.controllers.IndexController;
+import xyz.controllers.RouteManager;
+import xyz.controllers.UserController;
+import xyz.dbkit.DBMain;
+
+import java.io.IOException;
 
 
 public class App {
-    public static void main(String[] args) {
-        System.out.println("Hello World");
+    public static void main(String[] args) throws IOException {
+        //Initiate Controllers - Form API
+        Javalin app = Javalin.create().start(8080);
+        DBMain myDB = new DBMain("xyzDatabase");
+        myDB.CreateNode("Users", "user.keys");
+        myDB.CreateNode("Recipes", "recipe.keys");
+        myDB.CreateNode("Groups", "group.keys");
+        BaseController BaseEndpoint = new BaseController(myDB);
+        IndexController IndexEndpoint = new IndexController(myDB);
+        UserController userController = new UserController(myDB);
+        RouteManager routerGet = new RouteManager();
+        RouteManager routerPost = new RouteManager();
+
+
+        //Build API
+        routerGet.Register("/", IndexController::Index);
+        routerPost.Register("/user/create", userController::CreateUser);
+
+        //Add Routing to Javalin
+        for (String key : routerGet.RouteMethods.keySet()){
+            Handler method = routerGet.getHandler(key);
+            app.get(key, method);
+        }
+
+        for (String key : routerPost.RouteMethods.keySet()){
+            Handler method = routerPost.getHandler(key);
+            app.post(key, method);
+        }
+
+
     }
 }
