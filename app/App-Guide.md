@@ -12,9 +12,7 @@ into the ``RouteManager`` routes ``HashMap``.
 When we place a method into ``RouteManager.RouteMethods`` map we can either reference static methods
 or the instance methods. All methods take a ``Javalin.Context`` single parameter.
 
-If you are working with models and the database. You will need to be using an instanced class with
-a reference to the database. Retrieve and Add data on the ``DBNodes``. The database should auto sync
-in the future to save these models. 
+When accessing the database for model usage or edits you'll need to utilize an instance of the Controller class that has a reference to the database.
 
 
 ## Working with Templates ``xyz.webkit``
