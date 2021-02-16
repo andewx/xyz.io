@@ -32,6 +32,18 @@ See
 
 Familiarize yourself with using the build system by cloning the repository. Checking into the development repository. Creating a module-branch in git. Creating your own working commit. And merging with your module-branch for practice. 
 
+---
+## ``XYZ Framework``
+### Overview
+XYZ Framework is a fully self-encapsulated framework capable of deploying an in place web application solution. No other stack is required with all components required completely self contained. This framework is for demonstration purposes and small application architecture. Notably a self-contained Web Frameowrk API can
+be used for building self-contained Java Applications with an open-source and accessible UI/UX system. 
+
+System components include the ``xyz.dbkit`` for managing ``xyz.model`` permanence through JSON storage. DBNode queries are implicitly shallow to prevent deep global searches. Database state updates per DBNode update and via a sleep thread for syncing. 
+
+``xyz.webkit`` is responsible for managing ``Template`` file operations such as filling html files with keyed data.
+
+``xyz.app`` manages a lightweight server with REST controller routes and exposes APIs to consumers. Security handling is managed via simple groupID exclusion security levels rather than ACL tree lists. 
+
 
 
 
