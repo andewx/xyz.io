@@ -374,7 +374,7 @@ public class DBMain extends Thread implements DBManager{
 
         while (!ExitCondition) {
 
-            try{ this.sleep(4000);
+            try{ this.sleep(15000);
              this.SyncNotifications();
              System.out.println("Syncing...\n");
              this.Sync();
