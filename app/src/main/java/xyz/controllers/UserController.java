@@ -42,7 +42,7 @@ public class UserController extends BaseController{
             //Create new user
             DBNode userNode = db.GetNode("Users");
             User newUser = new User(email, password, username,first,last);
-            db.addModel(userNode, newUser);
+            db.AddModel(userNode, newUser);
 
         }else{
             SecurityError(ctx);

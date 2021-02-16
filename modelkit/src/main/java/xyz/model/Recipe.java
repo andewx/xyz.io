@@ -51,6 +51,26 @@ public class Recipe extends ModelObject{
         put("ImageURL", ImageURL);
     }
 
+    public Recipe(String name, String img,String category, String caption, String post, int prep, int cook, int serves){
+        super();
+        ClassName = "Recipe";
+        Name = name;
+        ImageURL = img;
+        PrepTime = prep;
+        CookTime = cook;
+        Serves = serves;
+        Caption = caption;
+        PostEntry = post;
+
+        updateKey("ClassName", ClassName);
+        updateKey("Name", Name);
+        put("Category", Category);
+        put("Serves", Serves);
+        put("Caption", Caption);
+        put("PostEntry", PostEntry);
+        put("ImageURL", ImageURL);
+    }
+
     public void update(){
         super.update();
         updateKey("Category", Category);
