@@ -11,14 +11,14 @@ public interface DBManager extends Runnable {
 
     //Database API
     DBNode CreateNode(String nodeName, String nodeFilePath) throws IOException;
-    DBNode CreateNode(String nodeName, String nodeFilePath, String json);
-    boolean DeleteNode(String nodeName);
+    DBNode CreateNode(String nodeName, String nodeFilePath, String json) throws IOException;
+    boolean DeleteNode(String nodeName) throws IOException;
     boolean ActiveNode(String nodeName);
     DBNode GetNode(String nodeName);
 
     //Repository actions
-    ModelObject addModel(DBNode node, ModelObject m);
-    ModelObject updateModel(DBNode node, ModelObject m);
+    ModelObject AddModel(DBNode node, ModelObject m);
+    ModelObject UpdateModel(DBNode node, ModelObject m);
 
     //Query Operations -- Matches exact all properties
     ArrayList<ModelObject> findExact(ModelObject model, String ClassName, HashMap<String,String> PropertyKeyValues);

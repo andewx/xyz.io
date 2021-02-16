@@ -2,19 +2,16 @@ package xyz.dbkit;
 
 import org.json.JSONObject;
 import xyz.model.FileMap;
-import xyz.model.ModelIterator;
-import xyz.model.ModelKeys;
+
 import xyz.model.ModelObject;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
-public class DBMain implements DBManager{
+public class DBMain extends Thread implements DBManager{
 
     HashMap<String,DBNode> Nodes;
     DBNode ActiveNode;
@@ -26,7 +23,7 @@ public class DBMain implements DBManager{
     public DBMain(String name) throws IOException {
         //Checks if node property files exists -- stored as .keys json files
         Name = name;
-        Nodes = new HashMap<String, DBNode>();
+        Nodes = new HashMap<>();
         srcPath = "resources/";
         String nodeFile = srcPath + "node.keys";
 
@@ -46,10 +43,9 @@ public class DBMain implements DBManager{
                         JSONObject fileMapping = (JSONObject) MapNodes.get(key);
                         if (fileMapping != null) {
                             String nodeName = (String)fileMapping.get("Name");
-                            Path nodePath = Path.of(srcPath + (String) fileMapping.get("FilePath"));
+                            Path nodePath = Path.of((String) fileMapping.get("FilePath"));
                             String text = Files.readString(nodePath);
-                            DBNode nNode = CreateNode(nodeName, nodePath.toString(), text);
-                            ActiveNode = nNode;
+                            ActiveNode = CreateNode(nodeName, nodePath.toString(), text);
                             Nodes.put(nodeName, ActiveNode);
                         }
                     }
@@ -65,51 +61,67 @@ public class DBMain implements DBManager{
             NodeFileManager = new ModelObject();
             NodeFileManager.Name = "NodeFiles";
             NodeFileManager.update();
-            DBNode myNode = new DBNode("default", "node.keys");
-            FileMap nMap = new FileMap("default", "node.keys");
+            DBNode myNode = new DBNode("default", srcPath + "default.keys");
+            FileMap nMap = new FileMap("default", srcPath + "node.keys");
             Nodes.put(myNode.name, myNode);
             ActiveNode = myNode;
             NodeFileManager.addModel(nMap);
             NodeFileManager.update();
             Path myPath = Path.of(nodeFile);
+            myNode.WriteNode(myNode.file);
             Files.writeString(myPath, NodeFileManager.toString());
         }
 
     }
 
+    public void WriteFileMap() throws IOException {
+        NodeFileManager.update();
+        Path file = Path.of(srcPath + "node.keys");
+        boolean exists = Files.exists(file);
+        if(!exists){
+            Files.createFile(file);
+        }
+
+        Files.writeString(file, NodeFileManager.toString());
+    }
+
 
     @Override
     public DBNode CreateNode(String nodeName, String nodeFilePath) throws IOException {
-        DBNode myNode = new DBNode(nodeName, nodeFilePath);
-        FileMap nMap = new FileMap(nodeName, nodeFilePath);
+        DBNode myNode = new DBNode(nodeName, srcPath + nodeFilePath);
+        FileMap nMap = new FileMap(nodeName, srcPath + nodeFilePath);
         NodeFileManager.addModel(nMap);
-        Path myPath = Path.of(srcPath + myNode.file);
+        Path myPath = Path.of(myNode.file);
         boolean exists =  Files.exists(myPath);
         if(exists){
-            Files.writeString( myPath, myNode.rootGraph.toString());
+            myNode.rootGraph = new ModelObject(Files.readString(myPath));
         }else{
             Files.createFile(myPath);
             Files.writeString(myPath, myNode.rootGraph.toString());
         }
+
+        Nodes.put(nodeName, myNode);
+        WriteFileMap();
         return myNode;
     }
 
     @Override
-    public DBNode CreateNode(String nodeName, String nodeFilePath, String json) {
+    public DBNode CreateNode(String nodeName, String nodeFilePath, String json) throws IOException {
         DBNode myNode = new DBNode(nodeName, nodeFilePath);
         FileMap nMap = new FileMap(nodeName, nodeFilePath);
         NodeFileManager.addModel(nMap);
+        WriteFileMap();
         return myNode;
     }
 
     @Override
-    public boolean DeleteNode(String nodeName) {
+    public boolean DeleteNode(String nodeName) throws IOException {
         DBNode delNode = Nodes.get(nodeName);
         if(delNode == null){
             return false;
         }
         //Delete file;
-        Path myPath = Path.of(srcPath + delNode.file);
+        Path myPath = Path.of(delNode.file);
         boolean exists = Files.exists(myPath);
 
         if(!exists){
@@ -119,9 +131,11 @@ public class DBMain implements DBManager{
         try {
             Files.delete(myPath);
             Nodes.remove(delNode.name);
+            NodeFileManager.Remove("FileMap",delNode.name);
         }catch(IOException e) {
             return false;
         }
+        WriteFileMap();
 
         return true;
     }
@@ -136,21 +150,24 @@ public class DBMain implements DBManager{
         return true;
     }
 
+    public ModelObject GetFileManager(){
+        return NodeFileManager;
+    }
+
     @Override
     public DBNode GetNode(String nodeName) {
         return Nodes.get(nodeName);
     }
 
     @Override
-    public ModelObject addModel(DBNode node, ModelObject m) {
-        String className = m.getModelName();
+    public ModelObject AddModel(DBNode node, ModelObject m) {
         node.rootGraph.addModel(m);
         node.hasChanged = true;
         return m;
     }
 
     @Override
-    public ModelObject updateModel(DBNode node, ModelObject m) {
+    public ModelObject UpdateModel(DBNode node, ModelObject m) {
         m.update();
         node.hasChanged = true;
         return m;
@@ -160,7 +177,7 @@ public class DBMain implements DBManager{
 
     @Override
     public ArrayList<ModelObject> findExact(ModelObject model, String ClassName, HashMap<String, String> PropertyKeyValues) {
-        ArrayList<ModelObject> myMatches = new ArrayList<ModelObject>();
+        ArrayList<ModelObject> myMatches = new ArrayList<>();
         ModelObject myMap = (ModelObject)model.get(ClassName);
         boolean matches = true;
         for(String key : myMap.keySet()){
@@ -184,7 +201,7 @@ public class DBMain implements DBManager{
 
     @Override
     public ArrayList<ModelObject> findExact(DBNode node, String ClassName, HashMap<String, String> PropertyKeyValues) {
-        ArrayList<ModelObject> myMatches = new ArrayList<ModelObject>();
+        ArrayList<ModelObject> myMatches = new ArrayList<>();
         ModelObject myMap = (ModelObject)node.rootGraph.get(ClassName);
         boolean matches = true;
         for(String key : myMap.keySet()){
@@ -208,7 +225,7 @@ public class DBMain implements DBManager{
 
     @Override
     public ArrayList<ModelObject> findSome(ModelObject model, String ClassName, HashMap<String, String> PropertyKeyValues) {
-        ArrayList<ModelObject> myMatches = new ArrayList<ModelObject>();
+        ArrayList<ModelObject> myMatches = new ArrayList<>();
         ModelObject myMap = (ModelObject)model.get(ClassName);
         for(String key : myMap.keySet()){
             ModelObject myModel = (ModelObject)myMap.get(key);
@@ -227,7 +244,7 @@ public class DBMain implements DBManager{
 
     @Override
     public ArrayList<ModelObject> findSome(DBNode node, String ClassName, HashMap<String, String> PropertyKeyValues) {
-        ArrayList<ModelObject> myMatches = new ArrayList<ModelObject>();
+        ArrayList<ModelObject> myMatches = new ArrayList<>();
         ModelObject myMap = (ModelObject)node.rootGraph.get(ClassName);
         for(String key : myMap.keySet()){
             ModelObject myModel = (ModelObject)myMap.get(key);
@@ -246,7 +263,7 @@ public class DBMain implements DBManager{
 
     @Override
     public ArrayList<ModelObject> findSimilar(ModelObject model, String ClassName, String property, String value) {
-        ArrayList<ModelObject> myMatches = new ArrayList<ModelObject>();
+        ArrayList<ModelObject> myMatches = new ArrayList<>();
         ModelObject myMap = (ModelObject)model.get(ClassName);
         for(String key : myMap.keySet()){
             ModelObject myModel = (ModelObject)myMap.get(key);
@@ -264,7 +281,7 @@ public class DBMain implements DBManager{
 
     @Override
     public ArrayList<ModelObject> findSimilar(DBNode node, String ClassName, String property, String value) {
-        ArrayList<ModelObject> myMatches = new ArrayList<ModelObject>();
+        ArrayList<ModelObject> myMatches = new ArrayList<>();
         ModelObject myMap = (ModelObject)node.rootGraph.get(ClassName);
         for(String key : myMap.keySet()){
             ModelObject myModel = (ModelObject)myMap.get(key);
@@ -303,15 +320,9 @@ public class DBMain implements DBManager{
     public boolean deleteKey(ModelObject model, String ClassName, String key) {
 
         JSONObject myMap =  model.getModels(ClassName);
-        if (myMap == null){
-            return false;
-        }
+        if (myMap == null) return false;
         ModelObject value = (ModelObject)myMap.remove(key);
-        if(value == null){
-            return false;
-        }
-
-        return true;
+        return value != null;
     }
 
     @Override
@@ -334,14 +345,7 @@ public class DBMain implements DBManager{
     public String SyncNode(DBNode thisNode) throws IOException {
 
         if(thisNode.hasChanged) {
-            Path myPath = Path.of(thisNode.file);
-            boolean exists = Files.exists(myPath);
-            if (!exists) {
-                Files.createFile(myPath);
-                Files.writeString(myPath, thisNode.rootGraph.toString());
-            } else {
-                Files.writeString(myPath, thisNode.rootGraph.toString());
-            }
+            thisNode.WriteNode(srcPath + thisNode.GetFile());
             thisNode.hasChanged = false;
             return "DBNode: " + thisNode.name + " Written\n";
         }
@@ -366,19 +370,19 @@ public class DBMain implements DBManager{
 
     @Override
     public void run() {
+        System.out.println("\nDatabase: " + Name + " starting...");
+
         while (!ExitCondition) {
-            try {
-                this.wait();
-                this.SyncNotifications();
-                try {
-                    this.Sync();
-                }catch(IOException e){
+
+            try{ this.sleep(15000);
+             this.SyncNotifications();
+             System.out.println("Syncing...\n");
+             this.Sync();
+            }
+            catch(IOException | InterruptedException e){
                     System.out.println("Database File Error Exiting Sync Thread ...");
                     e.printStackTrace();
                     ExitCondition = true;
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
 
         }
