@@ -4,6 +4,7 @@ import xyz.model.ModelObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import xyz.dbkit.DBNode;
 
 
 public interface DBManager extends Runnable {

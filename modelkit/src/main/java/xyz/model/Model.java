@@ -3,6 +3,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public interface Model {
@@ -19,10 +20,10 @@ public interface Model {
     public void update();
 
     //Child Handlers
-    public HashMap<String,HashMap<String,ModelObject>> getChildren();
+    public JSONObject getChildren(String Class);
     public ModelObject getModel(String mClass, String uid);
     public void addModel(ModelObject m);
-    public HashMap<String,ModelObject> getModels(String mClass);
+    public JSONObject getModels(String mClass);
     public boolean Remove(String mClass, String uid);
     public ModelIterator getIterator();
 

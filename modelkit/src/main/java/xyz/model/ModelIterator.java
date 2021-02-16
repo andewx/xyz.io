@@ -1,5 +1,6 @@
 package xyz.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.function.Consumer;
@@ -8,30 +9,41 @@ public class ModelIterator implements Iterator<ModelObject> {
     //BFS Tree Next
     public ModelObject currentNode;
     public ModelObject childNode;
-    public Iterator<String> keyIter;
+    public ArrayList<String> keys;
+    public int index;
+    public int length;
+    public String key;
 
     public ModelIterator(ModelObject node){
         super();
         currentNode = node;
-        keyIter = currentNode.keys();
-        if (keyIter.hasNext()) {
-            childNode = (ModelObject) currentNode.get(keyIter.next());
+        keys = ModelKeys.ModelKeys();
+        index = 0;
+        length = keys.size();
+
+        if (length > 0) {
+            key = keys.get(0);
         }
     }
     @Override
     public boolean hasNext() {
-       return keyIter.hasNext();
+       if(index < (length -1)){
+           return true;
+
+       }
+        return false;
     }
 
     @Override
     public ModelObject next() {
-        childNode = (ModelObject) currentNode.get(keyIter.next());
-        return childNode;
+        index++;
+        key = keys.get(index);
+        return (ModelObject)currentNode.get(key);
     }
 
     @Override
     public void remove() {
-        currentNode.remove(childNode.getUID());
+        currentNode.remove(key);
     }
 
     @Override

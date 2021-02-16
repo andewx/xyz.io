@@ -42,8 +42,8 @@ public class Recipe extends ModelObject{
         Caption = "Caption Text";
         PostEntry = "Recipe Instructions";
 
-        put("ClassName", ClassName);
-        put("Name", Name);
+        updateKey("ClassName", ClassName);
+        updateKey("Name", Name);
         put("Category", Category);
         put("Serves", Serves);
         put("Caption", Caption);
@@ -53,10 +53,10 @@ public class Recipe extends ModelObject{
 
     public void update(){
         super.update();
-        put("Category", Category);
-        put("Serves", Serves);
-        put("Caption", Caption);
-        put("PostEntry", PostEntry);
-        put("ImageURL", ImageURL);
+        updateKey("Category", Category);
+        updateKey("Serves", Serves);
+        updateKey("Caption", Caption);
+        updateKey("PostEntry", PostEntry);
+        updateKey("ImageURL", ImageURL);
     }
 }

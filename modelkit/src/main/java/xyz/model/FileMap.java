@@ -18,9 +18,9 @@ public class FileMap extends ModelObject {
 
     public void update(){
         super.update();
-        put("UID", UID);
-        put("ClassName", ClassName);
-        put("Name", Name);
-        put("FilePath", FilePath);
+        updateKey("UID", UID);
+        updateKey("ClassName", ClassName);
+        updateKey("Name", Name);
+        updateKey("FilePath", FilePath);
     }
 }

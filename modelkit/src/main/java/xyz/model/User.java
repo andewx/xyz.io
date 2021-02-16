@@ -37,13 +37,13 @@ public class User extends ModelObject{
         LoginLast = Instant.now().toString();
 
         //Put Keys
-       put("UID", Email);
-       put("ClassName", ClassName);
+        updateKey("UID", Email);
+        updateKey("ClassName", ClassName);
        put("Email", Email);
        put("FirstName", FirstName);
        put("LastName", LastName);
        put("GroupID", GroupID);
-       put("Name", Name);
+        updateKey("Name", Name);
        put("PasswordSHA256", PasswordSHA256);
        put("LoginLast", LoginLast);
 
@@ -52,11 +52,11 @@ public class User extends ModelObject{
     public void update(){
         //Put Keys
         super.update();
-        put("FirstName", FirstName);
-        put("LastName", LastName);
-        put("GroupID", GroupID);
-        put("Name", Name);
-        put("PasswordSHA256", PasswordSHA256);
-        put("LoginLast", LoginLast);
+        updateKey("FirstName", FirstName);
+        updateKey("LastName", LastName);
+        updateKey("GroupID", GroupID);
+        updateKey("Name", Name);
+        updateKey("PasswordSHA256", PasswordSHA256);
+        updateKey("LoginLast", LoginLast);
     }
 }

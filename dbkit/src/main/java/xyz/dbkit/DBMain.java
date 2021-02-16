@@ -1,7 +1,9 @@
 package xyz.dbkit;
 
+import org.json.JSONObject;
 import xyz.model.FileMap;
 import xyz.model.ModelIterator;
+import xyz.model.ModelKeys;
 import xyz.model.ModelObject;
 
 import java.io.IOException;
@@ -10,6 +12,7 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class DBMain implements DBManager{
 
@@ -18,51 +21,72 @@ public class DBMain implements DBManager{
     ModelObject NodeFileManager;
     String Name;
     boolean ExitCondition;
+    String srcPath;
 
     public DBMain(String name) throws IOException {
         //Checks if node property files exists -- stored as .keys json files
         Name = name;
-        String nodeFile = "node.keys";
+        Nodes = new HashMap<String, DBNode>();
+        srcPath = "resources/";
+        String nodeFile = srcPath + "node.keys";
 
         //File Stuff
         Path dbPath = Path.of(nodeFile);
         boolean exists = Files.exists(dbPath);
+        boolean hasKeys = false;
+
         if(exists){
             String jsonText = Files.readString(dbPath);
-            NodeFileManager = new ModelObject(jsonText);
-            ModelIterator myIter = new ModelIterator(NodeFileManager);
-            while(myIter.hasNext()){ //Read in database
-                ModelObject fileMapping = myIter.next();
-                String nodeName = fileMapping.getName();
-                Path nodePath = Path.of((String)fileMapping.get("FilePath"));
-                String text = Files.readString(nodePath);
-                DBNode nNode = CreateNode(nodeName, nodePath.toString(), text);
-                ActiveNode = nNode;
-                Nodes.put(nodeName, ActiveNode);
+            if(jsonText.compareTo("") != 0) {
+                hasKeys = true;
+                NodeFileManager = new ModelObject(jsonText);
+                JSONObject MapNodes = NodeFileManager.getChildren("FileMaps");
+                if (MapNodes != null) {
+                    for (String key : MapNodes.keySet()) {
+                        JSONObject fileMapping = (JSONObject) MapNodes.get(key);
+                        if (fileMapping != null) {
+                            String nodeName = (String)fileMapping.get("Name");
+                            Path nodePath = Path.of(srcPath + (String) fileMapping.get("FilePath"));
+                            String text = Files.readString(nodePath);
+                            DBNode nNode = CreateNode(nodeName, nodePath.toString(), text);
+                            ActiveNode = nNode;
+                            Nodes.put(nodeName, ActiveNode);
+                        }
+                    }
+                }
             }
-            Files.writeString(dbPath, NodeFileManager.toString());
-        }else{
+        }
+
+        if(!exists){
             Files.createFile(dbPath);
-            ModelObject NodeFileManager = new ModelObject();
-            NodeFileManager.Name = "root";
-            DBNode defaultNode = CreateNode("default", "default.keys");
-            ActiveNode = defaultNode;
-            Nodes.put(ActiveNode.name, ActiveNode);
-            FileMap nFileMap = new FileMap(defaultNode.name, defaultNode.file);
-            Files.writeString(dbPath, NodeFileManager.toString());
+        }
+
+        if(!hasKeys){
+            NodeFileManager = new ModelObject();
+            NodeFileManager.Name = "NodeFiles";
+            NodeFileManager.update();
+            DBNode myNode = new DBNode("default", "node.keys");
+            FileMap nMap = new FileMap("default", "node.keys");
+            Nodes.put(myNode.name, myNode);
+            ActiveNode = myNode;
+            NodeFileManager.addModel(nMap);
+            NodeFileManager.update();
+            Path myPath = Path.of(nodeFile);
+            Files.writeString(myPath, NodeFileManager.toString());
         }
 
     }
+
 
     @Override
     public DBNode CreateNode(String nodeName, String nodeFilePath) throws IOException {
         DBNode myNode = new DBNode(nodeName, nodeFilePath);
         FileMap nMap = new FileMap(nodeName, nodeFilePath);
         NodeFileManager.addModel(nMap);
-        Path myPath = Path.of(myNode.file);
+        Path myPath = Path.of(srcPath + myNode.file);
         boolean exists =  Files.exists(myPath);
         if(exists){
-            Files.writeString(myPath, myNode.rootGraph.toString());
+            Files.writeString( myPath, myNode.rootGraph.toString());
         }else{
             Files.createFile(myPath);
             Files.writeString(myPath, myNode.rootGraph.toString());
@@ -85,7 +109,7 @@ public class DBMain implements DBManager{
             return false;
         }
         //Delete file;
-        Path myPath = Path.of(delNode.file);
+        Path myPath = Path.of(srcPath + delNode.file);
         boolean exists = Files.exists(myPath);
 
         if(!exists){
@@ -137,241 +161,173 @@ public class DBMain implements DBManager{
     @Override
     public ArrayList<ModelObject> findExact(ModelObject model, String ClassName, HashMap<String, String> PropertyKeyValues) {
         ArrayList<ModelObject> myMatches = new ArrayList<ModelObject>();
-        ModelIterator myIter = new ModelIterator(model);
-        while(myIter.hasNext()){
-            ModelObject nextModel = myIter.next();
-            String myClass = nextModel.getModelName();
-            if(myClass.compareTo(ClassName) != 0){ //Search Inner
-              ArrayList<ModelObject> Append = findExact(nextModel, ClassName, PropertyKeyValues);
-              myMatches.addAll(Append);
-            }else{
-                boolean match = true;
-                for(String Prop : PropertyKeyValues.keySet()){
-                    String propVal = PropertyKeyValues.get(Prop);
-                    if(propVal.compareTo((String)nextModel.get(Prop)) != 0){
-                        match = false;
+        ModelObject myMap = (ModelObject)model.get(ClassName);
+        boolean matches = true;
+        for(String key : myMap.keySet()){
+            ModelObject myModel = (ModelObject)myMap.get(key);
+            if(key != null){
+                for(String mapKey : PropertyKeyValues.keySet()){
+                    String cVal = myModel.get(mapKey).toString();
+                    if(cVal.compareTo(myMap.get(mapKey).toString())!=0){
+                        matches = false;
+                        break;
                     }
                 }
-                if(match){
-                    myMatches.add(nextModel);
-                }
+            }
+            if (matches){
+                myMatches.add(myModel);
             }
         }
+
         return myMatches;
     }
 
     @Override
     public ArrayList<ModelObject> findExact(DBNode node, String ClassName, HashMap<String, String> PropertyKeyValues) {
         ArrayList<ModelObject> myMatches = new ArrayList<ModelObject>();
-        ModelIterator myIter = new ModelIterator(node.rootGraph);
-        while(myIter.hasNext()){
-            ModelObject nextModel = myIter.next();
-            String myClass = nextModel.getModelName();
-            if(myClass.compareTo(ClassName) != 0){ //Search Inner
-                ArrayList<ModelObject> Append = findExact(nextModel, ClassName, PropertyKeyValues);
-                myMatches.addAll(Append);
-            }else{
-                boolean match = true;
-                for(String Prop : PropertyKeyValues.keySet()){
-                    String propVal = PropertyKeyValues.get(Prop);
-                    if(propVal.compareTo((String)nextModel.get(Prop)) != 0){
-                        match = false;
+        ModelObject myMap = (ModelObject)node.rootGraph.get(ClassName);
+        boolean matches = true;
+        for(String key : myMap.keySet()){
+            ModelObject myModel = (ModelObject)myMap.get(key);
+            if(key != null){
+                for(String mapKey : PropertyKeyValues.keySet()){
+                    String cVal = myModel.get(mapKey).toString();
+                    if(cVal.compareTo(myMap.get(mapKey).toString())!=0){
+                        matches = false;
+                        break;
                     }
                 }
-                if(match){
-                    myMatches.add(nextModel);
-                }
+            }
+            if (matches){
+                myMatches.add(myModel);
             }
         }
+
         return myMatches;
     }
 
     @Override
     public ArrayList<ModelObject> findSome(ModelObject model, String ClassName, HashMap<String, String> PropertyKeyValues) {
         ArrayList<ModelObject> myMatches = new ArrayList<ModelObject>();
-        ModelIterator myIter = new ModelIterator(model);
-        while(myIter.hasNext()){
-            ModelObject nextModel = myIter.next();
-            String myClass = nextModel.getModelName();
-            if(myClass.compareTo(ClassName) != 0){ //Search Inner
-                ArrayList<ModelObject> Append = findSome(nextModel, ClassName, PropertyKeyValues);
-                myMatches.addAll(Append);
-            }else{
-                for(String Prop : PropertyKeyValues.keySet()){
-                    String propVal = PropertyKeyValues.get(Prop);
-                    if(propVal.compareTo((String)nextModel.get(Prop)) == 0){
-                        myMatches.add(nextModel);
-                        break;
-                    }
-                }
+        ModelObject myMap = (ModelObject)model.get(ClassName);
+        for(String key : myMap.keySet()){
+            ModelObject myModel = (ModelObject)myMap.get(key);
+            if(key != null){
+               for(String mapKey : PropertyKeyValues.keySet()){
+                   String cVal = myModel.get(mapKey).toString();
+                   if(cVal.compareTo(myMap.get(mapKey).toString())==0){
+                       myMatches.add(myModel);
+                   }
+               }
             }
         }
+
         return myMatches;
     }
 
     @Override
     public ArrayList<ModelObject> findSome(DBNode node, String ClassName, HashMap<String, String> PropertyKeyValues) {
         ArrayList<ModelObject> myMatches = new ArrayList<ModelObject>();
-        ModelIterator myIter = new ModelIterator(node.rootGraph);
-        while(myIter.hasNext()){
-            ModelObject nextModel = myIter.next();
-            String myClass = nextModel.getModelName();
-            if(myClass.compareTo(ClassName) != 0){ //Search Inner
-                ArrayList<ModelObject> Append = findSome(nextModel, ClassName, PropertyKeyValues);
-                myMatches.addAll(Append);
-            }else{
-                for(String Prop : PropertyKeyValues.keySet()){
-                    String propVal = PropertyKeyValues.get(Prop);
-                    if(propVal.compareTo((String)nextModel.get(Prop)) == 0){
-                        myMatches.add(nextModel);
-                        break;
+        ModelObject myMap = (ModelObject)node.rootGraph.get(ClassName);
+        for(String key : myMap.keySet()){
+            ModelObject myModel = (ModelObject)myMap.get(key);
+            if(key != null){
+                for(String mapKey : PropertyKeyValues.keySet()){
+                    String cVal = myModel.get(mapKey).toString();
+                    if(cVal.compareTo(myMap.get(mapKey).toString())==0){
+                        myMatches.add(myModel);
                     }
                 }
             }
         }
+
         return myMatches;
     }
 
     @Override
     public ArrayList<ModelObject> findSimilar(ModelObject model, String ClassName, String property, String value) {
         ArrayList<ModelObject> myMatches = new ArrayList<ModelObject>();
-        ModelIterator myIter = new ModelIterator(model);
-        while(myIter.hasNext()){
-            ModelObject nextModel = myIter.next();
-            String myClass = nextModel.getModelName();
-            if(myClass.compareTo(ClassName) != 0){ //Search Inner
-                ArrayList<ModelObject> Append = findSimilar(nextModel, ClassName, property, value);
-                myMatches.addAll(Append);
-            }else{
-                    int diff = value.compareTo((String)nextModel.get(property));
-                    diff = Math.abs(diff); //Problematic need some distance metric for similarity
-                    if(diff <=  5){ //Weight
-                        myMatches.add(nextModel);
-                    }
+        ModelObject myMap = (ModelObject)model.get(ClassName);
+        for(String key : myMap.keySet()){
+            ModelObject myModel = (ModelObject)myMap.get(key);
+            if(key != null){
+                String cVal = myModel.get(property).toString();
+                int diff = Math.abs(cVal.compareTo(value));
+                if( diff < 5){
+                    myMatches.add(myModel);
+                }
             }
         }
+
         return myMatches;
     }
 
     @Override
     public ArrayList<ModelObject> findSimilar(DBNode node, String ClassName, String property, String value) {
         ArrayList<ModelObject> myMatches = new ArrayList<ModelObject>();
-        ModelIterator myIter = new ModelIterator(node.rootGraph);
-        while(myIter.hasNext()){
-            ModelObject nextModel = myIter.next();
-            String myClass = nextModel.getModelName();
-            if(myClass.compareTo(ClassName) != 0){ //Search Inner
-                ArrayList<ModelObject> Append = findSimilar(nextModel, ClassName, property, value);
-                myMatches.addAll(Append);
-            }else{
-                int diff = value.compareTo((String)nextModel.get(property));
-                diff = Math.abs(diff); //Problematic need some distance metric for similarity
-                if(diff <=  5){ //Weight
-                    myMatches.add(nextModel);
+        ModelObject myMap = (ModelObject)node.rootGraph.get(ClassName);
+        for(String key : myMap.keySet()){
+            ModelObject myModel = (ModelObject)myMap.get(key);
+            if(key != null){
+                String cVal = myModel.get(property).toString();
+                int diff = Math.abs(cVal.compareTo(value));
+                if( diff < 5){
+                    myMatches.add(myModel);
                 }
             }
         }
+
         return myMatches;
     }
 
     @Override
     public ModelObject findKey(ModelObject model, String ClassName, String key) {
-        ModelIterator myIter = new ModelIterator(model);
-        while(myIter.hasNext()){
-            ModelObject nextModel = myIter.next();
-            String myClass = nextModel.getModelName();
-            if(myClass.compareTo(ClassName) != 0){ //Search Inner
-                ModelObject myModel = findKey(nextModel, ClassName,key);
-                if(myModel != null){
-                    return myModel;
-                }
-            }else{
-              ModelObject myModel = (ModelObject)nextModel.get(key);
-              if(myModel != null) {
-                  return myModel;
-              }
-            }
+        JSONObject myMap =  model.getModels(ClassName);
+        if (myMap == null){
+            return null;
         }
-        return null;
+        return (ModelObject)myMap.get(key);
     }
 
     @Override
     public ModelObject findKey(DBNode node, String ClassName, String key) {
-        ModelIterator myIter = new ModelIterator(node.rootGraph);
-        while(myIter.hasNext()){
-            ModelObject nextModel = myIter.next();
-            String myClass = nextModel.getModelName();
-            if(myClass.compareTo(ClassName) != 0){ //Search Inner
-                ModelObject myModel = findKey(nextModel, ClassName,key);
-                if(myModel != null){
-                    return myModel;
-                }
-            }else{
-                ModelObject myModel = (ModelObject)nextModel.get(key);
-                if(myModel != null) {
-                    return myModel;
-                }
-            }
+        JSONObject myMap =  node.rootGraph.getModels(ClassName);
+        if (myMap == null){
+            return null;
         }
-        return null;
+        return (ModelObject)myMap.get(key);
+
     }
 
     @Override
     public boolean deleteKey(ModelObject model, String ClassName, String key) {
 
-        HashMap<String, ModelObject> myMap =  model.getModels(ClassName);
-
-        if(myMap == null){
-            for(String keyName : model.Children.keySet()){
-                HashMap<String, ModelObject> modelHeader = model.Children.get(keyName);
-                for(String innerKey : modelHeader.keySet()){
-                    ModelObject innerObject = modelHeader.get(innerKey);
-                    if(deleteKey(innerObject, ClassName, key)){
-                        return true;
-                    }
-                }
-            }
-        }else{
-            ModelObject myModel = myMap.get(key);
-            if(myModel != null){
-                myMap.remove(key);
-                model.Modified = Instant.now().toString();
-                model.update();
-                return true;
-            }
+        JSONObject myMap =  model.getModels(ClassName);
+        if (myMap == null){
+            return false;
+        }
+        ModelObject value = (ModelObject)myMap.remove(key);
+        if(value == null){
+            return false;
         }
 
-
-        return false;
+        return true;
     }
 
     @Override
     public boolean deleteKey(DBNode node, String ClassName, String key) {
 
-        HashMap<String, ModelObject> myMap =  node.rootGraph.getModels(ClassName);
-
+        JSONObject myMap =  node.rootGraph.getModels(ClassName);
         if(myMap == null){
-            for(String keyName : node.rootGraph.Children.keySet()){
-                HashMap<String, ModelObject> modelHeader = node.rootGraph.Children.get(keyName);
-                for(String innerKey : modelHeader.keySet()){
-                    ModelObject innerObject = modelHeader.get(innerKey);
-                    if(deleteKey(innerObject, ClassName, key)){
-                        return true;
-                    }
-                }
-            }
-        }else{
-            ModelObject myModel = myMap.get(key);
-            if(myModel != null){
-                myMap.remove(key);
-                node.rootGraph.Modified = Instant.now().toString();
-                node.rootGraph.update();
-                return true;
-            }
+            return false;
         }
 
+        ModelObject value = (ModelObject)myMap.remove(key);
+        if(value == null){
+            return false;
+        }
 
-        return false;
+        return true;
     }
 
     @Override
