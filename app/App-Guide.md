@@ -24,7 +24,18 @@ The template object scans the ``.html`` files for ``@:somekey`` and gets those k
 will have to know what keys they are working with and add them to the template object with ``Template.AddKey(String key, String value)``. Then call 
 ``Template.ReplaceKeys()`` to get the reformmatted HTML. You can get the keys in the HTML file with ``Template.GetKeys()``
 
-Views are sometimes included in web frameworks but for now everything as a general template works fine.
+Here is an example:
+```
+<!DOCTYPE html>
+<html><head>
+<title>@:recipeName</title>
+</head>
+<body>
+<div class="user-info">@:username</div>
+</body>
+</html>
+
+
 
 ## Forms
 There should be two ``RouteManagers`` that you make. One set of routes for the GET posts and the other for
