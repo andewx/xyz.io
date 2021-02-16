@@ -13,6 +13,7 @@ dependencies {
     implementation project(':modelkit')
     implementation project(':dbkit')
     implementation project(':utilities')
+    implementation project(':webkit')
 }
 
 application {
