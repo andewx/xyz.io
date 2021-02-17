@@ -79,4 +79,60 @@ public class Recipe extends ModelObject{
         updateKey("PostEntry", PostEntry);
         updateKey("ImageURL", ImageURL);
     }
+
+    public String getCategory() {
+        return Category;
+    }
+
+    public int getPrepTime() {
+        return PrepTime;
+    }
+
+    public int getCookTime() {
+        return CookTime;
+    }
+
+    public int getServes() {
+        return Serves;
+    }
+
+    public String getCaption() {
+        return Caption;
+    }
+
+    public String getPostEntry() {
+        return PostEntry;
+    }
+
+    public String getImageURL() {
+        return ImageURL;
+    }
+
+    public void setCategory(String category) {
+        Category = category;
+    }
+
+    public void setPrepTime(int prepTime) {
+        PrepTime = prepTime;
+    }
+
+    public void setCookTime(int cookTime) {
+        CookTime = cookTime;
+    }
+
+    public void setServes(int serves) {
+        Serves = serves;
+    }
+
+    public void setCaption(String caption) {
+        Caption = caption;
+    }
+
+    public void setPostEntry(String postEntry) {
+        PostEntry = postEntry;
+    }
+
+    public void setImageURL(String imageURL) {
+        ImageURL = imageURL;
+    }
 }

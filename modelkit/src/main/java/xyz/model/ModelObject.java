@@ -134,6 +134,10 @@ public class ModelObject extends JSONObject implements Model {
         return UID;
     }
 
+    public String GetModified(){
+        return Modified;
+    }
+
     @Override
     public JSONObject getJson() {
         return (JSONObject)this;
