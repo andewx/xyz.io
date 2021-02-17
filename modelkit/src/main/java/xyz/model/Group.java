@@ -35,6 +35,11 @@ public class Group extends ModelObject {
         updateKey("AccessLevel", AccessLevel);
     }
 
+    public String GetGroupID(){ return GroupID;}
+    public String GetAccessDescription(){ return AccessDescription;}
+    public int GetAccessLevel(){ return AccessLevel;}
+
+
 
 
 }

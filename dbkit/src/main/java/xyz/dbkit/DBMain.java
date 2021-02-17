@@ -1,8 +1,10 @@
 package xyz.dbkit;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import xyz.model.FileMap;
 
+import xyz.model.ModelKeys;
 import xyz.model.ModelObject;
 
 import java.io.IOException;
@@ -178,142 +180,148 @@ public class DBMain extends Thread implements DBManager{
     @Override
     public ArrayList<ModelObject> findExact(ModelObject model, String ClassName, HashMap<String, String> PropertyKeyValues) {
         ArrayList<ModelObject> myMatches = new ArrayList<>();
-        ModelObject myMap = (ModelObject)model.get(ClassName);
-        boolean matches = true;
-        for(String key : myMap.keySet()){
-            ModelObject myModel = (ModelObject)myMap.get(key);
-            if(key != null){
-                for(String mapKey : PropertyKeyValues.keySet()){
-                    String cVal = myModel.get(mapKey).toString();
-                    if(cVal.compareTo(myMap.get(mapKey).toString())!=0){
-                        matches = false;
-                        break;
+        JSONObject Models = model.getModels(ClassName);
+        if(Models == null){
+            for(String modelName : ModelKeys.ModelKeys()) { //Search internal models
+                JSONObject InternalModels = model.getModels(modelName);
+                if (InternalModels != null) {
+                    for(String uid : InternalModels.keySet()){
+                        ModelObject thisObj = (ModelObject)InternalModels.get(uid);
+                        ArrayList<ModelObject> internalMatches = findSome(thisObj, ClassName, PropertyKeyValues);
+                        myMatches.addAll(internalMatches);
                     }
                 }
             }
-            if (matches){
-                myMatches.add(myModel);
+        }
+        else {
+            for (String uid : Models.keySet()) {
+                ModelObject thisModel = (ModelObject)Models.get(uid);
+                boolean matches = true;
+                for(String prop : PropertyKeyValues.keySet()){
+                    String value = (String)thisModel.get(prop);
+                    if(value.compareTo((String)PropertyKeyValues.get(prop)) != 0){
+                        matches = false;
+                    }
+                }
+                if (matches){ myMatches.add(thisModel);}
             }
         }
-
         return myMatches;
     }
 
     @Override
     public ArrayList<ModelObject> findExact(DBNode node, String ClassName, HashMap<String, String> PropertyKeyValues) {
-        ArrayList<ModelObject> myMatches = new ArrayList<>();
-        ModelObject myMap = (ModelObject)node.rootGraph.get(ClassName);
-        boolean matches = true;
-        for(String key : myMap.keySet()){
-            ModelObject myModel = (ModelObject)myMap.get(key);
-            if(key != null){
-                for(String mapKey : PropertyKeyValues.keySet()){
-                    String cVal = myModel.get(mapKey).toString();
-                    if(cVal.compareTo(myMap.get(mapKey).toString())!=0){
-                        matches = false;
-                        break;
-                    }
-                }
-            }
-            if (matches){
-                myMatches.add(myModel);
-            }
-        }
-
-        return myMatches;
+      return findExact(node.rootGraph, ClassName, PropertyKeyValues);
     }
 
     @Override
     public ArrayList<ModelObject> findSome(ModelObject model, String ClassName, HashMap<String, String> PropertyKeyValues) {
         ArrayList<ModelObject> myMatches = new ArrayList<>();
-        ModelObject myMap = (ModelObject)model.get(ClassName);
-        for(String key : myMap.keySet()){
-            ModelObject myModel = (ModelObject)myMap.get(key);
-            if(key != null){
-               for(String mapKey : PropertyKeyValues.keySet()){
-                   String cVal = myModel.get(mapKey).toString();
-                   if(cVal.compareTo(myMap.get(mapKey).toString())==0){
-                       myMatches.add(myModel);
-                   }
-               }
+        JSONObject Models = model.getModels(ClassName);
+        if(Models == null){
+            for(String modelName : ModelKeys.ModelKeys()) { //Search internal models
+                JSONObject InternalModels = model.getModels(modelName);
+                if (InternalModels != null) {
+                    for(String uid : InternalModels.keySet()){
+                        ModelObject thisObj = (ModelObject)InternalModels.get(uid);
+                        ArrayList<ModelObject> internalMatches = findSome(thisObj, ClassName, PropertyKeyValues);
+                        myMatches.addAll(internalMatches);
+                    }
+                }
             }
         }
-
+        else {
+            for (String uid : Models.keySet()) {
+                ModelObject thisModel = (ModelObject)Models.get(uid);
+                boolean matches = false;
+                for(String prop : PropertyKeyValues.keySet()){
+                    String value = (String)thisModel.get(prop);
+                    if(value.compareTo((String)PropertyKeyValues.get(prop)) == 0){
+                        matches = true;
+                    }
+                }
+                if (matches){ myMatches.add(thisModel);}
+            }
+        }
         return myMatches;
     }
 
     @Override
     public ArrayList<ModelObject> findSome(DBNode node, String ClassName, HashMap<String, String> PropertyKeyValues) {
-        ArrayList<ModelObject> myMatches = new ArrayList<>();
-        ModelObject myMap = (ModelObject)node.rootGraph.get(ClassName);
-        for(String key : myMap.keySet()){
-            ModelObject myModel = (ModelObject)myMap.get(key);
-            if(key != null){
-                for(String mapKey : PropertyKeyValues.keySet()){
-                    String cVal = myModel.get(mapKey).toString();
-                    if(cVal.compareTo(myMap.get(mapKey).toString())==0){
-                        myMatches.add(myModel);
-                    }
-                }
-            }
-        }
-
-        return myMatches;
+            return findSome(node.rootGraph, ClassName, PropertyKeyValues);
     }
 
     @Override
     public ArrayList<ModelObject> findSimilar(ModelObject model, String ClassName, String property, String value) {
         ArrayList<ModelObject> myMatches = new ArrayList<>();
-        ModelObject myMap = (ModelObject)model.get(ClassName);
-        for(String key : myMap.keySet()){
-            ModelObject myModel = (ModelObject)myMap.get(key);
-            if(key != null){
-                String cVal = myModel.get(property).toString();
-                int diff = Math.abs(cVal.compareTo(value));
-                if( diff < 5){
-                    myMatches.add(myModel);
+        JSONObject Models = model.getModels(ClassName);
+        if(Models == null){
+            for(String modelName : ModelKeys.ModelKeys()) { //Search internal models
+                JSONObject InternalModels = model.getModels(modelName);
+                if (InternalModels != null) {
+                    for(String uid : InternalModels.keySet()){
+                        ModelObject thisObj = (ModelObject)InternalModels.get(uid);
+                        ArrayList<ModelObject> internalMatches = findSimilar(thisObj, ClassName, property, value);
+                        myMatches.addAll(internalMatches);
+                    }
                 }
             }
         }
-
+        else {
+            for (String uid : Models.keySet()) {
+                ModelObject thisModel = (ModelObject)Models.get(uid);
+                String prop = (String)thisModel.get(property);
+                if(prop.compareTo(value) <= 5){
+                    myMatches.add(thisModel);
+                }
+            }
+        }
         return myMatches;
     }
 
     @Override
     public ArrayList<ModelObject> findSimilar(DBNode node, String ClassName, String property, String value) {
-        ArrayList<ModelObject> myMatches = new ArrayList<>();
-        ModelObject myMap = (ModelObject)node.rootGraph.get(ClassName);
-        for(String key : myMap.keySet()){
-            ModelObject myModel = (ModelObject)myMap.get(key);
-            if(key != null){
-                String cVal = myModel.get(property).toString();
-                int diff = Math.abs(cVal.compareTo(value));
-                if( diff < 5){
-                    myMatches.add(myModel);
-                }
-            }
-        }
-
-        return myMatches;
+       return findSimilar(node.rootGraph, ClassName, property,value);
     }
 
     @Override
     public ModelObject findKey(ModelObject model, String ClassName, String key) {
-        JSONObject myMap =  model.getModels(ClassName);
-        if (myMap == null){
-            return null;
+        ModelObject findModel;
+        try {
+             return model.getModel(ClassName, key);
+        }catch(JSONException e){
+            //Keep Searching
         }
-        return (ModelObject)myMap.get(key);
+
+
+        JSONObject myMap =  model.getModels(ClassName);
+
+        if(myMap != null){
+            findModel = (ModelObject)myMap.get(key);
+            if(findModel != null){
+                return findModel;
+            }
+        }
+
+
+        for(String modelName : ModelKeys.ModelKeys()) { //Search internal models
+            myMap = model.getModels(modelName);
+            if (myMap != null) {
+                for(String uid : myMap.keySet()){
+                    ModelObject thisObj = (ModelObject)myMap.get(uid);
+                    findModel = findKey(thisObj, ClassName, key);
+                    if(findModel != null){
+                        return findModel;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     @Override
     public ModelObject findKey(DBNode node, String ClassName, String key) {
-        JSONObject myMap =  node.rootGraph.getModels(ClassName);
-        if (myMap == null){
-            return null;
-        }
-        return (ModelObject)myMap.get(key);
-
+        return findKey(node.rootGraph, ClassName, key);
     }
 
     @Override
