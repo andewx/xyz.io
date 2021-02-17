@@ -16,6 +16,54 @@ public class User extends ModelObject{
     public String LoginLast;
 
 
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
+
+    public String getPasswordSHA256() {
+        return PasswordSHA256;
+    }
+
+    public void setPasswordSHA256(String passwordSHA256) {
+        PasswordSHA256 = passwordSHA256;
+    }
+
+    public String getGroupID() {
+        return GroupID;
+    }
+
+    public void setGroupID(String groupID) {
+        GroupID = groupID;
+    }
+
+    public String getFirstName() {
+        return FirstName;
+    }
+
+    public void setFirstName(String firstName) {
+        FirstName = firstName;
+    }
+
+    public String getLastName() {
+        return LastName;
+    }
+
+    public void setLastName(String lastName) {
+        LastName = lastName;
+    }
+
+    public String getLoginLast() {
+        return LoginLast;
+    }
+
+    public void setLoginLast(String loginLast) {
+        LoginLast = loginLast;
+    }
+
     public User(String email, String initialPassword, String username, String first, String last){
         //Verify Email Unique Before Creating User
         super();

@@ -23,4 +23,12 @@ public class FileMap extends ModelObject {
         updateKey("Name", Name);
         updateKey("FilePath", FilePath);
     }
+
+    public String GetFilepath(){
+        return FilePath;
+    }
+
+    public void setFilePath(String filePath) {
+        FilePath = filePath;
+    }
 }

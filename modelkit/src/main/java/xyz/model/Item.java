@@ -53,5 +53,17 @@ public class Item extends ModelObject {
         updateKey("Amount", Amount);
     }
 
+    public String GetUnits(){
+        return Unit;
+    }
+
+    public String GetDescription(){
+        return Description;
+    }
+
+    public int GetAmount(){
+        return Amount;
+    }
+
 
 }

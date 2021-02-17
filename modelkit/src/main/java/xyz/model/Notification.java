@@ -41,6 +41,78 @@ public class Notification extends ModelObject{
         put("idB", idB);
     }
 
+    public String getClassA() {
+        return ClassA;
+    }
+
+    public void setClassA(String classA) {
+        ClassA = classA;
+    }
+
+    public String getClassB() {
+        return ClassB;
+    }
+
+    public void setClassB(String classB) {
+        ClassB = classB;
+    }
+
+    public String getIdA() {
+        return idA;
+    }
+
+    public void setIdA(String idA) {
+        this.idA = idA;
+    }
+
+    public String getIdB() {
+        return idB;
+    }
+
+    public void setIdB(String idB) {
+        this.idB = idB;
+    }
+
+    public boolean isSent() {
+        return Sent;
+    }
+
+    public void setSent(boolean sent) {
+        Sent = sent;
+    }
+
+    public boolean isRead() {
+        return Read;
+    }
+
+    public void setRead(boolean read) {
+        Read = read;
+    }
+
+    public String getDateCreated() {
+        return DateCreated;
+    }
+
+    public void setDateCreated(String dateCreated) {
+        DateCreated = dateCreated;
+    }
+
+    public String getDateRead() {
+        return DateRead;
+    }
+
+    public void setDateRead(String dateRead) {
+        DateRead = dateRead;
+    }
+
+    public String getMessage() {
+        return Message;
+    }
+
+    public void setMessage(String message) {
+        Message = message;
+    }
+
     public void update(){
         super.update();
         updateKey("DateRead", DateRead);
