@@ -327,26 +327,35 @@ public class DBMain extends Thread implements DBManager{
     @Override
     public boolean deleteKey(ModelObject model, String ClassName, String key) {
 
+
+        boolean removed =   model.Remove(ClassName, key);
+        if(removed) return true;
+
+
         JSONObject myMap =  model.getModels(ClassName);
-        if (myMap == null) return false;
-        ModelObject value = (ModelObject)myMap.remove(key);
-        return value != null;
+
+        if(myMap != null){
+            ModelObject mObj = (ModelObject)myMap.remove(key);
+            if(mObj != null) return true;
+        }
+
+
+        for(String modelName : ModelKeys.ModelKeys()) { //Search internal models
+            myMap = model.getModels(modelName);
+            if (myMap != null) {
+                for(String uid : myMap.keySet()){
+                    ModelObject thisObj = (ModelObject)myMap.get(uid);
+                    removed = deleteKey(thisObj, ClassName, key);
+                    if(removed)return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean deleteKey(DBNode node, String ClassName, String key) {
-
-        JSONObject myMap =  node.rootGraph.getModels(ClassName);
-        if(myMap == null){
-            return false;
-        }
-
-        ModelObject value = (ModelObject)myMap.remove(key);
-        if(value == null){
-            return false;
-        }
-
-        return true;
+        return deleteKey(node.rootGraph, ClassName, key);
     }
 
     @Override
