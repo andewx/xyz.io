@@ -1,13 +1,13 @@
 package xyz.model;
 
 public class Recipe extends ModelObject{
-    public String Category;
-    public int PrepTime;
-    public int CookTime;
-    public int Serves;
-    public String Caption;
-    public String PostEntry;
-    public String ImageURL;
+    protected String Category;
+    protected int PrepTime;
+    protected int CookTime;
+    protected int Serves;
+    protected String Caption;
+    protected String PostEntry;
+    protected String ImageURL;
 
     public Recipe() {
         super();
@@ -49,6 +49,8 @@ public class Recipe extends ModelObject{
         put("Caption", Caption);
         put("PostEntry", PostEntry);
         put("ImageURL", ImageURL);
+        put("PrepTime", PrepTime);
+        put("CookTime", CookTime);
     }
 
     public Recipe(String name, String img,String category, String caption, String post, int prep, int cook, int serves){
@@ -69,16 +71,10 @@ public class Recipe extends ModelObject{
         put("Caption", Caption);
         put("PostEntry", PostEntry);
         put("ImageURL", ImageURL);
+        put("PrepTime", PrepTime);
+        put("CookTime", CookTime);
     }
 
-    public void update(){
-        super.update();
-        updateKey("Category", Category);
-        updateKey("Serves", Serves);
-        updateKey("Caption", Caption);
-        updateKey("PostEntry", PostEntry);
-        updateKey("ImageURL", ImageURL);
-    }
 
     public String getCategory() {
         return Category;
@@ -110,29 +106,36 @@ public class Recipe extends ModelObject{
 
     public void setCategory(String category) {
         Category = category;
+        updateKey("Category", Category);
     }
 
     public void setPrepTime(int prepTime) {
         PrepTime = prepTime;
+        updateKey("PrepTime", PrepTime);
     }
 
     public void setCookTime(int cookTime) {
         CookTime = cookTime;
+        updateKey("CookTime", CookTime);
     }
 
     public void setServes(int serves) {
         Serves = serves;
+        updateKey("Serves", Serves);
     }
 
     public void setCaption(String caption) {
         Caption = caption;
+        updateKey("Caption", Caption);
     }
 
     public void setPostEntry(String postEntry) {
         PostEntry = postEntry;
+        updateKey("PostEntry", PostEntry);
     }
 
     public void setImageURL(String imageURL) {
         ImageURL = imageURL;
+        updateKey("ImageURL", ImageURL);
     }
 }

@@ -23,12 +23,16 @@ public class DBFindTests {
            mDatabase = new DBMain("MyDatabase");
        } catch (IOException e) {
            System.out.println("Error Creating Database");
+           throw e;
        }
 
        ModelObject RecipeMapping = mDatabase.GetFileManager().getModel("FileMap","Recipes" );
        assertNotNull(RecipeMapping);
        DBNode RecipeNode = mDatabase.GetNode("Recipes");
-       assertNotNull(RecipeMapping);
+
+       if(RecipeNode == null){
+          RecipeNode = mDatabase.CreateNode("Recipes", "Recipes.keys");
+       }
 
        Item Coffee = new Item("Coffee", "fresh", "oz", 12);
        Item Sugar = new Item("Sugar", "white", "gram", 4);

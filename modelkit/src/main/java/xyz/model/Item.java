@@ -4,9 +4,9 @@ package xyz.model;
 public class Item extends ModelObject {
 
 
-    public String Description;
-    public String Unit;
-    public int Amount;
+    protected String Description;
+    protected String Unit;
+    protected int Amount;
 
     public Item() {
         super();
@@ -31,6 +31,8 @@ public class Item extends ModelObject {
         put("Amount", Amount);
     }
 
+
+
     public Item(String name, String descrip, String unit, int amount){
         super();
         ClassName = "Item";
@@ -46,12 +48,6 @@ public class Item extends ModelObject {
         put("Amount", Amount);
     }
 
-    public void update(){
-        super.update();
-        updateKey("Description", Description);
-        updateKey("Unit", Unit);
-        updateKey("Amount", Amount);
-    }
 
     public String GetUnits(){
         return Unit;
@@ -63,6 +59,20 @@ public class Item extends ModelObject {
 
     public int GetAmount(){
         return Amount;
+    }
+    public void setDescription(String description) {
+        Description = description;
+        updateKey("Description", Description);
+    }
+
+    public void setUnit(String unit) {
+        Unit = unit;
+        updateKey("Unit", Unit);
+    }
+
+    public void setAmount(int amount) {
+        Amount = amount;
+        updateKey("Amount", Amount);
     }
 
 

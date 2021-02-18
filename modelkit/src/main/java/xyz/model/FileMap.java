@@ -2,7 +2,7 @@ package xyz.model;
 
 
 public class FileMap extends ModelObject {
-    String FilePath;
+   protected String FilePath;
 
     public FileMap(String name, String pathName){
         super();
@@ -10,19 +10,12 @@ public class FileMap extends ModelObject {
         Name = name;
         ClassName = "FileMap";
         UID = Name;
-        put("UID", UID);
-        put("ClassName", ClassName);
-        put("Name", Name);
-        put("FilePath", FilePath);
-    }
-
-    public void update(){
-        super.update();
         updateKey("UID", UID);
         updateKey("ClassName", ClassName);
         updateKey("Name", Name);
-        updateKey("FilePath", FilePath);
+        put("FilePath", FilePath);
     }
+
 
     public String GetFilepath(){
         return FilePath;
@@ -30,5 +23,6 @@ public class FileMap extends ModelObject {
 
     public void setFilePath(String filePath) {
         FilePath = filePath;
+        updateKey("FilePath", FilePath);
     }
 }

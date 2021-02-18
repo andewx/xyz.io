@@ -4,15 +4,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
 
-public class ModelObject extends JSONObject implements Model {
+public class ModelObject extends JSONObject {
 
-    public String UID;
-    public String ClassName;
-    public String Name;
-    public String Modified;
+    protected String UID;
+    protected String ClassName;
+    protected String Name;
+    protected String Modified;
 
     public ModelObject(){
         super();
@@ -27,6 +25,8 @@ public class ModelObject extends JSONObject implements Model {
         put("Modified", Modified);
 
     }
+
+
 
     public ModelObject(JSONObject jObj){
 
@@ -102,7 +102,7 @@ public class ModelObject extends JSONObject implements Model {
         return str;
     }
 
-    @Override
+    
     public void addModel(ModelObject m) {
         JSONObject internal = getChildren(m.plural());
         if (internal == null){
@@ -115,45 +115,76 @@ public class ModelObject extends JSONObject implements Model {
         }
 
         Modified = Instant.now().toString();
-        update();
 
     }
 
-    @Override
-    public String getModelName() {
-        return ClassName;
+    //Getters and Setters ------
+
+    public void setUID(String UID) {
+        this.UID = UID;
+        updateKey("UID", UID);
+
     }
 
-    @Override
+    public String getUID() {
+        return UID;
+    }
+
+
+    public void setName(String name) {
+        Name = name;
+        updateKey("Name", Name);
+    }
+
     public String getName() {
         return Name;
     }
 
-    @Override
-    public String getUID() {
-        return UID;
+
+    public void setModified(String modified) {
+        Modified = modified;
+        updateKey("Modified", Modified);
     }
+
+    public String getModified(){
+        return Modified;
+    }
+
+    
+    public String getModelName() {
+        return ClassName;
+    }
+
+    public void setModelName(String className) {
+        ClassName = className;
+        updateKey("ClassName", ClassName);
+    }
+
+    
+
+    
+
 
     public String GetModified(){
         return Modified;
     }
 
-    @Override
+    
     public JSONObject getJson() {
         return (JSONObject)this;
     }
 
-    @Override
+    
     public Object updateKey(String key, Object value) {
        return put(key,value);
     }
 
-    @Override
+    
     public void removeKey(String key){
-        put(key,(Object)null);
+        remove(key);
     }
 
-    @Override
+    
     public ModelObject getModel(String mClass, String uid) {
         JSONObject internal = getChildren(pluralize(mClass));
         if(internal == null){
@@ -172,7 +203,7 @@ public class ModelObject extends JSONObject implements Model {
 
     }
 
-    @Override
+    
     public boolean Remove(String mClass, String uid){
         String collection = pluralize(mClass);
         JSONObject internal = getChildren(collection);
@@ -191,34 +222,21 @@ public class ModelObject extends JSONObject implements Model {
         return true;
     }
 
-    @Override
+    
     public JSONObject getModels(String mClass) {
       return getChildren(pluralize(mClass));
     }
 
-    @Override
+    
     public String toString() {
         return super.toString();
     }
 
-    @Override
+    
     public String toJson() {
         return super.toString();
     }
 
-    @Override
-    public ModelIterator getIterator(){
-        ModelIterator myIter = new ModelIterator(this);
-        return myIter;
-    }
 
-    @Override
-    public void update(){
 
-        updateKey("UID", UID);
-        updateKey("ClassName", ClassName);
-        updateKey("Name", Name);
-        updateKey("Modified", Modified);
-
-    }
 }
