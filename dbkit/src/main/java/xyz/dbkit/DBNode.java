@@ -22,17 +22,17 @@ public class DBNode {
 
     public ModelObject AddModel(ModelObject m){
          rootGraph.addModel(m);
+         hasChanged = true;
          return m;
     }
 
     public void DeleteModel(ModelObject m){
-       String mUID = m.UID;
+       String mUID = m.getUID();
        rootGraph.Remove(m.getModelName(), mUID);
+       hasChanged = true;
     }
 
-    public void DeleteModel(String Class, String UID){
-        rootGraph.Remove(Class, UID);
-    }
+    public void DeleteModel(String Class, String UID){ hasChanged =true; rootGraph.Remove(Class, UID); }
 
     public String GetFile(){
         return file;
@@ -48,6 +48,7 @@ public class DBNode {
         else{
             Files.writeString(file, rootGraph.toString());
         }
+        hasChanged = false;
     }
 
 }

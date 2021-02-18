@@ -9,6 +9,7 @@ import xyz.model.ModelObject;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,9 +47,16 @@ public class DBMain extends Thread implements DBManager{
                         if (fileMapping != null) {
                             String nodeName = (String)fileMapping.get("Name");
                             Path nodePath = Path.of((String) fileMapping.get("FilePath"));
-                            String text = Files.readString(nodePath);
-                            ActiveNode = CreateNode(nodeName, nodePath.toString(), text);
-                            Nodes.put(nodeName, ActiveNode);
+                            try {
+                                String text = Files.readString(nodePath);
+                                ActiveNode = CreateNode(nodeName, nodePath.toString(), text);
+                                Nodes.put(nodeName, ActiveNode);
+                            }catch(NoSuchFileException e){
+                                Path nodeMgrPath = Path.of(nodeFile);
+                                NodeFileManager.removeKey(key);
+                                Nodes.remove(key);
+                                Files.writeString(nodeMgrPath,NodeFileManager.toString());
+                            }
                         }
                     }
                 }
@@ -61,14 +69,12 @@ public class DBMain extends Thread implements DBManager{
 
         if(!hasKeys){
             NodeFileManager = new ModelObject();
-            NodeFileManager.Name = "NodeFiles";
-            NodeFileManager.update();
+            NodeFileManager.setName("NodeFiles");
             DBNode myNode = new DBNode("default", srcPath + "default.keys");
             FileMap nMap = new FileMap("default", srcPath + "node.keys");
             Nodes.put(myNode.name, myNode);
             ActiveNode = myNode;
             NodeFileManager.addModel(nMap);
-            NodeFileManager.update();
             Path myPath = Path.of(nodeFile);
             myNode.WriteNode(myNode.file);
             Files.writeString(myPath, NodeFileManager.toString());
@@ -77,7 +83,6 @@ public class DBMain extends Thread implements DBManager{
     }
 
     public void WriteFileMap() throws IOException {
-        NodeFileManager.update();
         Path file = Path.of(srcPath + "node.keys");
         boolean exists = Files.exists(file);
         if(!exists){
@@ -104,6 +109,7 @@ public class DBMain extends Thread implements DBManager{
 
         Nodes.put(nodeName, myNode);
         WriteFileMap();
+        this.interrupt();
         return myNode;
     }
 
@@ -134,6 +140,7 @@ public class DBMain extends Thread implements DBManager{
             Files.delete(myPath);
             Nodes.remove(delNode.name);
             NodeFileManager.Remove("FileMap",delNode.name);
+            this.interrupt();
         }catch(IOException e) {
             return false;
         }
@@ -164,13 +171,14 @@ public class DBMain extends Thread implements DBManager{
     @Override
     public ModelObject AddModel(DBNode node, ModelObject m) {
         node.rootGraph.addModel(m);
+        this.interrupt();
         node.hasChanged = true;
         return m;
     }
 
     @Override
     public ModelObject UpdateModel(DBNode node, ModelObject m) {
-        m.update();
+        this.interrupt();
         node.hasChanged = true;
         return m;
     }
@@ -187,7 +195,7 @@ public class DBMain extends Thread implements DBManager{
                 if (InternalModels != null) {
                     for(String uid : InternalModels.keySet()){
                         ModelObject thisObj = (ModelObject)InternalModels.get(uid);
-                        ArrayList<ModelObject> internalMatches = findSome(thisObj, ClassName, PropertyKeyValues);
+                        ArrayList<ModelObject> internalMatches = findExact(thisObj, ClassName, PropertyKeyValues);
                         myMatches.addAll(internalMatches);
                     }
                 }
@@ -206,6 +214,7 @@ public class DBMain extends Thread implements DBManager{
                 if (matches){ myMatches.add(thisModel);}
             }
         }
+        this.interrupt();
         return myMatches;
     }
 
@@ -217,6 +226,7 @@ public class DBMain extends Thread implements DBManager{
     @Override
     public ArrayList<ModelObject> findSome(ModelObject model, String ClassName, HashMap<String, String> PropertyKeyValues) {
         ArrayList<ModelObject> myMatches = new ArrayList<>();
+
         JSONObject Models = model.getModels(ClassName);
         if(Models == null){
             for(String modelName : ModelKeys.ModelKeys()) { //Search internal models
@@ -243,6 +253,7 @@ public class DBMain extends Thread implements DBManager{
                 if (matches){ myMatches.add(thisModel);}
             }
         }
+        this.interrupt();
         return myMatches;
     }
 
@@ -254,6 +265,7 @@ public class DBMain extends Thread implements DBManager{
     @Override
     public ArrayList<ModelObject> findSimilar(ModelObject model, String ClassName, String property, String value) {
         ArrayList<ModelObject> myMatches = new ArrayList<>();
+
         JSONObject Models = model.getModels(ClassName);
         if(Models == null){
             for(String modelName : ModelKeys.ModelKeys()) { //Search internal models
@@ -299,6 +311,7 @@ public class DBMain extends Thread implements DBManager{
         if(myMap != null){
             findModel = (ModelObject)myMap.get(key);
             if(findModel != null){
+                this.interrupt();
                 return findModel;
             }
         }
@@ -311,6 +324,7 @@ public class DBMain extends Thread implements DBManager{
                     ModelObject thisObj = (ModelObject)myMap.get(uid);
                     findModel = findKey(thisObj, ClassName, key);
                     if(findModel != null){
+                        this.interrupt();
                         return findModel;
                     }
                 }
@@ -321,12 +335,12 @@ public class DBMain extends Thread implements DBManager{
 
     @Override
     public ModelObject findKey(DBNode node, String ClassName, String key) {
+        this.interrupt();
         return findKey(node.rootGraph, ClassName, key);
     }
 
     @Override
     public boolean deleteKey(ModelObject model, String ClassName, String key) {
-
 
         boolean removed =   model.Remove(ClassName, key);
         if(removed) return true;
@@ -336,7 +350,10 @@ public class DBMain extends Thread implements DBManager{
 
         if(myMap != null){
             ModelObject mObj = (ModelObject)myMap.remove(key);
-            if(mObj != null) return true;
+            if(mObj != null){
+                this.interrupt();
+                return true;
+            }
         }
 
 
@@ -346,7 +363,10 @@ public class DBMain extends Thread implements DBManager{
                 for(String uid : myMap.keySet()){
                     ModelObject thisObj = (ModelObject)myMap.get(uid);
                     removed = deleteKey(thisObj, ClassName, key);
-                    if(removed)return true;
+                    if(removed){
+                        this.interrupt();
+                        return true;
+                    }
                 }
             }
         }
@@ -359,28 +379,39 @@ public class DBMain extends Thread implements DBManager{
     }
 
     @Override
-    public String SyncNode(DBNode thisNode) throws IOException {
+    public void SyncNode(DBNode thisNode) throws IOException {
 
         if(thisNode.hasChanged) {
-            thisNode.WriteNode(srcPath + thisNode.GetFile());
-            thisNode.hasChanged = false;
-            return "DBNode: " + thisNode.name + " Written\n";
+            try {
+                thisNode.WriteNode(thisNode.GetFile());
+                thisNode.hasChanged = false;
+            }catch(NoSuchFileException e){
+                thisNode.WriteNode(srcPath + thisNode.GetFile());
+                thisNode.hasChanged = false;
+            }
         }
-        return "DBNode: " + thisNode.name + " No Update\n";
+
     }
 
     @Override
-    public synchronized String SyncNotifications() {
-        return null; //No implementation
+    public synchronized void SyncNotifications() {
+        //I don't do anything
     }
 
     @Override
-    public synchronized String Sync() throws IOException {
+    public synchronized void Sync() throws IOException {
         for(String nodeKey : Nodes.keySet()){
             DBNode node = Nodes.get(nodeKey);
             SyncNode(node);
         }
-        return "Nodes Synced\n";
+
+        try {
+            this.wait();
+        }catch(InterruptedException e){
+            //Waiting for this
+        }
+
+
     }
 
 
@@ -390,13 +421,11 @@ public class DBMain extends Thread implements DBManager{
         System.out.println("\nDatabase: " + Name + " starting...");
 
         while (!ExitCondition) {
-
-            try{ this.sleep(15000);
-             this.SyncNotifications();
-             System.out.println("Syncing...\n");
-             this.Sync();
+            try{
+                this.SyncNotifications();
+                this.Sync();
             }
-            catch(IOException | InterruptedException e){
+            catch(IOException e){
                     System.out.println("Database File Error Exiting Sync Thread ...");
                     e.printStackTrace();
                     ExitCondition = true;
@@ -408,6 +437,6 @@ public class DBMain extends Thread implements DBManager{
     @Override
     public void Exit() {
         ExitCondition = true;
-        this.notifyAll();
+        this.interrupt();
     }
 }

@@ -46,14 +46,14 @@ public class DBNodeTest {
         Latte.addModel(Milk);
         RecipeNode.AddModel(Latte);
 
-        ModelObject modelLatte = RecipeNode.rootGraph.getModel("Recipe", Latte.UID);
+        ModelObject modelLatte = RecipeNode.rootGraph.getModel("Recipe", Latte.getUID());
         assertNotNull(modelLatte);
         JSONObject latteItems = modelLatte.getModels("Item");
-        System.out.print("Recipe: " + modelLatte.Name + "{\n");
+        System.out.print("Recipe: " + modelLatte.getName() + "{\n");
         for(String key : latteItems.keySet()){
             Item mObj = (Item)latteItems.get(key);
             assertNotNull(mObj);
-            System.out.print(mObj.Name+ ": " + String.format("%d .",(mObj.Amount)) + mObj.Unit + "\n");
+            System.out.print(mObj.getName()+ ": " + String.format("%d .",(mObj.get("Amount"))) + mObj.get("Unit") + "\n");
         }
 
         System.out.println("}");

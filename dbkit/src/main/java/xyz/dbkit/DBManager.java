@@ -41,9 +41,9 @@ public interface DBManager extends Runnable {
     boolean deleteKey(DBNode node, String ClassName, String key);
 
     //Database I/O Sync Operations - Runnable
-    String SyncNode(DBNode thisNode) throws IOException;
-    String SyncNotifications();
-    String Sync() throws IOException;
+    void SyncNode(DBNode thisNode) throws IOException;
+    void SyncNotifications();
+    void Sync() throws IOException, InterruptedException;
     void Exit();
 
     //Logging Operations
