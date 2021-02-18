@@ -4,15 +4,15 @@ import java.time.Instant;
 
 public class Notification extends ModelObject{
     //Edge from A to B
-    String ClassA;
-    String ClassB;
-    String idA;
-    String idB;
-    boolean Sent;
-    boolean Read;
-    String DateCreated;
-    String DateRead;
-    String Message;
+    protected String ClassA;
+    protected String ClassB;
+    protected String idA;
+    protected String idB;
+    protected boolean Sent;
+    protected boolean Read;
+    protected String DateCreated;
+    protected String DateRead;
+    protected String Message;
 
     //Our Database Engine Is Also Our Model Manager - It will sync the graphs and Do Notification Work
 
@@ -39,6 +39,8 @@ public class Notification extends ModelObject{
         put("DateRead", DateRead);
         put("idA", idA);
         put("idB", idB);
+        put("ClassA", ClassA);
+        put("ClassB", ClassB);
     }
 
     public String getClassA() {
@@ -47,6 +49,7 @@ public class Notification extends ModelObject{
 
     public void setClassA(String classA) {
         ClassA = classA;
+        updateKey("ClassA", ClassA);
     }
 
     public String getClassB() {
@@ -55,6 +58,7 @@ public class Notification extends ModelObject{
 
     public void setClassB(String classB) {
         ClassB = classB;
+        updateKey("ClassB", ClassB);
     }
 
     public String getIdA() {
@@ -63,6 +67,7 @@ public class Notification extends ModelObject{
 
     public void setIdA(String idA) {
         this.idA = idA;
+        updateKey("idA", idA);
     }
 
     public String getIdB() {
@@ -71,6 +76,7 @@ public class Notification extends ModelObject{
 
     public void setIdB(String idB) {
         this.idB = idB;
+        updateKey("idB", idB);
     }
 
     public boolean isSent() {
@@ -79,6 +85,7 @@ public class Notification extends ModelObject{
 
     public void setSent(boolean sent) {
         Sent = sent;
+        updateKey("Sent", Sent);
     }
 
     public boolean isRead() {
@@ -87,6 +94,7 @@ public class Notification extends ModelObject{
 
     public void setRead(boolean read) {
         Read = read;
+        updateKey("Read", Read);
     }
 
     public String getDateCreated() {
@@ -95,6 +103,7 @@ public class Notification extends ModelObject{
 
     public void setDateCreated(String dateCreated) {
         DateCreated = dateCreated;
+        updateKey("DateCreated", DateCreated);
     }
 
     public String getDateRead() {
@@ -103,6 +112,7 @@ public class Notification extends ModelObject{
 
     public void setDateRead(String dateRead) {
         DateRead = dateRead;
+        updateKey("DateRead", DateRead);
     }
 
     public String getMessage() {
@@ -111,11 +121,7 @@ public class Notification extends ModelObject{
 
     public void setMessage(String message) {
         Message = message;
-    }
-
-    public void update(){
-        super.update();
-        updateKey("DateRead", DateRead);
         updateKey("Message", Message);
     }
+
 }

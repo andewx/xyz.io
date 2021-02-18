@@ -1,13 +1,14 @@
 package xyz.controllers;
 
 import io.javalin.http.Context;
+import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
 import xyz.dbkit.DBMain;
 
-import java.util.Map;
-import java.util.function.Consumer;
 
-public class BaseController implements ControllerInterface{
+import java.util.Map;
+
+public class BaseController implements Handler {
 
     DBMain db;
 
@@ -36,7 +37,6 @@ public class BaseController implements ControllerInterface{
     }
 
 
-    @Override
     public void handle(@NotNull Context ctx) throws Exception {
 
     }

@@ -22,6 +22,7 @@ public class App {
         myDB.CreateNode("Users", "user.keys");
         myDB.CreateNode("Recipes", "recipe.keys");
         myDB.CreateNode("Groups", "group.keys");
+        myDB.start();
         BaseController BaseEndpoint = new BaseController(myDB);
         IndexController IndexEndpoint = new IndexController(myDB);
         UserController userController = new UserController(myDB);

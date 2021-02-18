@@ -8,12 +8,12 @@ import java.nio.charset.Charset;
 import java.time.Instant;
 
 public class User extends ModelObject{
-    public String Email;
-    public String PasswordSHA256;
-    public String GroupID;
-    public String FirstName;
-    public String LastName;
-    public String LoginLast;
+    protected String Email;
+    protected String PasswordSHA256;
+    protected String GroupID;
+    protected String FirstName;
+    protected String LastName;
+    protected String LoginLast;
 
 
     public String getEmail() {
@@ -22,6 +22,7 @@ public class User extends ModelObject{
 
     public void setEmail(String email) {
         Email = email;
+        updateKey("Email", email);
     }
 
     public String getPasswordSHA256() {
@@ -30,6 +31,7 @@ public class User extends ModelObject{
 
     public void setPasswordSHA256(String passwordSHA256) {
         PasswordSHA256 = passwordSHA256;
+        updateKey("PasswordSHA256", passwordSHA256);
     }
 
     public String getGroupID() {
@@ -38,6 +40,7 @@ public class User extends ModelObject{
 
     public void setGroupID(String groupID) {
         GroupID = groupID;
+        updateKey("GroupID", GroupID);
     }
 
     public String getFirstName() {
@@ -46,6 +49,7 @@ public class User extends ModelObject{
 
     public void setFirstName(String firstName) {
         FirstName = firstName;
+        updateKey("FirstName", FirstName);
     }
 
     public String getLastName() {
@@ -54,6 +58,7 @@ public class User extends ModelObject{
 
     public void setLastName(String lastName) {
         LastName = lastName;
+        updateKey("LastName", lastName);
     }
 
     public String getLoginLast() {
@@ -62,6 +67,7 @@ public class User extends ModelObject{
 
     public void setLoginLast(String loginLast) {
         LoginLast = loginLast;
+        updateKey("LoginLast", LoginLast);
     }
 
     public User(String email, String initialPassword, String username, String first, String last){
@@ -97,14 +103,4 @@ public class User extends ModelObject{
 
     }
 
-    public void update(){
-        //Put Keys
-        super.update();
-        updateKey("FirstName", FirstName);
-        updateKey("LastName", LastName);
-        updateKey("GroupID", GroupID);
-        updateKey("Name", Name);
-        updateKey("PasswordSHA256", PasswordSHA256);
-        updateKey("LoginLast", LoginLast);
-    }
 }
