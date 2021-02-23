@@ -2,52 +2,34 @@ package xyz.controllers;
 
 import io.javalin.http.Context;
 
-import java.util.List;
-import java.util.Map;
+
 
 import xyz.dbkit.DBMain;
 import xyz.dbkit.DBNode;
 import xyz.model.User;
+import xyz.webkit.SiteTemplate;
 
 public class UserController extends BaseController{
 
-    public UserController(DBMain db_instance) {
+    public UserController(DBMain db_instance, DBNode users_node, RouteManager router) {
         super(db_instance);
     }
 
-    public static void CreateUserForm(Context ctx){
-        int SecurityLevel = 5;
-        int UserSecurity = getUserSecurity(ctx);
-        if(UserSecurity < SecurityLevel){
-            String HTML = "<!DOCTYPE html><html><head><title>Index</title></head><body><h1>Base Controller Index</h1><p>Create User Security Form</p></body></html>";
-            ctx.contentType("html");
-            ctx.result(HTML);
-        }else{
-            SecurityError(ctx);
-        }
+    public void main(Context ctx){
+        SiteTemplate templatizer = new SiteTemplate();
+        SiteTemplate viewTemplate = new SiteTemplate();
+        templatizer.GetTemplate("templates/ion.html");
+        viewTemplate.GetTemplate("views/usertop.html");
+
+        //Construct user listing
+        StringBuilder sb = new StringBuilder();
+
+        templatizer.AddKey("controllerTitle", "Framework User/Group Security Settings");
+        templatizer.AddKey("controllerContent", viewTemplate.GetHtml());
+        templatizer.ReplaceKeys();
+        sb.append(templatizer.GetHtml());
+        ctx.contentType("html");
+        ctx.result(sb.toString());
     }
 
-    public void CreateUser(Context ctx){ //Form Post Method
-        int SecurityLevel = 5;
-        int UserSecurity = getUserSecurity(ctx);
-        if(UserSecurity < SecurityLevel){
-            Map<String, List<String>> Parameters = ctx.formParamMap();
-            List<String> UserParams = Parameters.get("User");
-            String first = UserParams.get(0);
-            String last = UserParams.get(1);
-            String email = UserParams.get(2);
-            String username = UserParams.get(3);
-            String password = UserParams.get(4);
-
-            //Create new user
-            DBNode userNode = db.GetNode("Users");
-            User newUser = new User(email, password, username,first,last);
-            db.AddModel(userNode, newUser);
-
-        }else{
-            SecurityError(ctx);
-        }
-
-
-    }
 }

@@ -1,5 +1,8 @@
 package xyz.dbkit;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import xyz.model.FileMap;
 import xyz.model.ModelObject;
 
 import java.io.IOException;
@@ -9,7 +12,7 @@ import java.nio.file.Path;
 public class DBNode {
     String name;
     String file;
-    public ModelObject rootGraph;
+    protected ModelObject rootGraph;
     boolean hasChanged;
 
     public DBNode(String DBName, String DBFilePath){ //Instantiates New DBNode Object
@@ -18,6 +21,27 @@ public class DBNode {
         file = DBFilePath;
         rootGraph = new ModelObject();
         hasChanged = false;
+    }
+
+    public JSONObject Root(String ModelName) throws JSONException {
+        JSONObject retObj = rootGraph.getModels(ModelName);
+        if (retObj == null){
+            throw new JSONException("Model: " + ModelName + " not found in immediate root graph");
+        }
+        return retObj;
+    }
+
+    public static DBNode CreateDBNode(String name, String path) throws IOException {
+        DBNode myNode = new DBNode(name, path);
+        Path myPath = Path.of(myNode.file);
+        boolean exists =  Files.exists(myPath);
+        if(exists){
+            myNode.rootGraph = new ModelObject(Files.readString(myPath));
+        }else{
+            Files.createFile(myPath);
+            Files.writeString(myPath, myNode.rootGraph.toString());
+        }
+        return myNode;
     }
 
     public ModelObject AddModel(ModelObject m){

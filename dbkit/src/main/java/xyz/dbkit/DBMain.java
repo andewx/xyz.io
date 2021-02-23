@@ -17,110 +17,39 @@ import java.util.HashMap;
 public class DBMain extends Thread implements DBManager{
 
     HashMap<String,DBNode> Nodes;
-    DBNode ActiveNode;
-    ModelObject NodeFileManager;
     String Name;
     boolean ExitCondition;
-    String srcPath;
+    String SrcPath;
 
     public DBMain(String name) throws IOException {
         //Checks if node property files exists -- stored as .keys json files
         Name = name;
         Nodes = new HashMap<>();
-        srcPath = "resources/";
-        String nodeFile = srcPath + "node.keys";
+        ExitCondition = false;
+        SrcPath = "resources/";
+        
 
-        //File Stuff
-        Path dbPath = Path.of(nodeFile);
-        boolean exists = Files.exists(dbPath);
-        boolean hasKeys = false;
-
-        if(exists){
-            String jsonText = Files.readString(dbPath);
-            if(jsonText.compareTo("") != 0) {
-                hasKeys = true;
-                NodeFileManager = new ModelObject(jsonText);
-                JSONObject MapNodes = NodeFileManager.getChildren("FileMaps");
-                if (MapNodes != null) {
-                    for (String key : MapNodes.keySet()) {
-                        JSONObject fileMapping = (JSONObject) MapNodes.get(key);
-                        if (fileMapping != null) {
-                            String nodeName = (String)fileMapping.get("Name");
-                            Path nodePath = Path.of((String) fileMapping.get("FilePath"));
-                            try {
-                                String text = Files.readString(nodePath);
-                                ActiveNode = CreateNode(nodeName, nodePath.toString(), text);
-                                Nodes.put(nodeName, ActiveNode);
-                            }catch(NoSuchFileException e){
-                                Path nodeMgrPath = Path.of(nodeFile);
-                                NodeFileManager.removeKey(key);
-                                Nodes.remove(key);
-                                Files.writeString(nodeMgrPath,NodeFileManager.toString());
-                            }
-                        }
-                    }
-                }
+        for(String key : ModelKeys.ModelKeys()){
+            DBNode thisNode = DBUtils.InitNode(key);
+            if(thisNode == null){
+                throw new IOException("Model Node: " + key + " does not exist. Could not create DBNode object. Database creation failed!\n");
             }
-        }
-
-        if(!exists){
-            Files.createFile(dbPath);
-        }
-
-        if(!hasKeys){
-            NodeFileManager = new ModelObject();
-            NodeFileManager.setName("NodeFiles");
-            DBNode myNode = new DBNode("default", srcPath + "default.keys");
-            FileMap nMap = new FileMap("default", srcPath + "node.keys");
-            Nodes.put(myNode.name, myNode);
-            ActiveNode = myNode;
-            NodeFileManager.addModel(nMap);
-            Path myPath = Path.of(nodeFile);
-            myNode.WriteNode(myNode.file);
-            Files.writeString(myPath, NodeFileManager.toString());
+            Nodes.put(ModelKeys.pluralize(key), thisNode);
         }
 
     }
 
-    public void WriteFileMap() throws IOException {
-        Path file = Path.of(srcPath + "node.keys");
-        boolean exists = Files.exists(file);
-        if(!exists){
-            Files.createFile(file);
-        }
-
-        Files.writeString(file, NodeFileManager.toString());
-    }
-
-
-    @Override
-    public DBNode CreateNode(String nodeName, String nodeFilePath) throws IOException {
-        DBNode myNode = new DBNode(nodeName, srcPath + nodeFilePath);
-        FileMap nMap = new FileMap(nodeName, srcPath + nodeFilePath);
-        NodeFileManager.addModel(nMap);
-        Path myPath = Path.of(myNode.file);
-        boolean exists =  Files.exists(myPath);
-        if(exists){
-            myNode.rootGraph = new ModelObject(Files.readString(myPath));
-        }else{
-            Files.createFile(myPath);
-            Files.writeString(myPath, myNode.rootGraph.toString());
-        }
-
-        Nodes.put(nodeName, myNode);
-        WriteFileMap();
-        this.interrupt();
-        return myNode;
+    public String GetName(){
+        return Name;
     }
 
     @Override
-    public DBNode CreateNode(String nodeName, String nodeFilePath, String json) throws IOException {
-        DBNode myNode = new DBNode(nodeName, nodeFilePath);
-        FileMap nMap = new FileMap(nodeName, nodeFilePath);
-        NodeFileManager.addModel(nMap);
-        WriteFileMap();
-        return myNode;
+    public DBNode CreateNode(String nodeName) throws IOException {
+            DBNode myNode = DBUtils.InitNode(nodeName);
+            Nodes.put(ModelKeys.pluralize(nodeName), myNode);
+            return myNode;
     }
+
 
     @Override
     public boolean DeleteNode(String nodeName) throws IOException {
@@ -139,29 +68,14 @@ public class DBMain extends Thread implements DBManager{
         try {
             Files.delete(myPath);
             Nodes.remove(delNode.name);
-            NodeFileManager.Remove("FileMap",delNode.name);
             this.interrupt();
         }catch(IOException e) {
             return false;
         }
-        WriteFileMap();
 
         return true;
     }
 
-    @Override
-    public boolean ActiveNode(String nodeName) {
-        DBNode aNode = Nodes.get(nodeName);
-        if(aNode == null){
-            return false;
-        }
-        ActiveNode = aNode;
-        return true;
-    }
-
-    public ModelObject GetFileManager(){
-        return NodeFileManager;
-    }
 
     @Override
     public DBNode GetNode(String nodeName) {
@@ -378,6 +292,10 @@ public class DBMain extends Thread implements DBManager{
         return deleteKey(node.rootGraph, ClassName, key);
     }
 
+    public String NumberNodes(){
+        return String.format("%d",Nodes.keySet().size());
+    }
+
     @Override
     public void SyncNode(DBNode thisNode) throws IOException {
 
@@ -386,7 +304,7 @@ public class DBMain extends Thread implements DBManager{
                 thisNode.WriteNode(thisNode.GetFile());
                 thisNode.hasChanged = false;
             }catch(NoSuchFileException e){
-                thisNode.WriteNode(srcPath + thisNode.GetFile());
+                thisNode.WriteNode(SrcPath + thisNode.GetFile());
                 thisNode.hasChanged = false;
             }
         }

@@ -1,9 +1,9 @@
 import org.json.JSONObject;
 import xyz.dbkit.*;
 import org.junit.jupiter.api.Test;
-import xyz.model.Item;
 import xyz.model.ModelObject;
-import xyz.model.Recipe;
+import xyz.model.Site;
+import xyz.model.Template;
 
 
 import java.io.IOException;
@@ -28,47 +28,45 @@ public class DBNodeTest {
 
     @Test
     public void CreateNodes() throws IOException {
-        mDataBase.CreateNode("Users", "Users.keys");
-        mDataBase.CreateNode("Groups", "Groups.keys");
-        mDataBase.CreateNode("Recipes", "Recipes.keys");
+        mDataBase.CreateNode("Node1");
+        mDataBase.CreateNode("Node2");
 
-        ModelObject RecipeMapping = mDataBase.GetFileManager().getModel("FileMap","Recipes" );
-        assertNotNull(RecipeMapping);
-        DBNode RecipeNode = mDataBase.GetNode("Recipes");
-        assertNotNull(RecipeMapping);
+        DBNode TemplateNode = mDataBase.GetNode("Sites");
 
-        Item Coffee = new Item("Coffee", "fresh", "oz", 12);
-        Item Sugar = new Item("Sugar", "white", "gram", 4);
-        Item Milk = new Item("Milk", "whole", "oz", 2);
-        Recipe Latte = new Recipe("Latte","none","drink", "hot", "cafe", 0, 4, 2);
-        Latte.addModel(Coffee);
-        Latte.addModel(Sugar);
-        Latte.addModel(Milk);
-        RecipeNode.AddModel(Latte);
+       assertNotNull(TemplateNode);
 
-        ModelObject modelLatte = RecipeNode.rootGraph.getModel("Recipe", Latte.getUID());
-        assertNotNull(modelLatte);
-        JSONObject latteItems = modelLatte.getModels("Item");
-        System.out.print("Recipe: " + modelLatte.getName() + "{\n");
-        for(String key : latteItems.keySet()){
-            Item mObj = (Item)latteItems.get(key);
+        Template Header = new Template("Light-UI-Header");
+        Template Body = new Template("Light-UI-Body");
+        Template Footer = new Template("Light-UI-Footer");
+        Site MySite = new Site("MySite", "Example Site", "/mysite", "My Site Is Awesome");
+        MySite.addModel(Header);
+        MySite.addModel(Body);
+        MySite.addModel(Footer);
+        TemplateNode.AddModel(MySite);
+
+        ModelObject modelSite= mDataBase.findKey(TemplateNode,"Site", MySite.getUID());
+        assertNotNull(modelSite);
+        JSONObject myTemplates = modelSite.getModels("Template");
+        System.out.print("Template: " + modelSite.getName() + "{\n");
+        for(String key : myTemplates.keySet()){
+            Template mObj = (Template)myTemplates.get(key);
             assertNotNull(mObj);
-            System.out.print(mObj.getName()+ ": " + String.format("%d .",(mObj.get("Amount"))) + mObj.get("Unit") + "\n");
+            System.out.println(mObj.getName());
         }
 
         System.out.println("}");
 
-        RecipeNode.WriteNode(RecipeNode.GetFile());
+        TemplateNode.WriteNode(TemplateNode.GetFile());
 
     }
 
     @Test
     public void DeleteNode() throws IOException {
-            DBNode Recipe = mDataBase.GetNode("Recipes");
-            boolean delete = mDataBase.DeleteNode("Recipes");
-            Recipe = mDataBase.GetNode("Recipes");
+            DBNode theme = mDataBase.GetNode("Themes");
+            boolean delete = mDataBase.DeleteNode("Themes");
+            theme = mDataBase.GetNode("Themes");
            assertTrue(delete);
-            assertNull(Recipe);
+            assertNull(theme);
     }
 
 

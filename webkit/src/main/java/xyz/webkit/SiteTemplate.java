@@ -10,14 +10,14 @@ import java.util.regex.Matcher;
 
 import java.util.HashMap;
 
-public class Template {
+public class SiteTemplate {
     String PathFolder;
     String HTML;
     HashMap<String,String> PropertyMap;
     Pattern KeyPattern;
     Matcher KeyMatcher;
 
-    public Template(){
+    public SiteTemplate(){
         PathFolder = "templates";
         HTML = "";
         PropertyMap = new HashMap<String,String>();
@@ -44,7 +44,7 @@ public class Template {
     }
 
     public String GetTemplate(String Name){
-        String TemplateFile = PathFolder + "/" + Name + ".html";
+        String TemplateFile = Name;
         Path TemplatePath = Path.of(TemplateFile);
         try{
             HTML = Files.readString(TemplatePath);
@@ -56,13 +56,21 @@ public class Template {
         }
     }
 
+    public void setHTML(String html){
+        HTML = html;
+    }
+
     public String ReplaceKeys(){
         KeyMatcher = KeyPattern.matcher(HTML);
         StringBuffer sb = new StringBuffer();
         while(KeyMatcher.find()){
             String key = KeyMatcher.group(1);
             String value = PropertyMap.get(key);
-            KeyMatcher.appendReplacement(sb,value);
+            try {
+                KeyMatcher.appendReplacement(sb, value);
+            }catch(NullPointerException e){
+                System.out.println("Key: " + key + "Could not be replaced");
+            }
         }
         KeyMatcher.appendTail(sb);
         HTML = sb.toString();

@@ -6,6 +6,8 @@ plugins {
     id 'xyz.java-application-conventions'
 }
 
+
+
 dependencies {
     compile 'io.javalin:javalin:3.13.0'
     compile 'org.slf4j:slf4j-simple:1.7.30'
@@ -16,6 +18,13 @@ dependencies {
     implementation project(':webkit')
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDirs "resources"
+        }
+    }
+}
 application {
     // Define the main class for the application.
     mainClass = 'xyz.app.App'
