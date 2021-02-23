@@ -39,13 +39,55 @@ public final class ModelKeys { //Static Model Methods
     public static ArrayList<String> ModelKeys(){
         //Add all model types to this set
         ArrayList<String> keySet = new ArrayList<String>();
-        keySet.add("Item");
-        keySet.add("Recipe");
         keySet.add("Group");
         keySet.add("User");
         keySet.add("Notification");
-        keySet.add("ThemeCSS");
+        keySet.add("Theme");
+        keySet.add("Edge");
+        keySet.add("Site");
+        keySet.add("Template");
+        keySet.add("FileMap");
         return keySet;
+    }
+
+    public static ModelObject Default(String name){
+        if(name.equals("Group")){
+            return new Group("", "", 5);
+        }
+        if(name.equals("User")){
+            User myUser = new User("", "","","","");
+            myUser.setPassword("");
+            return myUser;
+        }
+        if(name.equals("Notification")){
+            return new Notification("","","","","","");
+        }
+        if(name.equals("FileMap")){
+            return new FileMap("", "");
+        }
+        if(name.equals("Site")){
+            return new Site("","","", "");
+        }
+        if(name.equals("Template")){
+            return new Template("");
+        }
+        if(name.equals("Theme")){
+            return new Theme("","");
+        }
+        if(name.equals("Edge")){
+            return new Edge("","","","", "");
+        }
+
+        return null;
+    }
+
+    public static String pluralize(String str){
+        int index = str.lastIndexOf(str);
+        char c = str.charAt(index);
+        if (c != 's'){
+            return str + "s";
+        }
+        return str;
     }
 
 

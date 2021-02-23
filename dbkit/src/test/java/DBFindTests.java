@@ -1,9 +1,7 @@
 
 import xyz.dbkit.*;
 import org.junit.jupiter.api.Test;
-import xyz.model.Item;
-import xyz.model.ModelObject;
-import xyz.model.Recipe;
+import xyz.model.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DBFindTests {
 
    DBMain mDatabase;
-   String milkUID;
+   String headerUID;
 
    public DBFindTests() throws IOException {
        try {
@@ -26,33 +24,29 @@ public class DBFindTests {
            throw e;
        }
 
-       ModelObject RecipeMapping = mDatabase.GetFileManager().getModel("FileMap","Recipes" );
-       assertNotNull(RecipeMapping);
-       DBNode RecipeNode = mDatabase.GetNode("Recipes");
+       DBNode TemplateNode = mDatabase.GetNode("Sites");
 
-       if(RecipeNode == null){
-          RecipeNode = mDatabase.CreateNode("Recipes", "Recipes.keys");
-       }
+       assertNotNull(TemplateNode);
 
-       Item Coffee = new Item("Coffee", "fresh", "oz", 12);
-       Item Sugar = new Item("Sugar", "white", "gram", 4);
-       Item Milk = new Item("Milk", "whole", "oz", 2);
-       milkUID = Milk.getUID();
-       Recipe Latte = new Recipe("Latte","none","drink", "hot", "cafe", 0, 4, 2);
-       Latte.addModel(Coffee);
-       Latte.addModel(Sugar);
-       Latte.addModel(Milk);
-       RecipeNode.AddModel(Latte);
+       Template Header = new Template("Light-UI-Header");
+       Template Body = new Template("Light-UI-Body");
+       Template Footer = new Template("Light-UI-Footer");
+       headerUID = Header.getUID();
+       Site MySite = new Site("MySite", "Example Site", "/mysite", "My Site Is Awesome");
+       MySite.addModel(Header);
+       MySite.addModel(Body);
+       MySite.addModel(Footer);
+       TemplateNode.AddModel(MySite);
 
    }
 
     @Test
     public void FindModelID(){
-       DBNode recipes = mDatabase.GetNode("Recipes");
-       Item milk =(Item) mDatabase.findKey(recipes,"Item", milkUID);
+       DBNode Sites = mDatabase.GetNode("Sites");
+       Template header =(Template) mDatabase.findKey(Sites,"Template", "Light-UI-Header");
 
-       assertEquals(0, milk.getUID().compareTo(milkUID));
-       System.out.println("Milk found in recipe Coffee");
+       assertEquals(0, header.getUID().compareTo(headerUID));
+       System.out.println("Light UI Header Found in site");
 
     }
 
@@ -60,14 +54,14 @@ public class DBFindTests {
     public void FindExactPropertys(){
 
        HashMap<String,String> propVals = new HashMap<>();
-       propVals.put("Unit", "oz");
-       DBNode recipes = mDatabase.GetNode("Recipes");
-       ArrayList<ModelObject> liquids = mDatabase.findExact(recipes, "Item", propVals);
+       propVals.put("Name", "Light-UI-Header");
+       DBNode Sites = mDatabase.GetNode("Sites");
+       ArrayList<ModelObject> templates = mDatabase.findExact(Sites, "Template", propVals);
 
-       for(ModelObject i : liquids){
-           Item item = (Item)i;
-           String unit = (String)i.get("Unit");
-           assertEquals(0, unit.compareTo("oz"));
+       for(ModelObject i : templates){
+           Template myTemplate = (Template)i;
+           String name = (String)i.get("Name");
+           assertEquals(0, name.compareTo("Light-UI-Header"));
        }
 
     }

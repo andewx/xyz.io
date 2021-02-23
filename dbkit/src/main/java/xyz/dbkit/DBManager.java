@@ -10,10 +10,8 @@ import xyz.dbkit.DBNode;
 public interface DBManager extends Runnable {
 
     //Database API
-    DBNode CreateNode(String nodeName, String nodeFilePath) throws IOException;
-    DBNode CreateNode(String nodeName, String nodeFilePath, String json) throws IOException;
+    DBNode CreateNode(String nodeName) throws IOException;
     boolean DeleteNode(String nodeName) throws IOException;
-    boolean ActiveNode(String nodeName);
     DBNode GetNode(String nodeName);
 
     //Repository actions

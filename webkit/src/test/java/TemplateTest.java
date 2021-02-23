@@ -1,8 +1,7 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import xyz.webkit.Template;
+import xyz.webkit.SiteTemplate;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,15 +9,15 @@ import java.util.regex.Pattern;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TemplateTest {
-    Template myTemplate;
+    SiteTemplate myTemplate;
     ArrayList<String> keys;
     public TemplateTest(){
         keys = new ArrayList<String>();
         keys.add("title");
         keys.add("first");
         keys.add("last");
-        myTemplate = new Template();
-        myTemplate.GetTemplate("index");
+        myTemplate = new SiteTemplate();
+        myTemplate.GetTemplate("index.html");
     }
 
     @Test
@@ -48,8 +47,8 @@ public class TemplateTest {
         myTemplate.AddKey("first", "Brian");
         myTemplate.AddKey("last", "Anderson");
         myTemplate.ReplaceKeys();
-        Template nTemplate = new Template();
-        nTemplate.GetTemplate("test-index");
+        SiteTemplate nTemplate = new SiteTemplate();
+        nTemplate.GetTemplate("test-index.html");
         System.out.println(myTemplate.GetHtml());
         assertEquals(0, myTemplate.GetHtml().compareTo(nTemplate.GetHtml()));
     }

@@ -24,7 +24,14 @@ public class RouteManager {
     }
 
     public String PrintAPI(){
-        return null;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("<div class='submenu-arrow'><ul>");
+        for(String route : RouteMethods.keySet()){
+            sb.append("<li>-" + route +"</li>");
+        }
+        sb.append("</ul></div>");
+        return sb.toString();
     }
 
 }
