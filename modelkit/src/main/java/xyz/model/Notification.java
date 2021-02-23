@@ -1,13 +1,12 @@
 package xyz.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.time.Instant;
 
-public class Notification extends ModelObject{
+public class Notification extends Edge{
     //Edge from A to B
-    protected String ClassA;
-    protected String ClassB;
-    protected String idA;
-    protected String idB;
     protected boolean Sent;
     protected boolean Read;
     protected String DateCreated;
@@ -17,18 +16,14 @@ public class Notification extends ModelObject{
     //Our Database Engine Is Also Our Model Manager - It will sync the graphs and Do Notification Work
 
     public Notification(String uidA, String uidB, String message, String NotifierClass, String SubscriberClass, String MessageType){
-        super();
+        super(NotifierClass, SubscriberClass, uidA, uidB, "Notifies");
         ClassName = "Notification";
         Name = MessageType;
         Message = message;
         Sent = false;
         Read = false;
         DateCreated = Instant.now().toString();
-        DateRead = "N.A";
-        idA = uidA;
-        idB = uidB;
-        ClassA = NotifierClass;
-        ClassB = SubscriberClass;
+        DateRead = "";
 
         updateKey("ClassName", ClassName);
         updateKey("Name", Name);
@@ -37,46 +32,46 @@ public class Notification extends ModelObject{
         put("Read", Read);
         put("DateCreated", DateCreated);
         put("DateRead", DateRead);
-        put("idA", idA);
-        put("idB", idB);
-        put("ClassA", ClassA);
-        put("ClassB", ClassB);
     }
 
-    public String getClassA() {
-        return ClassA;
+
+    public Notification(String json){
+        super(json);
+        Message = (String)get("Message");
+        Sent = (boolean)get("Sent");
+        Read = (boolean)get("Read");
+        DateCreated = (String)get("DateCreated");
+        DateRead = (String)get("DateRead");
+        put("Message", Message);
+        put("Sent", Sent);
+        put("Read", Read);
+        put("DateCreated", DateCreated);
+        put("DateRead", DateRead);
     }
 
-    public void setClassA(String classA) {
-        ClassA = classA;
-        updateKey("ClassA", ClassA);
-    }
+    public Notification(JSONObject jObj){
+        super(jObj);
 
-    public String getClassB() {
-        return ClassB;
-    }
+        try { //Assumes jObj is a ModelObject internally
+            Message = (String)jObj.get("Message");
+            Sent = (boolean)jObj.get("Sent");
+            Read = (boolean)jObj.get("Read");
+            DateCreated = (String)jObj.get("DateCreated");
+            DateRead = (String)jObj.get("DateRead");
+            put("Message", Message);
+            put("Sent", Sent);
+            put("Read", Read);
+            put("DateCreated", DateCreated);
+            put("DateRead", DateRead);
 
-    public void setClassB(String classB) {
-        ClassB = classB;
-        updateKey("ClassB", ClassB);
-    }
+        }catch(JSONException e){
+            for (String key : jObj.keySet()){
+                JSONObject jModel = (JSONObject)jObj.get(key);
+                ModelObject mModel = new ModelObject(jModel);
+                addModel(mModel);
+            }
+        }
 
-    public String getIdA() {
-        return idA;
-    }
-
-    public void setIdA(String idA) {
-        this.idA = idA;
-        updateKey("idA", idA);
-    }
-
-    public String getIdB() {
-        return idB;
-    }
-
-    public void setIdB(String idB) {
-        this.idB = idB;
-        updateKey("idB", idB);
     }
 
     public boolean isSent() {

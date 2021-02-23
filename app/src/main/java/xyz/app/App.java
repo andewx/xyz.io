@@ -5,34 +5,46 @@ package xyz.app;
 
 import io.javalin.Javalin;
 import io.javalin.http.Handler;
-import xyz.controllers.BaseController;
-import xyz.controllers.IndexController;
-import xyz.controllers.RouteManager;
-import xyz.controllers.UserController;
+import io.javalin.http.staticfiles.Location;
+import xyz.controllers.*;
 import xyz.dbkit.DBMain;
 
+import java.io.File;
 import java.io.IOException;
 
 
 public class App {
     public static void main(String[] args) throws IOException {
+
+
+
         //Initiate Controllers - Form API
-        Javalin app = Javalin.create().start(8080);
-        DBMain myDB = new DBMain("xyzDatabase");
-        myDB.CreateNode("Users", "user.keys");
-        myDB.CreateNode("Recipes", "recipe.keys");
-        myDB.CreateNode("Groups", "group.keys");
+        Javalin app = Javalin.create();
+        app.config.addStaticFiles("/web");
+        app.start(8080);
+        DBMain myDB = new DBMain("xyz-db");
+
+
+
         myDB.start();
-        BaseController BaseEndpoint = new BaseController(myDB);
-        IndexController IndexEndpoint = new IndexController(myDB);
-        UserController userController = new UserController(myDB);
         RouteManager routerGet = new RouteManager();
         RouteManager routerPost = new RouteManager();
+        BaseController BaseEndpoint = new BaseController(myDB);
+        IndexController IndexEndpoint = new IndexController(myDB, routerGet );
+        UserController userController = new UserController(myDB, myDB.GetNode("Users"), routerGet);
+        ModelsController modelController = new ModelsController(myDB);
 
 
         //Build API
-        routerGet.Register("/", IndexController::Index);
-        routerPost.Register("/user/create", userController::CreateUser);
+        routerGet.Register("/", IndexEndpoint::Index);
+        routerGet.Register("/users", userController::main);
+        routerGet.Register("/model/create/:name", modelController::ModelCreateForm);
+        routerGet.Register("/model/edit/:name/:id", modelController::ModelEditForm);
+        routerGet.Register("/model/delete/:name/:id", modelController::Delete);
+
+        routerPost.Register("/model/user_submit/:name", modelController::ModelCreate);
+        routerPost.Register("/model/edit-response/:name/:id", modelController::ModelEdit);
+
 
         //Add Routing to Javalin
         for (String key : routerGet.RouteMethods.keySet()){

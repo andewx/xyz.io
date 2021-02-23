@@ -10,19 +10,16 @@ public class ModelObject extends JSONObject {
     protected String UID;
     protected String ClassName;
     protected String Name;
-    protected String Modified;
 
     public ModelObject(){
         super();
         UID = ModelKeys.genUID();
         ClassName = "ModelBase";
-        Modified = Instant.now().toString();
         Name = "ModelBase";
 
         put("UID", UID);
         put("ClassName", ClassName);
         put("Name", Name);
-        put("Modified", Modified);
 
     }
 
@@ -36,11 +33,9 @@ public class ModelObject extends JSONObject {
             UID = (String) jObj.get("UID");
             ClassName = (String) jObj.get("ClassName");
             Name = (String) jObj.get("Name");
-            Modified = (String) jObj.get("Modified");
             put("UID", UID);
             put("ClassName", ClassName);
             put("Name", Name);
-            put("Modified", Modified);
 
         }catch(JSONException e){
             for (String key : jObj.keySet()){
@@ -59,10 +54,6 @@ public class ModelObject extends JSONObject {
         UID = (String)get("UID");
         ClassName = (String)get("ClassName");
         Name = (String)get("Name");
-        Modified = (String)get("Modified");
-
-
-
 
     }
 
@@ -71,11 +62,9 @@ public class ModelObject extends JSONObject {
         UID = ModelKeys.genUID();
         ClassName = "ModelBase";
         Name = "ModelBase";
-        Modified = Instant.now().toString();
         put("UID", UID);
         put("ClassName", ClassName);
         put("Name", Name);
-        put("Modified", Modified);
     }
 
     public JSONObject getChildren(String Pluralized){ //Expects the Plura
@@ -113,9 +102,6 @@ public class ModelObject extends JSONObject {
             internal.put(m.getUID(), m);
             updateKey(m.plural(), internal);
         }
-
-        Modified = Instant.now().toString();
-
     }
 
     //Getters and Setters ------
@@ -141,15 +127,6 @@ public class ModelObject extends JSONObject {
     }
 
 
-    public void setModified(String modified) {
-        Modified = modified;
-        updateKey("Modified", Modified);
-    }
-
-    public String getModified(){
-        return Modified;
-    }
-
     
     public String getModelName() {
         return ClassName;
@@ -158,15 +135,6 @@ public class ModelObject extends JSONObject {
     public void setModelName(String className) {
         ClassName = className;
         updateKey("ClassName", ClassName);
-    }
-
-    
-
-    
-
-
-    public String GetModified(){
-        return Modified;
     }
 
     
@@ -216,9 +184,6 @@ public class ModelObject extends JSONObject {
             return false;
         }
 
-        Modified = Instant.now().toString();
-        updateKey("Modified", Modified);
-
         return true;
     }
 
@@ -235,6 +200,33 @@ public class ModelObject extends JSONObject {
     
     public String toJson() {
         return super.toString();
+    }
+
+    public String getNode(){
+        return pluralize(ClassName);
+    }
+
+    public String getKey(){
+        return "UID";
+    }
+
+    public String Form(){ //Override for custom form element processing
+        StringBuilder sb = new StringBuilder();
+        sb.append("<form id='" + getModelName() + "' class='model-form'><ul><li><div class='form-label'>");
+        boolean required = false;
+        for(String key : keySet()){ //No UID / ClassName
+            if (!key.equals("UID") && !key.equals("ClassName")){
+                sb.append(key);
+                sb.append(GetInputTag(key));
+                sb.append("</div></li>");
+            }
+        }
+        sb.append("</ul></form>");
+        return sb.toString();
+    }
+
+    public String GetInputTag(String key){
+        return "<input type ='text' value='" + get(key) + " id='" + key + "' name='" + key + "' ></input>";
     }
 
 
