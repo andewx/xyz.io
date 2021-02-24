@@ -44,10 +44,9 @@ Familiarize yourself with using the build system by cloning the repository. Chec
 ---
 ## ``XYZ Framework``
 ### Overview
-XYZ Framework is a fully self-encapsulated framework capable of deploying an in place web application solution. No other stack is required with all components required completely self contained. This framework is for demonstration purposes and small application architecture. Notably a self-contained Web Frameowrk API can
-be used for building self-contained Java Applications with an open-source and accessible UI/UX system. 
+XYZ Framework is a fully self-encapsulated framework capable of deploying an in place web application solution. No other stack is required with all components required completely self contained. 
 
-System components include the ``xyz.dbkit`` for managing ``xyz.model`` permanence through JSON storage. DBNode queries are implicitly shallow to prevent deep global searches. Database state updates per DBNode update and via a sleep thread for syncing. 
+Standard Web Framework MVC architecture is expanded by integrating a Data Permanence solution with a JSON Database. 
 
 ``xyz.webkit`` is responsible for managing ``Template`` file operations such as filling html files with keyed data.
 
