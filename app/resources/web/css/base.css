@@ -865,15 +865,6 @@ textarea {
 
 }
 
-.context-panel{
-position: relative;
-display: none;
-width: 100%;
-padding: 20px;
-display: none;
-
-box-shadow: -6px 10px 52px 3px #898989;
-}
 
 
 
@@ -906,6 +897,34 @@ box-shadow: -6px 10px 52px 3px #898989;
     display: inline;
     font-size: 0.8em;
     border: 1px 1px 1px 1px #111;
+}
+
+.form-close:hover{
+   text-color: #23F310;
+   cursor: pointer;
+}
+
+.form-caption{
+   font-size:0.45em;
+   margin: 0 auto;
+   text-align: center;
+}
+
+/* ================================
+DASHBOARD
+*================================= */
+
+.dashboard{
+padding: 15px;
+background: #cccccc;
+}
+
+
+.dash-panel{
+ padding: 10px;
+ margin: 0 auto;
+ background: #aaaaaa;
+ text-color: #333;
 }
 
 

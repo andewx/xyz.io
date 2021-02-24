@@ -62,28 +62,34 @@ public class Group extends ModelObject {
 
     }
 
-    public String Form(){ //Override for custom form element processing
+    @Override
+    public String Form(){ //Too Coupled with HTML i.e. Forms need to know which classes to use.
         StringBuilder sb = new StringBuilder();
-        sb.append("<form id='" + getModelName() + "' class='model-form'><ul><li><div class='form-label'>");
+        sb.append("<div style='width:100%'><div style='float:right'><div class='form-close'>X</div></div></div>" );
+        sb.append("<form id='group-form' action='model/group_submit/Group' method='post' value='Submit' enctype='multipart/form-data' class='model-form'><legend><label> Create Group</label></legend>");
         boolean required = false;
         for(String key : keySet()){ //No UID / ClassName
-            if (!key.equals("UID") && !key.equals("ClassName")){
+            if (!key.equals("UID") && !key.equals("ClassName") && !key.equals("GroupID") && !key.equals("LoginLast")){
+                sb.append("<div class='form-item'><div class='form-item-label col-1-2'>");
                 sb.append(key);
+                sb.append("</div>");
                 sb.append(GetInputTag(key));
-                sb.append( "</div></li>");
+                sb.append( "</div>");
             }
         }
-        sb.append("</ul></form>");
+        sb.append("<input id='submitUser' type='submit' value='Submit'/>");
+        sb.append("</form>");
         return sb.toString();
     }
 
-    public String GetInputTag(String key){
-        String type = "<input type='text' maxLength='45'" +" value='" + get(key) + " id='" + key + "' name='" + key + "' required></input>";
+    @Override
+    public String GetInputTag(String key){ //too much coupling with - CSS/HTML Specifics
+        String type = "<input class='col-1-2' type='text' maxLength='45' value='" + get(key)  + "' name='" + key + "'></input>";
         if(key.equals("AccessDescription")){
-            type = "<textarea rows='50' cols='3'" +" value='" + get(key) + " id='" + key + "' name='" + key + "'></textarea>";
+            type = "<textarea class='col-1-2' type='text' maxLength='45' value='" + get(key) + "' name='" + key + "' required></textarea>";
         }
-        if(key.equals("AccessSpecifier")){
-            type = "<input type='number' min='1' max='5'"+" value='" + get(key) + " id='" + key + "' name='" + key + "'></input>";
+        if(key.equals("AccessLevel")){
+            type = "<input class='col-1-2' type='number' min=1 max=5 " +" value='" + get(key) + "' name='" +  key +  "' required></input>";
         }
         return type;
     }

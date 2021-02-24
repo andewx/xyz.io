@@ -1,6 +1,15 @@
 # XYZ Recipes
 ## Overview
-Web framework that supports a Recipe productivity planning tool in Java.
+Java Web Framework for deploying a self contained Web Framework in Java. Built on top of Javalin.io API.
+
+Gradle build system is modularized. (multi-application build framework). 
+
+Main Components:
+``xyz.app`` , ``xyz.webkit``, ``xyz.modelkit``, ``xyz.dbkit``
+
+Which translates to a well defined and familiar MVC pattern. Which we have wrapped in interfaces for easy usage. 
+
+See project issues for feature adding plans. 
 
 ## ``Gradle System Build``
 
@@ -31,6 +40,17 @@ See
 ## ``NOTES.md`` for git version control. 
 
 Familiarize yourself with using the build system by cloning the repository. Checking into the development repository. Creating a module-branch in git. Creating your own working commit. And merging with your module-branch for practice. 
+
+---
+## ``XYZ Framework``
+### Overview
+XYZ Framework is a fully self-encapsulated framework capable of deploying an in place web application solution. No other stack is required with all components required completely self contained. 
+
+Standard Web Framework MVC architecture is expanded by integrating a Data Permanence solution with a JSON Database. 
+
+``xyz.webkit`` is responsible for managing ``Template`` file operations such as filling html files with keyed data.
+
+``xyz.app`` manages a lightweight server with REST controller routes and exposes APIs to consumers. Security handling is managed via simple groupID exclusion security levels rather than ACL tree lists. 
 
 
 

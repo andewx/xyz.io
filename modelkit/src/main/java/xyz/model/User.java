@@ -158,8 +158,8 @@ public class User extends ModelObject{
     @Override
     public String Form(){ //Override for custom form element processing
         StringBuilder sb = new StringBuilder();
-        sb.append("<div style='width:100%'><div style='float:right'><div id='exit-form'>X</div></div></div>" );
-        sb.append("<form  action='model/user_submit/User' method='post' value='Submit' id='formSubmit' enctype='multipart/form-data' class='model-form'><legend><label> Create User</label></legend>");
+        sb.append("<div style='width:100%'><div style='float:right'><div class='form-close' onclick='clCloseUser()'>X</div></div></div>" );
+        sb.append("<form id='user-form' action='model/user_submit/User' method='post' value='Submit'  enctype='multipart/form-data' class='model-form'><legend><label> Create User</label></legend>");
         boolean required = false;
         for(String key : keySet()){ //No UID / ClassName
             if (!key.equals("UID") && !key.equals("ClassName") && !key.equals("GroupID") && !key.equals("LoginLast")){
