@@ -1,6 +1,6 @@
 # XYZ Recipes
 ## Overview
-Java Web Framework for deploying a self contained Java Web Application. Built on top of Javalin.io API.
+Java Web Framework for deploying a self contained Web Framework in Java. Built on top of Javalin.io API.
 
 Gradle build system is modularized. (multi-application build framework). 
 
