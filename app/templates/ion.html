@@ -43,7 +43,7 @@
 <header class='s-header'>
 
     <div class='header-logo'>
-        <a class='site-logo' href='index.html'>
+        <a class='site-logo' href='/'>
             <img src='images/logo.png' alt='Homepage'>
         </a>
     </div>
@@ -120,13 +120,24 @@
 
     <div class='home-content__line'></div>
 
-    </div> <!-- end home-content -->
+    </section> <!-- end home-content -->
 
-    <section class='context-wrapper close'>
-         <div id='form-attach' class='row context-panel close'></div>
-    </section>
+    <div id='user-context' class='context-wrapper'>
+        <div class='form-caption col-full'>This gives over admin control to create users as needed. Default assignment is to the User access level group: 5</div>
+    </div>
+    <div id='group-context' class='context-wrapper'>
+        <div class='form-caption col-full'>Admin access only. Creates a group association with Access Level 1-5. 1-3 are reserved for system access restrictors. 5 is default public user access.</div>
+    </div>
 
 </section> <!-- end s-home -->
+</div>
+<!-- Functionality Dashboard Template
+ =======-->
+<section id='dash' class='row dashboard'>
+    <div id='dash1' class='dash-panel col-1-3'> @:dashboard1 </div>
+    <div id='dash1' class='dash-panel col-1-3'> @:dashboard2 </div>
+    <div id='dash1' class='dash-panel col-1-3'> @:dashboard3 </div>
+</section>
 <!-- footer
 ================================================== -->
 <footer>
