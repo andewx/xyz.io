@@ -1,6 +1,15 @@
 # XYZ Recipes
 ## Overview
-Web framework that supports a Recipe productivity planning tool in Java.
+Java Web Framework for deploying a self contained Java Web Application. Built on top of Javalin.io API.
+
+Gradle build system is modularized. (multi-application build framework). 
+
+Main Components:
+``xyz.app`` , ``xyz.webkit``, ``xyz.modelkit``, ``xyz.dbkit``
+
+Which translates to a well defined and familiar MVC pattern. Which we have wrapped in interfaces for easy usage. 
+
+See project issues for feature adding plans. 
 
 ## ``Gradle System Build``
 
