@@ -3,37 +3,60 @@ package xyz.controllers;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
+import xyz.app.AppManager;
+import xyz.app.Security;
 import xyz.dbkit.DBMain;
 
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class BaseController implements Handler {
 
-    DBMain db;
+    DBMain mDB;
+    String mRouteFrom;
+    AppManager mApp;
+    Integer mSecurity;
 
-    public BaseController(DBMain db_instance){
-        db = db_instance;
+    public BaseController(DBMain db_instance, AppManager appManager) {
+        mDB = db_instance;
+        mRouteFrom = "";
+        mApp = appManager;
+        mSecurity = 6;
     }
 
-    public static int getUserSecurity(Context ctx){
-        int UserSecurity = 5; //Public
-        Map<String,String> Cookies = ctx.cookieMap();
-        String userSecurity = Cookies.get("Security");
-        if(userSecurity != null){
-            Integer myInt = Integer.getInteger(userSecurity);
-            if(myInt != null){
-                UserSecurity = myInt.intValue();
+    public void pre(Context ctx){
+        Security securityObj = new Security();
+        String securityGroup = "";
+        try {
+            securityGroup = ctx.cookie("GUID");
+            if(securityGroup != null) {
+                mSecurity = mApp.GetSessionSecurity(securityGroup);
+            }else{
+                mSecurity = 6;
             }
+        }catch(Exception e){//Do nothing
+            mSecurity = 6;
         }
 
-        return UserSecurity;
+        int routeSecurity = mApp.GetRouteSecurity(ctx.matchedPath());
+        Security.Resolver myResolver = securityObj.HasPermission(mSecurity, routeSecurity );
+
+        if(!myResolver.IsValid()){
+            ctx.redirect("/", 501); //Redirect home with error.
+        }else{
+            if(myResolver.NeedsResolve()){
+                resolve(ctx);
+            }
+        }
     }
 
-    public static void SecurityError(Context ctx){
-        String HTML = "<!DOCTYPE html><html><head><title>Index</title></head><body><h1>Security Permissions Error</h1><p>User Does Not Have Access</p></body></html>";
-        ctx.contentType("html");
-        ctx.result(HTML);
+    public void post(Context ctx){
+        mRouteFrom = ctx.url(); //Sets the last url
+    }
+
+    public void resolve(Context ctx){
+        //Override resolver when objects needs to be owned by user.
     }
 
 

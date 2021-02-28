@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <title> @:title </title>
+    <meta name="description" content="portable java web framework">
+    <meta name="author" content="Brian Anderson">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="css/xyz-base.css">
+    <link rel="stylesheet" href="css/vendor.css">
+    <link rel="stylesheet" href="css/xyz-leaf.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="js/modernizr.js"></script>
+    <script src="js/pace.min.js"></script>
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+</head>
+<body>
+
+<section class="s-header">
+        <div class="header-logo"><a href='#'>xyz</a></div>
+    <div class="header-elements">
+        <div class="header-element"><a class="fa-gear" href=""></a></div>
+        <div class="header-element"><a class="fa-user" href=""></a></div>
+        <div class="header-element"><a class="fa-home" href="/"></a></div>
+        <div class="header-element"><a class="fa-bell" href=""></a><div class="notify"></div></div>
+    </div>
+</section>
+
+<div class="body-container">
+<div class="vnav-light">
+    <div class="vnav-section"><div class="vnav-label">Site Security</div>
+    <ul>
+        <li><a href="">Routes</a></li>
+        <li><a href="">Users</a></li>
+        <li><a href="">Groups</a></li>
+    </ul>
+    </div>
+    <div class="vnav-section"><div class="vnav-label">Sites</div>
+        <ul>
+            <li><a href="">Sites</a></li>
+            <li><a href="">Templates</a></li>
+            <li><a href="">CSS</a></li>
+            <li><a href="">Pages</a></li>
+        </ul>
+    </div>
+    <div class="vnav-section"><div class="vnav-label">Database</div>
+        <ul>
+            <li><a href="">Nodes</a></li>
+            <li><a href="">Configuration</a></li>
+            <li><a href="">Query</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="dash">
+    <div class="dash-header">
+        <div class="dash-lefth"><h1> @:dashTitle </h1></div>
+        <div class="dash-righth"><span>View</span><span>Site Toggle Element</span></div>
+    </div>
+ <div class="dash-section row">
+    @:dashcontent
+ </div>
+
+</div>
+</div>
+
+<footer>
+
+    <div class='row footer-main'>
+
+        <div class='col-six tab-full left footer-desc'>
+
+            <div class='footer-logo'></div>
+            This project was developed for a Software Engineering Capstone course at the University of Illinois - Springfield. Software is licensed under the GNU GPL 3.0 for general use and the application may be developed and used freely.
+
+        </div>
+
+        <div class='col-six tab-full right footer-subscribe'>
+
+            <h4>Get Notified</h4>
+            <p>This project will be maintained freely and open source at <a href='github.com/andewx/xyzio'>Github Andewx</a> If you wish to become a contributor please contact the owner at bande9@uis.edu</p>
+
+            <div class='subscribe-form'>
+                <form id='mc-form' class='group' novalidate='true'>
+                    <input type='email' value='' name='EMAIL' class='email' id='mc-email' placeholder='Email Address' required=''>
+                    <input type='submit' name='subscribe' value='Subscribe'>
+                    <label for='mc-email' class='subscribe-message'></label>
+                </form>
+            </div>
+
+        </div>
+
+    </div> <!-- end footer-main -->
+
+    <div class='row footer-bottom'>
+
+        <div class='col-twelve'>
+            <div class='copyright'>
+                <span>© Copyright None 2021</span>
+                <span>xyz.io</a></span>
+            </div>
+
+            <div class='go-top'>
+                <a class='smoothscroll' title='Back to Top' href='#top'><i class='icon-arrow-up' aria-hidden='true'></i></a>
+            </div>
+        </div>
+
+    </div> <!-- end footer-bottom -->
+
+</footer> <!-- end footer -->
+
+
+<div id="preloader">
+    <div id="loader">
+        <div class="line-scale-pulse-out">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+
+</body>
+</html>

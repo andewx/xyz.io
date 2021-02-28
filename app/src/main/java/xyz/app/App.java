@@ -5,58 +5,64 @@ package xyz.app;
 
 import io.javalin.Javalin;
 import io.javalin.http.Handler;
-import io.javalin.http.staticfiles.Location;
 import xyz.controllers.*;
 import xyz.dbkit.DBMain;
 
-import java.io.File;
 import java.io.IOException;
 
 
 public class App {
     public static void main(String[] args) throws IOException {
 
-
-
         //Initiate Controllers - Form API
         Javalin app = Javalin.create();
         app.config.addStaticFiles("/web");
         app.start(8080);
         DBMain myDB = new DBMain("xyz-db");
-
+        RouteManager myRouter = new RouteManager();
+        AppManager myApp = new AppManager(myDB, myRouter);
+        BaseController BaseEndpoint = new BaseController(myDB, myApp);
+        IndexController IndexEndpoint = new IndexController(myDB, myApp);
+        UserController userController = new UserController(myDB, myApp);
+        ModelsController modelController = new ModelsController(myDB, myApp);
+        AdminController adminController = new AdminController(myDB,myApp);
 
 
         myDB.start();
-        RouteManager routerGet = new RouteManager();
-        RouteManager routerPost = new RouteManager();
-        BaseController BaseEndpoint = new BaseController(myDB);
-        IndexController IndexEndpoint = new IndexController(myDB, routerGet );
-        UserController userController = new UserController(myDB, myDB.GetNode("Users"), routerGet);
-        ModelsController modelController = new ModelsController(myDB);
 
 
-        //Build API
-        routerGet.Register("/", IndexEndpoint::Index);
-        routerGet.Register("/users", userController::main);
-        routerGet.Register("/model/create/:name", modelController::ModelCreateForm);
-        routerGet.Register("/model/edit/:name/:id", modelController::ModelEditForm);
-        routerGet.Register("/model/delete/:name/:id", modelController::Delete);
+        //Build Model GET API
+        myApp.AddGetRoute("/", IndexEndpoint::Index, "Index Main");
+        myApp.AddGetRoute("/admin", adminController::main, "Admin Dashboard");
+        myApp.AddGetRoute("/user/login", userController::login, "User Login");
+        myApp.AddGetRoute("/model/default/:name", modelController::DefaultModel, "Return Model JSON Properties for Model of :name type");
+        myApp.AddGetRoute("/model/edit/:name/:id", modelController::ModelEdit, "Return Model JSON where :name is the model type, :id is its UID", 4);
+        myApp.AddGetRoute("/model/delete/:name/:id", modelController::ModelDelete, "Delete Model were :name is the model type, :id is the the model UID", 4);
+        myApp.AddGetRoute("/users/search/:name", userController::GetUser, "Find specfic user");
+        myApp.AddGetRoute("/users/find/:name", userController::GetUserStarts, "Find specfic user");
+        //Build Model POST API
+        myApp.AddPostRoute("/model/create/:name", modelController::ModelCreate, "Post params with Model Properties to create model :name type", 3);
+        myApp.AddPostRoute("/model/update/:name/:id", modelController::ModelUpdate, "Post params to update model :name type", 4);
 
-        routerPost.Register("/model/user_submit/:name", modelController::ModelCreate);
-        routerPost.Register("/model/edit-response/:name/:id", modelController::ModelEdit);
-
-
+        //Javalin Pre/Pos
+        app.before("/user/*", userController::pre);
+        app.before("/model/*", modelController::pre);
+        app.before("/admin", adminController::pre);
+        app.before("/", IndexEndpoint::pre);
+        app.after("/user/*", userController::post);
+        app.after("/model/*",modelController::post);
+        app.after("/admin", adminController::post);
+        app.after("/", IndexEndpoint::post);
         //Add Routing to Javalin
-        for (String key : routerGet.RouteMethods.keySet()){
-            Handler method = routerGet.getHandler(key);
+        for (String key : myApp.GetRouteKeys()){
+            Handler method = myApp.GetHandler(key);
             app.get(key, method);
         }
 
-        for (String key : routerPost.RouteMethods.keySet()){
-            Handler method = routerPost.getHandler(key);
+        for (String key : myApp.PostRouteKeys()){
+            Handler method = myApp.PostHandler(key);
             app.post(key, method);
         }
-
 
     }
 }

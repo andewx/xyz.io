@@ -35,9 +35,9 @@ public class DBNodeTest {
 
        assertNotNull(TemplateNode);
 
-        Template Header = new Template("Light-UI-Header");
-        Template Body = new Template("Light-UI-Body");
-        Template Footer = new Template("Light-UI-Footer");
+        Template Header = new Template("Light-UI-Header", "");
+        Template Body = new Template("Light-UI-Body", "");
+        Template Footer = new Template("Light-UI-Footer", "");
         Site MySite = new Site("MySite", "Example Site", "/mysite", "My Site Is Awesome");
         MySite.addModel(Header);
         MySite.addModel(Body);

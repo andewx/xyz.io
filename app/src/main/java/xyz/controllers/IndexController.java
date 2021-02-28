@@ -1,6 +1,7 @@
 package xyz.controllers;
 
 import io.javalin.http.Context;
+import xyz.app.AppManager;
 import xyz.dbkit.DBMain;
 import xyz.webkit.SiteTemplate;
 
@@ -13,10 +14,8 @@ import java.util.HashMap;
 
 public class IndexController extends BaseController{
 
-    RouteManager Router;
-    public IndexController(DBMain db_instance, RouteManager router) {
-        super(db_instance);
-        Router = router;
+    public IndexController(DBMain db_instance, AppManager app) {
+        super(db_instance, app);
     }
 
     public void Index(Context ctx){
@@ -26,11 +25,11 @@ public class IndexController extends BaseController{
         templatizer.AddKey("servername", "xyz-javalin-server");
         templatizer.AddKey("port", String.format("%d",ctx.port()));
         templatizer.AddKey("listening", WhatIP());
-        templatizer.AddKey("dbnodes", db.NumberNodes());
-        templatizer.AddKey("dbname", db.GetName());
-        templatizer.AddKey("endpoints", Router.PrintAPI());
+        templatizer.AddKey("dbnodes", mDB.NumberNodes());
+        templatizer.AddKey("dbname", mDB.GetName());
+        templatizer.AddKey("endpoints", mApp.PrintApi());
 
-        templatizer.AddKey("numnodes", db.NumberNodes());
+        templatizer.AddKey("numnodes", mDB.NumberNodes());
         templatizer.AddKey("ip", WhatIP());
         templatizer.AddKey("username", "andewx");
         templatizer.ReplaceKeys();
@@ -43,6 +42,7 @@ public class IndexController extends BaseController{
 
     public String WhatIP(){
         URL whatismyip = null;
+        String ip = "";
         try {
             whatismyip = new URL("http://checkip.amazonaws.com");
         } catch (MalformedURLException e) {
@@ -53,14 +53,14 @@ public class IndexController extends BaseController{
             in = new BufferedReader(new InputStreamReader(
                     whatismyip.openStream()));
         } catch (IOException e) {
-            e.printStackTrace();
+            ip = "No Internet Connection";
+            return ip;
         }
 
-        String ip = null; //you get the IP as a String
         try {
             ip = in.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            ip = "No Internet Connection";
         }
        return ip;
     }

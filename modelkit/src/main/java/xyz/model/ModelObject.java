@@ -53,7 +53,12 @@ public class ModelObject extends JSONObject {
 
         UID = (String)get("UID");
         ClassName = (String)get("ClassName");
-        Name = (String)get("Name");
+
+        try {
+            Name = (String) get("Name");
+        }catch(JSONException e){
+           Name = "";
+        }
 
     }
 

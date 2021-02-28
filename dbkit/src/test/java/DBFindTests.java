@@ -28,9 +28,9 @@ public class DBFindTests {
 
        assertNotNull(TemplateNode);
 
-       Template Header = new Template("Light-UI-Header");
-       Template Body = new Template("Light-UI-Body");
-       Template Footer = new Template("Light-UI-Footer");
+       Template Header = new Template("Light-UI-Header", "<div>");
+       Template Body = new Template("Light-UI-Body", "<div>");
+       Template Footer = new Template("Light-UI-Footer", "<div>");
        headerUID = Header.getUID();
        Site MySite = new Site("MySite", "Example Site", "/mysite", "My Site Is Awesome");
        MySite.addModel(Header);
@@ -52,18 +52,32 @@ public class DBFindTests {
 
     @Test
     public void FindExactPropertys(){
-
        HashMap<String,String> propVals = new HashMap<>();
        propVals.put("Name", "Light-UI-Header");
        DBNode Sites = mDatabase.GetNode("Sites");
        ArrayList<ModelObject> templates = mDatabase.findExact(Sites, "Template", propVals);
-
        for(ModelObject i : templates){
            Template myTemplate = (Template)i;
            String name = (String)i.get("Name");
            assertEquals(0, name.compareTo("Light-UI-Header"));
        }
+    }
 
+    @Test
+    public void FindSome(){
+        HashMap<String,String> propVals = new HashMap<>();
+        propVals.put("Name", "Light-UIX");
+        propVals.put("HTML", "<div>");
+        DBNode Sites = mDatabase.GetNode("Sites");
+        ArrayList<ModelObject> templates = mDatabase.findSome(Sites, "Template", propVals);
+        assertEquals(3, templates.size());
+    }
+
+    @Test
+    public void FindSimilar(){
+        DBNode Sites = mDatabase.GetNode("Sites");
+        ArrayList<ModelObject> templates = mDatabase.findStartsWith(Sites, "Template","Light");
+        assertEquals(3, templates.size());
     }
 
 

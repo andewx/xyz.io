@@ -4,6 +4,7 @@ import com.google.common.hash.HashCode;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import io.javalin.http.Context;
+import xyz.app.AppManager;
 import xyz.dbkit.DBMain;
 import xyz.dbkit.DBNode;
 import xyz.model.*;
@@ -11,17 +12,18 @@ import xyz.model.*;
 import java.nio.charset.Charset;
 
 public class ModelsController extends BaseController{
-    public ModelsController(DBMain db_instance) {
-        super(db_instance);
+    public ModelsController(DBMain db_instance, AppManager app) {
+        super(db_instance, app);
     }
 
-    public void ModelCreateForm(Context ctx){ //takes path params :modelname
+    public void DefaultModel(Context ctx){
         String ModelKey = ctx.pathParam("name");
         ModelObject myObj = ModelKeys.Default(ModelKey);
         if(myObj != null){
-            String form = myObj.Form();
-            ctx.contentType("text/plain");
-            ctx.result(form);
+          ctx.contentType("application/json");
+          ctx.result(myObj.toJson());
+        }else{
+            ctx.status(201);
         }
     }
 
@@ -33,9 +35,10 @@ public class ModelsController extends BaseController{
             String access = ctx.formParam("AccessLevel");
             int acc = Integer.valueOf(access).intValue();
             Group groupObj = new Group(grpID, descr, acc);
-            DBNode groupNode = db.GetNode("Groups");
-            db.AddModel(groupNode, groupObj);
-            ctx.result("Group Added!");
+            DBNode groupNode = mDB.GetNode("Groups");
+            mDB.AddModel(groupNode, groupObj);
+            ctx.cookieStore("message", "Group added");
+            ctx.redirect("/users");
         }
         if(name.equals("User")){
             String email = ctx.formParam("Email");
@@ -44,9 +47,10 @@ public class ModelsController extends BaseController{
             String first = ctx.formParam("First");
             String last = ctx.formParam("Last");
             User newUser = new User(email,pass,usern,first,last);
-            DBNode users = db.GetNode("Users");
-            db.AddModel(users, newUser);
-            ctx.result("User Added!");
+            DBNode users = mDB.GetNode("Users");
+            mDB.AddModel(users, newUser);
+            ctx.cookieStore("message", "User added");
+            ctx.redirect("/users");
         }
         if(name.equals("Site")){
             String desc = ctx.formParam("Description");
@@ -54,24 +58,24 @@ public class ModelsController extends BaseController{
             String mName = ctx.formParam("Name");
             String title = ctx.formParam("Title");
             Site newSite = new Site(mName,desc,rest,title);
-            DBNode sites = db.GetNode("Sites");
-            db.AddModel(sites,newSite);
+            DBNode sites = mDB.GetNode("Sites");
+            mDB.AddModel(sites,newSite);
             ctx.result("Site Added!");
         }
         if(name.equals("Template")){
             String mName = ctx.formParam("Name");
             String html = ctx.formParam("HTML");
             Template newTemplate = new Template(mName, html);
-            DBNode templates = db.GetNode("Templates");
-            db.AddModel(templates,newTemplate);
+            DBNode templates = mDB.GetNode("Templates");
+            mDB.AddModel(templates,newTemplate);
             ctx.result("Template Added!");
         }
         if(name.equals("Theme")){
             String mName = ctx.formParam("Name");
             String css = ctx.formParam("CSS");
             Theme newTheme = new Theme(mName, css);
-            DBNode themes = db.GetNode("Themes");
-            db.AddModel(themes,newTheme);
+            DBNode themes = mDB.GetNode("Themes");
+            mDB.AddModel(themes,newTheme);
             ctx.result("Theme Added!");
         }
         if(name.equals("Edge")){
@@ -81,30 +85,32 @@ public class ModelsController extends BaseController{
             String uB = ctx.formParam("KeyB");
             String rel = ctx.formParam("Relation");
             Edge newEdge = new Edge(mA,uA,mB,uB,rel);
-            DBNode edges = db.GetNode("Edges");
-            db.AddModel(edges,newEdge);
+            DBNode edges = mDB.GetNode("Edges");
+            mDB.AddModel(edges,newEdge);
             ctx.result("Edge Added!");
         }
 
-        db.interrupt();
-    }
-
-    public void ModelEditForm(Context ctx){
-        String ModelKey = ctx.pathParam("id");
-        String ModelName = ctx.pathParam("name");
-        DBNode modelNode = db.GetNode(ModelKeys.pluralize(ModelName));
-        ModelObject myObj = db.findKey(modelNode,ModelName,ModelKey);
-        if(myObj != null){
-            String form = myObj.Form();
-            ctx.result(form);
-        }
+        mDB.interrupt();
     }
 
     public void ModelEdit(Context ctx){
         String ModelKey = ctx.pathParam("id");
         String ModelName = ctx.pathParam("name");
-        DBNode modelNode = db.GetNode(ModelKeys.pluralize(ModelName));
-        ModelObject myObj = db.findKey(modelNode,ModelName,ModelKey);
+        DBNode modelNode = mDB.GetNode(ModelKeys.pluralize(ModelName));
+        ModelObject myObj = mDB.findKey(modelNode,ModelName,ModelKey);
+        if(myObj != null){
+            ctx.contentType("application/json");
+            ctx.result(myObj.toJson());
+        }else{
+            ctx.status(201);
+        }
+    }
+
+    public void ModelUpdate(Context ctx){
+        String ModelKey = ctx.pathParam("id");
+        String ModelName = ctx.pathParam("name");
+        DBNode modelNode = mDB.GetNode(ModelKeys.pluralize(ModelName));
+        ModelObject myObj = mDB.findKey(modelNode,ModelName,ModelKey);
 
         if(ModelName.equals("Group")){
             String grpID = ctx.formParam("GroupID");
@@ -176,17 +182,17 @@ public class ModelsController extends BaseController{
             ctx.result("Edge Edited");
         }
 
-        db.UpdateModel(modelNode, myObj);
+        mDB.UpdateModel(modelNode, myObj);
 
     }
 
-    public void Delete(Context ctx){
+    public void ModelDelete(Context ctx){
         String ModelKey = ctx.pathParam("id");
         String ModelName = ctx.pathParam("name");
-        DBNode modelNode = db.GetNode(ModelKeys.pluralize(ModelName));
-        ModelObject myObj = db.findKey(modelNode,ModelName,ModelKey);
+        DBNode modelNode = mDB.GetNode(ModelKeys.pluralize(ModelName));
+        ModelObject myObj = mDB.findKey(modelNode,ModelName,ModelKey);
         modelNode.DeleteModel(myObj);
-        db.UpdateModel(modelNode,myObj);
+        mDB.UpdateModel(modelNode,myObj);
     }
 
 

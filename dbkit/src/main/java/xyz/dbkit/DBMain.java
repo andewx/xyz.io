@@ -253,6 +253,86 @@ public class DBMain extends Thread implements DBManager{
         return findKey(node.rootGraph, ClassName, key);
     }
 
+    public ArrayList<ModelObject> findStartsWith(ModelObject model, String ClassName, String value) {
+        ArrayList<ModelObject> myMatches = new ArrayList<>();
+
+        JSONObject Models = model.getModels(ClassName);
+        if(Models == null){
+            for(String modelName : ModelKeys.ModelKeys()) { //Search internal models
+                JSONObject InternalModels = model.getModels(modelName);
+                if (InternalModels != null) {
+                    for(String uid : InternalModels.keySet()){
+                        ModelObject thisObj = (ModelObject)InternalModels.get(uid);
+                        ArrayList<ModelObject> internalMatches = findStartsWith(thisObj, ClassName, value);
+                        myMatches.addAll(internalMatches);
+                    }
+                }
+            }
+        }
+        else {
+            try {
+                for (String uid : Models.keySet()) {
+                    ModelObject thisModel = (ModelObject) Models.get(uid);
+                    String key = thisModel.getUID();
+                    if (key.startsWith(value)) {
+                        myMatches.add(thisModel);
+                    }
+                }
+            }catch(JSONException | ClassCastException e){
+
+                    for (String uid : Models.keySet()) {
+                        JSONObject thisModel = (JSONObject)Models.get(uid);
+                        ModelObject modelCopy = new ModelObject(thisModel.toString());
+                        String key = uid;
+                        if (key.startsWith(value)) {
+                            myMatches.add(modelCopy);
+                        }
+                    }
+
+                System.out.println("DB Query Error[findStartsWith]: associated key object couldn't be converted");
+                System.out.println(e.toString());
+            }
+        }
+        return myMatches;
+    }
+
+    public ArrayList<ModelObject> findStartsWith(DBNode node, String ClassName, String key) {
+        return findStartsWith(node.rootGraph, ClassName, key);
+    }
+
+    public ArrayList<ModelObject> propStartsWith(ModelObject model, String ClassName, String property, String value) {
+        ArrayList<ModelObject> myMatches = new ArrayList<>();
+
+        JSONObject Models = model.getModels(ClassName);
+        if(Models == null){
+            for(String modelName : ModelKeys.ModelKeys()) { //Search internal models
+                JSONObject InternalModels = model.getModels(modelName);
+                if (InternalModels != null) {
+                    for(String uid : InternalModels.keySet()){
+                        ModelObject thisObj = (ModelObject)InternalModels.get(uid);
+                        ArrayList<ModelObject> internalMatches = propStartsWith(thisObj, ClassName, property, value);
+                        myMatches.addAll(internalMatches);
+                    }
+                }
+            }
+        }
+        else {
+            for (String uid : Models.keySet()) {
+                ModelObject thisModel = (ModelObject)Models.get(uid);
+                String prop = (String)thisModel.get(property);
+                if(prop.startsWith(value)){
+                    myMatches.add(thisModel);
+                }
+            }
+        }
+        return myMatches;
+    }
+
+    public ArrayList<ModelObject> propStartsWith(DBNode node, String ClassName, String property, String value) {
+        return propStartsWith(node.rootGraph, ClassName, property,value);
+    }
+
+
     @Override
     public boolean deleteKey(ModelObject model, String ClassName, String key) {
 

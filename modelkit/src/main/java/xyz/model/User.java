@@ -27,12 +27,7 @@ public class User extends ModelObject{
         FirstName = first;
         LastName = last;
         GroupID = "User";
-
-
-        //Generate SHA256 Secure Hash
-        HashFunction f =  Hashing.sha256();
-        HashCode passHash = f.hashString(initialPassword, Charset.defaultCharset());
-        Password = passHash.toString();
+        Password = User.PasswordSHA(initialPassword);
         UID = Email;
 
         //Login Last Now
@@ -65,6 +60,13 @@ public class User extends ModelObject{
         put("GroupID", GroupID);
         put("Password", Password);
         put("LoginLast", LoginLast);
+    }
+
+    public static String PasswordSHA(String pass){
+        //Generate SHA256 Secure Hash
+        HashFunction f =  Hashing.sha256();
+        HashCode passHash = f.hashString(pass, Charset.defaultCharset());
+        return passHash.toString();
     }
 
     public User(JSONObject jObj){
@@ -158,8 +160,7 @@ public class User extends ModelObject{
     @Override
     public String Form(){ //Override for custom form element processing
         StringBuilder sb = new StringBuilder();
-        sb.append("<div style='width:100%'><div style='float:right'><div class='form-close' onclick='clCloseUser()'>X</div></div></div>" );
-        sb.append("<form id='user-form' action='model/user_submit/User' method='post' value='Submit'  enctype='multipart/form-data' class='model-form'><legend><label> Create User</label></legend>");
+        sb.append("<form id='user-form' action='model/user_submit/User' method='post' value='Submit'  enctype='multipart/form-data'>");
         boolean required = false;
         for(String key : keySet()){ //No UID / ClassName
             if (!key.equals("UID") && !key.equals("ClassName") && !key.equals("GroupID") && !key.equals("LoginLast")){

@@ -462,26 +462,30 @@
             groupClose = grpPanel.find('.form-close');
 
 
+        var groupSwap = function(){
+            grpPanel.hide();
+        };
+
+        var userSwap = function(){
+            userPanel.hide();
+        };
+
         userBtn.on('click', function(e){
             e.preventDefault();
-            userPanel.toggle();
-            userPanel.load('model/create/User', function(){
-            userClose = userPanel.find('.form-close');
-            userClose.on('click',function(e){
-                userPanel.toggle();
-              });
+            userPanel.toggle({
+            duration: '400',
+            easing: 'swing',
+            start: groupSwap
             });
         });
 
         grpBtn.on('click', function(e){
             e.preventDefault();
-            grpPanel.toggle();
-            grpPanel.load('model/create/Group', function(){
-             groupClose = grpPanel.find('.form-close');
-             groupClose.on('click', function(e){
-                grpPanel.toggle();
-             });
-            });
+                grpPanel.toggle({
+                        duration: '400',
+                        easing: 'swing',
+                        start: userSwap
+                        });
         });
 
         usrForm.submit(function(e){

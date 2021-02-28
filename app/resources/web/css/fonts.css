@@ -7,12 +7,7 @@
 /*
  * lora
 ================================================================================ */
-@font-face {
-    font-family: "lora-regular";
-    src: url("../fonts/lora/lora-regular-webfont.woff2") format("woff2"), url("../fonts/lora/lora-regular-webfont.woff") format("woff");
-    font-style: normal;
-    font-weight: normal;
-}
+
 
 @font-face {
     font-family: "lora-italic";
@@ -101,6 +96,42 @@
     font-style: normal;
     font-weight: normal;
 }
+
+@font-face {
+    font-family: "Barlow-Regular";
+    src: url("../fonts/barlow/Barlow-Regular-webfont.woff") format("woff"), url("../fonts/barlow/Barlow-Regular-webfont.woff") format("woff");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Barlow-Light";
+    src: url("../fonts/barlow/Barlow-Light-webfont.woff") format("woff"), url("../fonts/barlow/Barlow-Light-webfont.woff") format("woff");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Barlow-Thin";
+    src: url("../fonts/barlow/Barlow-Thin-webfont.woff") format("woff"), url("../fonts/barlow/Barlow-Thin-webfont.woff") format("woff");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Barlow-Bold";
+    src: url("../fonts/barlow/Barlow-SemiBold-webfont.woff") format("woff"), url("../fonts/barlow/Barlow-SemiBold-webfont.woff") format("woff");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Barlow-Italic";
+    src: url("../fonts/barlow/Barlow-Italic-webfont.woff") format("woff"), url("../fonts/barlow/Barlow-Italic-webfont.woff") format("woff");
+    font-style: normal;
+    font-weight: normal;
+}
+
 
 
 /*# sourceMappingURL=fonts.css.map */

@@ -853,50 +853,54 @@ textarea {
 /*------------------------
  FLOATING CONTEXT PANES
 -------------------------*/
-.context-wrapper{
+.banner{
  font-family: "montserrat-regular", sans-serif;
  position: absolute;
  width: 700px;
- top: 250px;
+ top: 50px;
  left: 300px;
  padding:20px;
- background-color:rgba(245,242,240,1.0);
- display:none;
-
+ background: #111111;
+ text-color: #ffffff;
+ display: none;
 }
 
 
+.inline-context-wrapper{
+   display: none;
+   width:1024px;
+   background-color: rgb(33,33,33,0.4);
+   text-color: #ffffff;
+}
 
 
 .form-item{
-    display: block;
     font-size: 1.8em;
 }
 
 .form-label{
-    display:block;
     font-size: 0.8em;
-    font-style: bold;
     margin:0 auto;
 }
 
 .form-item-label{
     display: inline;
-    font-style: bold;
-    font-size:0.8em;
+    font-size:0.5em;
     padding-right: 5px;
 }
 
 .form-item input{
     display: inline;
     font-size: 1.5em;
-     border: 1px 1px 1px 1px #111;;
+    color: #aaaaaa;
+     border: 2px 2px 2px 2px #111;
+     margin: 0;
 }
 
 .form-item textarea{
     display: inline;
     font-size: 0.8em;
-    border: 1px 1px 1px 1px #111;
+     border: 2px 2px 2px 2px #111;
 }
 
 .form-close:hover{
@@ -905,8 +909,8 @@ textarea {
 }
 
 .form-caption{
-   font-size:0.45em;
-   margin: 0 auto;
+   font-size: 0.7em;
+   width: 400px;
    text-align: center;
 }
 
@@ -914,18 +918,6 @@ textarea {
 DASHBOARD
 *================================= */
 
-.dashboard{
-padding: 15px;
-background: #cccccc;
-}
-
-
-.dash-panel{
- padding: 10px;
- margin: 0 auto;
- background: #aaaaaa;
- text-color: #333;
-}
 
 
 
