@@ -1,9 +1,7 @@
 package xyz.dbkit;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-import xyz.model.FileMap;
-
+import xyz.model.ModelIterator;
 import xyz.model.ModelKeys;
 import xyz.model.ModelObject;
 
@@ -68,7 +66,7 @@ public class DBMain extends Thread implements DBManager{
         try {
             Files.delete(myPath);
             Nodes.remove(delNode.name);
-            this.interrupt();
+            
         }catch(IOException e) {
             return false;
         }
@@ -85,14 +83,14 @@ public class DBMain extends Thread implements DBManager{
     @Override
     public ModelObject AddModel(DBNode node, ModelObject m) {
         node.rootGraph.addModel(m);
-        this.interrupt();
+        
         node.hasChanged = true;
         return m;
     }
 
     @Override
     public ModelObject UpdateModel(DBNode node, ModelObject m) {
-        this.interrupt();
+        
         node.hasChanged = true;
         return m;
     }
@@ -104,20 +102,16 @@ public class DBMain extends Thread implements DBManager{
         ArrayList<ModelObject> myMatches = new ArrayList<>();
         JSONObject Models = model.getModels(ClassName);
         if(Models == null){
-            for(String modelName : ModelKeys.ModelKeys()) { //Search internal models
-                JSONObject InternalModels = model.getModels(modelName);
-                if (InternalModels != null) {
-                    for(String uid : InternalModels.keySet()){
-                        ModelObject thisObj = (ModelObject)InternalModels.get(uid);
-                        ArrayList<ModelObject> internalMatches = findExact(thisObj, ClassName, PropertyKeyValues);
-                        myMatches.addAll(internalMatches);
-                    }
-                }
-            }
+          ModelIterator mIter = new ModelIterator(model);
+          while(mIter.hasNext()){
+              ModelObject thisModel = mIter.next();
+              ArrayList<ModelObject> myArray = findExact(thisModel,ClassName,PropertyKeyValues);
+              myMatches.addAll(myArray);
+          }
         }
         else {
             for (String uid : Models.keySet()) {
-                ModelObject thisModel = (ModelObject)Models.get(uid);
+                ModelObject thisModel = ModelObject.GetModelObj(Models, uid);
                 boolean matches = true;
                 for(String prop : PropertyKeyValues.keySet()){
                     String value = (String)thisModel.get(prop);
@@ -128,7 +122,7 @@ public class DBMain extends Thread implements DBManager{
                 if (matches){ myMatches.add(thisModel);}
             }
         }
-        this.interrupt();
+        
         return myMatches;
     }
 
@@ -143,20 +137,16 @@ public class DBMain extends Thread implements DBManager{
 
         JSONObject Models = model.getModels(ClassName);
         if(Models == null){
-            for(String modelName : ModelKeys.ModelKeys()) { //Search internal models
-                JSONObject InternalModels = model.getModels(modelName);
-                if (InternalModels != null) {
-                    for(String uid : InternalModels.keySet()){
-                        ModelObject thisObj = (ModelObject)InternalModels.get(uid);
-                        ArrayList<ModelObject> internalMatches = findSome(thisObj, ClassName, PropertyKeyValues);
-                        myMatches.addAll(internalMatches);
-                    }
-                }
+            ModelIterator mIter = new ModelIterator(model);
+            while(mIter.hasNext()){
+                ModelObject thisModel = mIter.next();
+                ArrayList<ModelObject> myArray = findSome(thisModel,ClassName,PropertyKeyValues);
+                myMatches.addAll(myArray);
             }
         }
         else {
             for (String uid : Models.keySet()) {
-                ModelObject thisModel = (ModelObject)Models.get(uid);
+                ModelObject thisModel = ModelObject.GetModelObj(Models, uid);
                 boolean matches = false;
                 for(String prop : PropertyKeyValues.keySet()){
                     String value = (String)thisModel.get(prop);
@@ -167,7 +157,7 @@ public class DBMain extends Thread implements DBManager{
                 if (matches){ myMatches.add(thisModel);}
             }
         }
-        this.interrupt();
+        
         return myMatches;
     }
 
@@ -182,22 +172,18 @@ public class DBMain extends Thread implements DBManager{
 
         JSONObject Models = model.getModels(ClassName);
         if(Models == null){
-            for(String modelName : ModelKeys.ModelKeys()) { //Search internal models
-                JSONObject InternalModels = model.getModels(modelName);
-                if (InternalModels != null) {
-                    for(String uid : InternalModels.keySet()){
-                        ModelObject thisObj = (ModelObject)InternalModels.get(uid);
-                        ArrayList<ModelObject> internalMatches = findSimilar(thisObj, ClassName, property, value);
-                        myMatches.addAll(internalMatches);
-                    }
-                }
+            ModelIterator mIter = new ModelIterator(model);
+            while(mIter.hasNext()){
+                ModelObject thisModel = mIter.next();
+                ArrayList<ModelObject> myArray = findSimilar(thisModel,ClassName,property, value);
+                myMatches.addAll(myArray);
             }
         }
         else {
             for (String uid : Models.keySet()) {
-                ModelObject thisModel = (ModelObject)Models.get(uid);
+                ModelObject thisModel = ModelObject.GetModelObj(Models, uid);
                 String prop = (String)thisModel.get(property);
-                if(prop.compareTo(value) <= 5){
+                if(DBUtils.similarity(prop,value) > 0.8){ //Levenshtein
                     myMatches.add(thisModel);
                 }
             }
@@ -212,36 +198,19 @@ public class DBMain extends Thread implements DBManager{
 
     @Override
     public ModelObject findKey(ModelObject model, String ClassName, String key) {
-        ModelObject findModel;
-        try {
-             return model.getModel(ClassName, key);
-        }catch(JSONException e){
-            //Keep Searching
+        ModelObject findModel = ModelObject.GetModelObj(model, key);
+        if(findModel != null) {
+           return findModel;
         }
+        findModel = model.getModel(ClassName, key);
 
-
-        JSONObject myMap =  model.getModels(ClassName);
-
-        if(myMap != null){
-            findModel = (ModelObject)myMap.get(key);
-            if(findModel != null){
-                this.interrupt();
-                return findModel;
-            }
-        }
-
-
-        for(String modelName : ModelKeys.ModelKeys()) { //Search internal models
-            myMap = model.getModels(modelName);
-            if (myMap != null) {
-                for(String uid : myMap.keySet()){
-                    ModelObject thisObj = (ModelObject)myMap.get(uid);
-                    findModel = findKey(thisObj, ClassName, key);
-                    if(findModel != null){
-                        this.interrupt();
-                        return findModel;
-                    }
-                }
+        if(findModel != null){
+            return findModel;
+        } else{
+            ModelIterator mIter = new ModelIterator(model); //New Iterator Method
+            while(mIter.hasNext()){
+                ModelObject currModel = mIter.next();
+                return findKey(currModel,ClassName, key);
             }
         }
         return null;
@@ -249,7 +218,6 @@ public class DBMain extends Thread implements DBManager{
 
     @Override
     public ModelObject findKey(DBNode node, String ClassName, String key) {
-        this.interrupt();
         return findKey(node.rootGraph, ClassName, key);
     }
 
@@ -258,40 +226,21 @@ public class DBMain extends Thread implements DBManager{
 
         JSONObject Models = model.getModels(ClassName);
         if(Models == null){
-            for(String modelName : ModelKeys.ModelKeys()) { //Search internal models
-                JSONObject InternalModels = model.getModels(modelName);
-                if (InternalModels != null) {
-                    for(String uid : InternalModels.keySet()){
-                        ModelObject thisObj = (ModelObject)InternalModels.get(uid);
-                        ArrayList<ModelObject> internalMatches = findStartsWith(thisObj, ClassName, value);
-                        myMatches.addAll(internalMatches);
-                    }
-                }
+            ModelIterator mIter = new ModelIterator(model);
+            while(mIter.hasNext()){
+                ModelObject thisModel = mIter.next();
+                ArrayList<ModelObject> myArray = findStartsWith(thisModel,ClassName, value);
+                myMatches.addAll(myArray);
             }
         }
         else {
-            try {
                 for (String uid : Models.keySet()) {
-                    ModelObject thisModel = (ModelObject) Models.get(uid);
+                    ModelObject thisModel = ModelObject.GetModelObj(Models, uid);
                     String key = thisModel.getUID();
                     if (key.startsWith(value)) {
                         myMatches.add(thisModel);
                     }
                 }
-            }catch(JSONException | ClassCastException e){
-
-                    for (String uid : Models.keySet()) {
-                        JSONObject thisModel = (JSONObject)Models.get(uid);
-                        ModelObject modelCopy = new ModelObject(thisModel.toString());
-                        String key = uid;
-                        if (key.startsWith(value)) {
-                            myMatches.add(modelCopy);
-                        }
-                    }
-
-                System.out.println("DB Query Error[findStartsWith]: associated key object couldn't be converted");
-                System.out.println(e.toString());
-            }
         }
         return myMatches;
     }
@@ -304,26 +253,22 @@ public class DBMain extends Thread implements DBManager{
         ArrayList<ModelObject> myMatches = new ArrayList<>();
 
         JSONObject Models = model.getModels(ClassName);
-        if(Models == null){
-            for(String modelName : ModelKeys.ModelKeys()) { //Search internal models
-                JSONObject InternalModels = model.getModels(modelName);
-                if (InternalModels != null) {
-                    for(String uid : InternalModels.keySet()){
-                        ModelObject thisObj = (ModelObject)InternalModels.get(uid);
-                        ArrayList<ModelObject> internalMatches = propStartsWith(thisObj, ClassName, property, value);
-                        myMatches.addAll(internalMatches);
+        if (Models == null) {
+            ModelIterator mIter = new ModelIterator(model);
+            while(mIter.hasNext()){
+                ModelObject thisModel = mIter.next();
+                ArrayList<ModelObject> myArray = propStartsWith(thisModel,ClassName, property,value);
+                myMatches.addAll(myArray);
+            }
+        } else {
+
+                for (String uid : Models.keySet()) {
+                    ModelObject thisModel = ModelObject.GetModelObj(Models, uid);
+                    String key = (String)thisModel.get(property);
+                    if (key.startsWith(value)) {
+                        myMatches.add(thisModel);
                     }
                 }
-            }
-        }
-        else {
-            for (String uid : Models.keySet()) {
-                ModelObject thisModel = (ModelObject)Models.get(uid);
-                String prop = (String)thisModel.get(property);
-                if(prop.startsWith(value)){
-                    myMatches.add(thisModel);
-                }
-            }
         }
         return myMatches;
     }
@@ -345,20 +290,19 @@ public class DBMain extends Thread implements DBManager{
         if(myMap != null){
             ModelObject mObj = (ModelObject)myMap.remove(key);
             if(mObj != null){
-                this.interrupt();
+                
                 return true;
             }
         }
-
 
         for(String modelName : ModelKeys.ModelKeys()) { //Search internal models
             myMap = model.getModels(modelName);
             if (myMap != null) {
                 for(String uid : myMap.keySet()){
-                    ModelObject thisObj = (ModelObject)myMap.get(uid);
-                    removed = deleteKey(thisObj, ClassName, key);
+                    ModelObject thisModel = ModelObject.GetModelObj(myMap, uid);
+                    removed = deleteKey(thisModel, ClassName, key);
                     if(removed){
-                        this.interrupt();
+                        
                         return true;
                     }
                 }
@@ -412,6 +356,10 @@ public class DBMain extends Thread implements DBManager{
 
     }
 
+    public void RunSync(){
+        this.interrupt();
+    }
+
 
 
     @Override
@@ -435,6 +383,6 @@ public class DBMain extends Thread implements DBManager{
     @Override
     public void Exit() {
         ExitCondition = true;
-        this.interrupt();
+        
     }
 }

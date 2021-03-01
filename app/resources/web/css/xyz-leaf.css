@@ -48,31 +48,19 @@ Light UI/UX
 /* CSS HEX */
 
 :root{
---flickr-pink: #f72585;
---byzantine: #b5179eff;
---purple: #7209b7;
---purple-2: #560bad;
---trypan-blue: #480ca8;
---trypan-blue-2: #3a0ca3;
---persian-blue: #3f37c9;
---ultramarine-blue: #4361ee;
---dodger-blue: #4895ef;
---vivid-sky-blue: #4cc9f0;
---off-white: #f8fafc;
---light-text: #a5a5a5;
+--charcoal: #131313;
+--midnight: #0d2238;
+--fog: #f2f5fa;
+--sky: #e5f8fc;
+--light-olive: #eff8f1;
+--lavender: #f2edfd;
+--denim: #e2e9f5
+--gray: #e8ecf3;
+--light-text: #a3a3a3;
+--light-alt: #9faab6;
 --heavy-text: #282828;
 --dark: #000000;
 
-/* SCSS Gradient */
-$gradient-top: linear-gradient(0deg, #f72585ff, #b5179eff, #7209b7ff, #560badff, #480ca8ff, #3a0ca3ff, #3f37c9ff, #4361eeff, #4895efff, #4cc9f0ff);
-$gradient-right: linear-gradient(90deg, #f72585ff, #b5179eff, #7209b7ff, #560badff, #480ca8ff, #3a0ca3ff, #3f37c9ff, #4361eeff, #4895efff, #4cc9f0ff);
-$gradient-bottom: linear-gradient(180deg, #f72585ff, #b5179eff, #7209b7ff, #560badff, #480ca8ff, #3a0ca3ff, #3f37c9ff, #4361eeff, #4895efff, #4cc9f0ff);
-$gradient-left: linear-gradient(270deg, #f72585ff, #b5179eff, #7209b7ff, #560badff, #480ca8ff, #3a0ca3ff, #3f37c9ff, #4361eeff, #4895efff, #4cc9f0ff);
-$gradient-top-right: linear-gradient(45deg, #f72585ff, #b5179eff, #7209b7ff, #560badff, #480ca8ff, #3a0ca3ff, #3f37c9ff, #4361eeff, #4895efff, #4cc9f0ff);
-$gradient-bottom-right: linear-gradient(135deg, #f72585ff, #b5179eff, #7209b7ff, #560badff, #480ca8ff, #3a0ca3ff, #3f37c9ff, #4361eeff, #4895efff, #4cc9f0ff);
-$gradient-top-left: linear-gradient(225deg, #f72585ff, #b5179eff, #7209b7ff, #560badff, #480ca8ff, #3a0ca3ff, #3f37c9ff, #4361eeff, #4895efff, #4cc9f0ff);
-$gradient-bottom-left: linear-gradient(315deg, #f72585ff, #b5179eff, #7209b7ff, #560badff, #480ca8ff, #3a0ca3ff, #3f37c9ff, #4361eeff, #4895efff, #4cc9f0ff);
-$gradient-radial: radial-gradient(#f72585ff, #b5179eff, #7209b7ff, #560badff, #480ca8ff, #3a0ca3ff, #3f37c9ff, #4361eeff, #4895efff, #4cc9f0ff);
 }
 /* ===================================================================
  * HTML Tag Body Colors and Themes
@@ -86,7 +74,7 @@ $gradient-radial: radial-gradient(#f72585ff, #b5179eff, #7209b7ff, #560badff, #4
 
  body{
     font-family: "Barlow-Regular";
-    background-color: var(--off-white);
+    background-color: var(--fog);
     color: #555555;
     font-size:2.0em;
  }
@@ -114,7 +102,7 @@ $gradient-radial: radial-gradient(#f72585ff, #b5179eff, #7209b7ff, #560badff, #4
 
  h5{
  font-family: "Barlow-Bold", sans-serif;
- color: var(--purple-2)
+ color: var(--charcoal)
  padding: 1.5em;
  font-size: 1.5em;
  }
@@ -149,7 +137,7 @@ $gradient-radial: radial-gradient(#f72585ff, #b5179eff, #7209b7ff, #560badff, #4
  }
 
  a:active{
-   color: var(--purple-2);
+   color: var(--charcoal);
  }
 
  ol, ul{
@@ -177,7 +165,7 @@ $gradient-radial: radial-gradient(#f72585ff, #b5179eff, #7209b7ff, #560badff, #4
 
  .s-header h1{
     font-size: 1.4em;
-    color: var(--purple-2)
+    color: var(--charcoal)
     margin-right: 1.2em;
  }
 
@@ -230,11 +218,11 @@ $gradient-radial: radial-gradient(#f72585ff, #b5179eff, #7209b7ff, #560badff, #4
     }
 
   .header-element a:hover{
-    color: var(--purple);
+    color: var(--midnight);
   }
 
   .header-element a:hover{
-    color: var(--purple-2);
+    color: var(--charcoal);
   }
 
   /*
@@ -255,7 +243,7 @@ $gradient-radial: radial-gradient(#f72585ff, #b5179eff, #7209b7ff, #560badff, #4
 
   .notify {
     display: relative;
-    background: var(--purple-2);
+    background: var(--charcoal);
     width: 5px;
     height: 5px;
     border-radius: 50%;
@@ -612,7 +600,7 @@ footer .row {
     width: 60px;
     line-height: 60px;
     text-align: center;
-    background: var(--purple-2);
+    background: var(--charcoal);
     color: rgba(255, 255, 255, 0.5);
     text-align: center;
     text-transform: uppercase;

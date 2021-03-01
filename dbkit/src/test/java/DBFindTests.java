@@ -44,8 +44,11 @@ public class DBFindTests {
     public void FindModelID(){
        DBNode Sites = mDatabase.GetNode("Sites");
        Template header =(Template) mDatabase.findKey(Sites,"Template", "Light-UI-Header");
-
-       assertEquals(0, header.getUID().compareTo(headerUID));
+        if(header != null) {
+            assertEquals(0, header.getUID().compareTo(headerUID));
+        }else{
+            assertNotNull(header);
+        }
        System.out.println("Light UI Header Found in site");
 
     }

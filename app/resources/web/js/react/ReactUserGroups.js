@@ -4,7 +4,7 @@ class UsersSearch extends React.Component {
     this.state = {
       error: null,
       isLoaded: false,
-      users: [],
+      users: {},
       searchName: ""
     };
     this.onUserSearch = this.onUserSearch.bind(this);
@@ -14,7 +14,9 @@ class UsersSearch extends React.Component {
     this.setState( state => ({
         searchName: event.target.value
     }));
-    this.ajax();
+    if(this.state.searchName != ""){
+        this.ajax();
+     }
   }
 
   ajax(){
@@ -24,12 +26,9 @@ class UsersSearch extends React.Component {
           (result) => {
             this.setState({
               isLoaded: true,
-              users: result.users
+              users: JSON.parse(result)
             });
           },
-          // Note: it's important to handle errors here
-          // instead of a catch() block so that we don't swallow
-          // exceptions from actual bugs in components.
           (error) => {
             this.setState({
               isLoaded: true,
@@ -65,7 +64,7 @@ class UsersSearch extends React.Component {
           </div>
            ))} </div> );}
            else{
-           return <div><div className="row">Search Users: <input type="text" maxLength="45" onInput={this.onUserSearch}/></div><div>No users found: {users}</div></div>;
+           return <div><div className="row">Search Users: <input type="text" maxLength="45" onInput={this.onUserSearch}/></div></div>;
            }
         }
       }
