@@ -54,13 +54,23 @@ Light UI/UX
 --sky: #e5f8fc;
 --light-olive: #eff8f1;
 --lavender: #f2edfd;
---denim: #e2e9f5
+--denim: #e2e9f5;
 --gray: #e8ecf3;
 --light-text: #a3a3a3;
 --light-alt: #9faab6;
+--feather: #d3d3d3;
 --heavy-text: #282828;
 --dark: #000000;
 
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 /* ===================================================================
  * HTML Tag Body Colors and Themes
@@ -133,7 +143,9 @@ Light UI/UX
  }
 
  a:hover{
-  color: var(--persian-blue);
+  color: var(--midnight);
+  animation: fadeIn;
+  animation-duration: 1s;
  }
 
  a:active{
@@ -157,9 +169,10 @@ Light UI/UX
  }
 
  .s-header{
-    width:100%;
-    height: 100px;
-    background: white;
+    display: inline-block;
+    vertical-align: top;
+    width:79%;
+    background: transparent;
     padding: 30px;
  }
 
@@ -176,27 +189,59 @@ Light UI/UX
 
  .header-element{
     display: inline;
-    padding: 20px;
+    float: left;
+    padding: 0 12px;
+    height: 60px;
+    color: var(--charcoal);
+    vertical-align: center;
+    font-size: 0.7em;
  }
 
 
- .header-logo{
-     display: inline-block;
-     position: relative;
-       top: -50px;
-       padding: 0;
-       outline: 0;
-       border: none;
-       width: 250px;
-       height: 155px;
-       background: url("../images/logo-dark.png") no-repeat center;
-       font: 0/0 a;
-       text-shadow: none;
-       color: transparent;
-       -webkit-transition: all 0.3s ease-in-out;
-       transition: all 0.3s ease-in-out;
-       vertical-align: top;
-  }
+
+
+ .search:hover{
+   background: white;
+   color: var(--heavy-text);
+   width: 200px;
+   animation: fadeIn;
+   animation-duration: 1s;
+
+ }
+
+ .vertical-center{
+  position: relative;
+  top: 25%;
+ }
+
+ .header-block{
+    background: white;
+    border-radius: 10px;
+    height:50px;
+    padding: 10px;
+ }
+
+.header-block:hover{
+     background: var(--midnight);
+     color: white;
+     animation: fadeIn;
+     animation-duration: 0.5s;
+}
+
+ .context-white{
+  background: white;
+  color: var(--charcoal);
+ }
+
+ .context-blue{
+  background: var(--denim);
+  color: var(--midnight);
+ }
+
+ .context-transparent{
+ background:transparent;
+ }
+
 
   .header-elements{
    display: inline;
@@ -206,20 +251,18 @@ Light UI/UX
    color: var(--light-text);
   }
 
-  .header-element{
-    display: inline;
+  .header-right-elements{
+    display: flex;
+    padding:10px;
+    height: 60px;
+    vertical-align: top;
     float: right;
     color: var(--light-text);
+    align-items: flex-start;
+    justify-content: flex-end;
+    flow-flow: row-reverse no-wrap;
   }
 
-    .header-element a{
-      font-family: "FontAwesome";
-      color: var(--light-text);
-    }
-
-  .header-element a:hover{
-    color: var(--midnight);
-  }
 
   .header-element a:hover{
     color: var(--charcoal);
@@ -250,8 +293,8 @@ Light UI/UX
     position: relative;
     top: 5%;
     left: 95%;
-    @include transform(translate(-50%, -50%));
-    @include animation(heartbeat 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) 1s infinite);
+    animation: heartbeat;
+    animation-duration: 0.25s;
   }
 
   /***************************************
@@ -269,7 +312,6 @@ Light UI/UX
     background: white;
     color: var(--light-text);
     font-size: 0.8em;
-    margin-top: 20px;
     width: 20%;
     height: 100%;
     overflow-x: hidden;
@@ -277,11 +319,49 @@ Light UI/UX
     z-index: 1;
 }
 
+.vnav-light a{
+ padding: 5px;
+ margin: 0 auto;
+}
+
+.vnav-light .fa{
+font-family: "FontAwesome";
+font-size: 1.2em;
+padding: 0 20px 0 20px;
+}
+
+.vnav-light .label{
+font-family: "Barlow-Bold", sans-serif;
+color: var(--midnight);
+}
+
+
+.vnav-header{
+    font-family: "Barlow-Bold", sans-serif;
+    margin: 20px auto 20px auto;
+    padding: 20px;
+    border-radius: 5px;
+    color: var(--feather);
+    background: var(--charcoal);
+    font-size: 2.3em;
+    text-align: center;
+
+}
+
+.vnav-header:hover{
+    color: white
+    background-color: var(--charcoal);
+    animation: fadeIn;
+    animation-duration: 1s;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
 .vnav-section{
     display:block;
     padding: 20px 15px 20px 15px;
     margin-top: 10px;
-    border-top: 1px solid var(--light-text);
+    border-top: 1px solid var(--feather);
 }
 
 .vnav-section:first-child{
@@ -290,20 +370,36 @@ Light UI/UX
 
 .vnav-section ul{
     display: block;
-    padding: 14px;
     list-style:none;
 }
 
 .vnav-section ul li{
     display: block;
-    padding: 14px;
-    margin: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
     list-style:none;
 }
 
+
+
+.vnav-section ul li:hover{
+    background: var(--midnight);
+    color: white;
+    cursor: pointer;
+    animation: fadeIn;
+    animation-duration: 1s;
+}
+
+
 .vnav-label{
     font-family: "Barlow-Light", sans-serif;
-    color: var(--persian-blue);
+    color: var(--charcoal);
+}
+
+.caption{
+color: var(--light-text);
+font-size: 0.7em;
 }
 
 /*******************
@@ -313,29 +409,74 @@ Light UI/UX
 .dash{
     display: inline-block;
     vertical-align: top;
-    width: 70%;
-    top: 0;
-}
-
-.dash-header{
-    display: block;
     width: 100%;
-}
-
-.dash-lefth{
-   width:75%;
-}
-.dash-righth{
-    float: right;
+    font-size: 0.9em;
 }
 
 .dash-section{
     display:block;
+    padding: 20px 0;
 }
 
-.dash-element{
+.dash h3{
+ color: var(--charcoal);
+ margin: 10px 0;
+ font-size: 0.9em;
+}
+
+.dash form{
+ font-size: 0.9em;
+ padding: 20px 0;
+ margin: 10px 0;
+}
+
+.dash ul{
+list-style: none;
+display: block;
+}
+
+.dash li{
+list-style: none;
+display: block;
+padding: 10px;
+margin: 10px 0;
+border-radius: 5px;
+font-size: 0.8em;
+font-family: "Barlow-Bold", sans-serif;
+color: var(--midnight);
+}
+
+.dash li:first-child{
+ background: var(--light-olive);
+}
+
+.dash li:hover{
+ background: var(--sky);
+ cursor: pointer;
+ animation: fadeIn;
+ animation-duration: 1.0s;
+}
+
+.dash input{
+border: none;
+width: 100%;
+margin: 10px 0;
+font-size: 0.7em;
+padding: 5px;
+background: #FAFAFA;
+color: var(--light-text);
+}
+
+.dash input:focus{
+color: var(--heavy-text);
+}
+
+.dash-element-3{
   background: white;
-  padding: 20px;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 3px;
+  width: 28%;
 }
 
 /* ===================================================================
@@ -521,15 +662,16 @@ Light UI/UX
  * ------------------------------------------------------------------- */
 footer {
     padding: 9rem 0 6rem;
-    font-family: "Gill Sans", sans;
+    font-family: "Barlow-Light", sans-serif;
     font-size: 15px;
     line-height: 2;
     text-align: center;
-    color: #
+    background: var(--charcoal);
+    color: #fff;
 }
 
 footer h4 {
-    color: #282828;
+    color: #fff;
     font-size: 1.6rem;
     line-height: 1.313;
     margin-top: 0;
@@ -537,15 +679,15 @@ footer h4 {
 }
 
 footer a {
-    color: #FFFFFF;
+    color: var(--sky);
 }
 
 footer a:hover, footer a:focus, footer a:active {
-    color: #39b54a;
+    color: var(--lavender);
 }
 
 footer .row {
-    max-width: 980px;
+    width: 100%;
 }
 
 
@@ -553,31 +695,31 @@ footer .row {
  * ## footer main
  * --------------------------------------------------------------- */
 .footer-main {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    flow-flow: row-reverse no-wrap;
     text-align: left;
+    font-size: 0.7em;
+    height: 200px;
 }
 
-.footer-main .left {
-    padding-right: 40px;
+.footer-element-wide{
+  display: inline-block;
+  width: 40%;
+  padding: 20px;
 }
 
-.footer-main .right {
-    padding-left: 40px;
+.footer-element-narrow{
+  display: inline-block;
+  width: 20%;
+   padding: 20px;
 }
 
-.footer-logo {
-    display: block;
-    margin: -.6rem 0 3.6rem 0;
-    padding: 0;
-    outline: 0;
-    border: none;
-    width: 250px;
-    height: 155px;
-    background: url("../images/logo-dark.png") no-repeat center;
-    font: 0/0 a;
-    text-shadow: none;
-    color: transparent;
-    -webkit-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
+.big-text{
+  margin: 0 auto;
+ font-family: "Barlow-Bold", sans-serif;
+ font-size: 6.0em;
 }
 
 

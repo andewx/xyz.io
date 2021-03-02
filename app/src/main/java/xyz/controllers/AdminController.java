@@ -18,8 +18,8 @@ public class AdminController extends BaseController{
         templatizer.AddKey("dashcontent",dashView.GetHtml());
         StringBuilder htmlResponse = new StringBuilder();
         templatizer.GetTemplate("templates/dashboard.html");
-        templatizer.AddKey("title", "admin dashboard");
-        templatizer.AddKey("dashTitle", "Admin Dashboard");
+        templatizer.AddKey("title", "Good Morning, Brian");
+        templatizer.AddKey("dashTitle", "Good Morning, Brian");
         templatizer.ReplaceKeys();
         htmlResponse.append(templatizer.GetHtml());
 

@@ -36,70 +36,58 @@
 
 <div class="body-container">
 <div class="vnav-light">
-    <div class="vnav-section"><div class="vnav-label"></div>
+    <div class="vnav-header">xyz<span style="color: var(--sky)">.io</span></div>
+    <div class="vnav-section"><div class="vnav-label">Application</div>
     <ul>
-        <li><a href="#" class="fa-barcode">Routes</a></li>
-        <li><a href="#" class="fa-globe">Sites</a></li>
-        <li><a href="#" class="fa-paint">Themes</a></li>
+        <li><span class="fa-road fa " ></span><span class="link">Routes</span></li>
+        <li><span class="fa-globe fa" ></span><span class="link">Sites</span></li>
+        <li><span class="fa-book fa" ></span><span class="link">Themes</span></li>
 
     </ul>
     </div>
-    <div class="vnav-section"><div class="vnav-label"></div>
+    <div class="vnav-section"><div class="vnav-label">Framework</div>
         <ul>
-            <li><a href="" class="fa-lock"></a>Security</li>
-            <li><a href="" class="fa-folder">Documents</a></li>
-            <li><a href="" class="fa-flask">Database</a></li>
-            <li><a href="#" class="fa-gear">Config</a></li>
+            <li><span class="fa-lock fa" ></span><span class="link">Security</span></li>
+            <li><span class="fa-folder fa" ></span><span class="link">Documents</span></li>
+            <li><span class="fa-flask fa" ></span><span class="link">Database</span></li>
+            <li><span class="fa-gear fa" ></span><span class="link">System</span></li>
+            <li><span class="fa-user fa" ></span><span class="link">Users</span></li>
         </ul>
     </div>
 </div>
     <section class="s-header">
-        <div class="header-logo"><a href='#'>xyz</a></div>
-        <div class="header-elements">
-            <div class="header-element"><a class="fa-gear" href=""></a></div>
-            <div class="header-element"><a class="fa-user" href=""></a></div>
-            <div class="header-element"><a class="fa-home" href="/"></a></div>
-            <div class="header-element"><a class="fa-bell" href=""></a><div class="notify"></div></div>
+
+        <div class="header-right-elements">
+            <div class="header-element"><div class="header-block search"><div class="fa-search fa vertical-center"></div></div></div>
+            <div class="header-element"><div class="header-block context-blue"><div class="vertical-center">BA<div class="notify"></div></div></div></div>
+            <div class="header-element"><div class="header-block context-white"><div class="vertical-center"><div class="fa-inbox fa"></div></div></div></div>
+            <div class="header-element"><div class="header-block context-transparent"><h3>Brian Anderson</h3>brian.michael.anderson@gmail.com<div class="fa-caret-down fa"></div></div></div>
         </div>
+
+        <div class="dash">
+            <div class="dash-header">
+                <div class="dash-lefth"><h2> @:dashTitle </h2><div class="caption">Here's what's going on with your sites</div></div>
+            </div>
+
+            @:dashcontent
+
+        </div>
+
     </section>
-
-<div class="dash">
-    <div class="dash-header">
-        <div class="dash-lefth"><h1> @:dashTitle </h1></div>
-        <div class="dash-righth"><span>View</span><span>Site Toggle Element</span></div>
-    </div>
- <div class="dash-section row">
-    @:dashcontent
- </div>
-
-</div>
 </div>
 
 <footer>
 
-    <div class='row footer-main'>
+    <div class='footer-main'>
+        <div class="footer-element-wide">
+            <h4>About</h4><p>This project was developed for a Software Engineering Capstone course at the University of Illinois - Springfield. Software is licensed under the GNU GPL 3.0 for general use and the application may be developed and used freely.</p></div>
 
-        <div class='col-six tab-full left footer-desc'>
-
-            <div class='footer-logo'></div>
-            This project was developed for a Software Engineering Capstone course at the University of Illinois - Springfield. Software is licensed under the GNU GPL 3.0 for general use and the application may be developed and used freely.
-
-        </div>
-
-        <div class='col-six tab-full right footer-subscribe'>
-
-            <h4>Get Notified</h4>
-            <p>This project will be maintained freely and open source at <a href='github.com/andewx/xyzio'>Github Andewx</a> If you wish to become a contributor please contact the owner at bande9@uis.edu</p>
-
-            <div class='subscribe-form'>
-                <form id='mc-form' class='group' novalidate='true'>
-                    <input type='email' value='' name='EMAIL' class='email' id='mc-email' placeholder='Email Address' required=''>
-                    <input type='submit' name='subscribe' value='Subscribe'>
-                    <label for='mc-email' class='subscribe-message'></label>
-                </form>
-            </div>
-
-        </div>
+    <div class="footer-element-narrow">
+    <h4>Get Notified</h4><p>This project will be maintained freely and open source at <a href='github.com/andewx/xyzio'>Github Andewx</a> If you wish to become a contributor please contact the owner at bande9@uis.edu</p>
+    </div>
+    <div class="footer-element-wide">
+        <div class="big-text">XYZ.IO</div>
+    </div>
 
     </div> <!-- end footer-main -->
 
@@ -107,7 +95,7 @@
 
         <div class='col-twelve'>
             <div class='copyright'>
-                <span>© Copyright None 2021</span>
+                <span>Copyright None 2021</span>
                 <span>xyz.io</a></span>
             </div>
 
