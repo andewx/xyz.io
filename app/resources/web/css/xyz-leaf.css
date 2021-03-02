@@ -342,15 +342,15 @@ color: var(--midnight);
     padding: 20px;
     border-radius: 5px;
     color: var(--feather);
-    background: var(--charcoal);
+    background: var(--midnight);
     font-size: 2.3em;
     text-align: center;
 
 }
 
 .vnav-header:hover{
-    color: white
-    background-color: var(--charcoal);
+    color: var(--midnight);
+    background-color: white;
     animation: fadeIn;
     animation-duration: 1s;
     cursor: pointer;
