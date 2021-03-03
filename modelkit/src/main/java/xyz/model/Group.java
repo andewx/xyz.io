@@ -29,6 +29,29 @@ public class Group extends ModelObject {
 
     }
 
+    public Group(JSONObject jObj){
+
+        for(String key : jObj.keySet()){
+            put(key, jObj.getString(key));
+            if(key.equals("UID")){
+                UID = jObj.getString(key);
+            }
+            if(key.equals("ClassName")){
+                ClassName = jObj.getString(key);
+            }
+            if(key.equals("Name")){
+                Name = jObj.getString(key);
+            }
+            if(key.equals("AccessDescription")){
+                AccessDescription = jObj.getString(key);
+            }
+            if(key.equals("AccessLevel")){
+                AccessLevel= Integer.valueOf(jObj.getString(key));
+            }
+        }
+
+    }
+
     public Group(String json){
         super(json);
         GroupID = (String)get("GroupID");
@@ -40,27 +63,6 @@ public class Group extends ModelObject {
         put("AccessLevel", AccessLevel);
     }
 
-    public Group(JSONObject jObj){
-        super(jObj);
-
-        try { //Assumes jObj is a ModelObject internally
-            GroupID = (String)jObj.get("GroupID");
-            AccessDescription = (String)jObj.get("AccessDescription");
-            Integer tempInt = (Integer)jObj.get("AccessLevel");
-            AccessLevel = tempInt.intValue();
-            put("GroupID", GroupID);
-            put("AccessDescription", AccessDescription);
-            put("AccessLevel", AccessLevel);
-
-        }catch(JSONException e){
-            for (String key : jObj.keySet()){
-                JSONObject jModel = (JSONObject)jObj.get(key);
-                ModelObject mModel = new ModelObject(jModel);
-                addModel(mModel);
-            }
-        }
-
-    }
 
     @Override
     public String Form(){ //Too Coupled with HTML i.e. Forms need to know which classes to use.

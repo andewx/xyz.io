@@ -26,16 +26,12 @@ public class UserController extends BaseController{
         ModelObject thisModel;
         thisModel  = mDB.findKey(mDB.GetNode("Users"), "User", email);
         try {
-            userObj = (User) thisModel;
+            userObj = new User(thisModel);
         } catch(JSONException | ClassCastException e){
-            try {
-                userObj = new User(thisModel);
-            }catch(JSONException d){
                 System.out.println("Error: User Object Format Invalid");
                 System.out.println(thisModel.toString(3));
                 ctx.status(201);
                 return;
-            }
         }
 
         //Generate SHA256 Secure Hash

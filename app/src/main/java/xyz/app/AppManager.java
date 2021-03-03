@@ -37,7 +37,7 @@ public class AppManager {
        DBNode grpNode = mDB.GetNode("Groups");
        User userObj = (User)mDB.findKey(userNode, "User", email);
        if(userObj != null) {
-           Group grpObj = (Group) mDB.findKey(grpNode, "Group", userObj.getGroupID());
+           Group grpObj = new Group(mDB.findKey(grpNode, "Group", userObj.getGroupID()));
            Integer access = grpObj.GetAccessLevel();
            return mSessions.AddSession(userObj.getEmail(), access); //return GUID
        }
