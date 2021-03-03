@@ -60,6 +60,27 @@ public class User extends ModelObject{
         put("GroupID", GroupID);
         put("Password", Password);
         put("LoginLast", LoginLast);
+        put("Name", Name);
+    }
+
+    public User(ModelObject mObj)throws JSONException{
+        super(mObj);
+
+        Email = mObj.GetString("Email");
+        Password = mObj.GetString("Password");
+        GroupID = mObj.GetString("GroupID");
+        FirstName = mObj.GetString("FirstName");
+        LastName = mObj.GetString("LastName");
+        LoginLast = mObj.GetString("LoginLast");
+
+
+        put("Email", Email);
+        put("FirstName", FirstName);
+        put("LastName", LastName);
+        put("GroupID", GroupID);
+        put("Password", Password);
+        put("LoginLast", LoginLast);
+
     }
 
     public static String PasswordSHA(String pass){
@@ -70,27 +91,35 @@ public class User extends ModelObject{
     }
 
     public User(JSONObject jObj){
-        super(jObj);
 
-        try { //Assumes jObj is a ModelObject internally
-            Email = (String)jObj.get("Email");
-            Password = (String)jObj.get("Password");
-            GroupID = (String)jObj.get("GroupID");
-            FirstName = (String)jObj.get("FirstName");
-            LastName = (String)jObj.get("LastName");
-            LoginLast = (String)jObj.get("LoginLast");
-            put("Email", Email);
-            put("FirstName", FirstName);
-            put("LastName", LastName);
-            put("GroupID", GroupID);
-            put("Password", Password);
-            put("LoginLast", LoginLast);
-
-        }catch(JSONException e){
-            for (String key : jObj.keySet()){
-                JSONObject jModel = (JSONObject)jObj.get(key);
-                ModelObject mModel = new ModelObject(jModel);
-                addModel(mModel);
+        for(String key : jObj.keySet()){
+            put(key, jObj.getString(key));
+            if(key.equals("UID")){
+                UID = jObj.getString(key);
+            }
+            if(key.equals("ClassName")){
+                ClassName = jObj.getString(key);
+            }
+            if(key.equals("Name")){
+                Name = jObj.getString(key);
+            }
+            if(key.equals("Email")){
+                Email = jObj.getString(key);
+            }
+            if(key.equals("Password")){
+                Password = jObj.getString(key);
+            }
+            if(key.equals("GroupID")){
+                GroupID = jObj.getString(key);
+            }
+            if(key.equals("FirstName")){
+                FirstName = jObj.getString(key);
+            }
+            if(key.equals("LastName")){
+                LastName = jObj.getString(key);
+            }
+            if(key.equals("LoginLast")){
+                LoginLast = jObj.getString(key);
             }
         }
 

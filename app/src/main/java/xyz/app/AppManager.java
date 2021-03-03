@@ -14,11 +14,21 @@ public class AppManager {
    private Sessions mSessions;
    private DBMain mDB;
    private RouteManager mRouteManager;
+   private String mName;
 
    public AppManager(DBMain db, RouteManager router){
        mSessions = new Sessions();
        mDB = db;
        mRouteManager = router;
+       mName = "xyzServer";
+   }
+
+   public String GetName(){
+       return mName;
+   }
+
+   public void SetName(String m){
+       mName = m;
    }
 
 

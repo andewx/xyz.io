@@ -24,39 +24,55 @@ public class ModelObject extends JSONObject {
 
 
     public ModelObject(JSONObject jObj){
-
         super(jObj);
 
+        for(String key : jObj.keySet()){
+            put(key, jObj.getString(key));
+            if(key.equals("UID")){
+                UID = jObj.getString(key);
+            }
+            if(key.equals("ClassName")){
+                ClassName = jObj.getString(key);
+            }
+            if(key.equals("Name")){
+                Name = jObj.getString(key);
+            }
+        }
+    }
+
+    public String GetString(String Key){
+        try{
+           return this.getString(Key);
+        }catch(JSONException e){
+           return "";
+        }
+    }
+
+    public ModelObject(ModelObject mObj) throws JSONException{ //Shallow Copies
+        super();
         try { //Assumes jObj is a ModelObject internally
-            UID = (String) jObj.get("UID");
-            ClassName = (String) jObj.get("ClassName");
-            Name = (String) jObj.get("Name");
+            UID = mObj.GetString("UID");
+            ClassName = mObj.GetString("ClassName");
+            Name = mObj.GetString("Name");
             put("UID", UID);
             put("ClassName", ClassName);
             put("Name", Name);
 
-        }catch(JSONException e){
-            for (String key : jObj.keySet()){
-                JSONObject jModel = (JSONObject)jObj.get(key);
-                ModelObject mModel = new ModelObject(jModel);
-                addModel(mModel);
-            }
-        }
+        }catch(JSONException | NullPointerException e){
 
+        }
     }
+
 
     public ModelObject(String json){
         super(json);
 
-        UID = (String)get("UID");
-        ClassName = (String)get("ClassName");
-
-        try {
-            Name = (String) get("Name");
-        }catch(JSONException e){
-           Name = "";
-        }
-
+        UID = getString("UID");
+        ClassName = getString("ClassName");
+        Name =  getString("Name");
+        put("UID", UID);
+        put("ClassName", ClassName);
+        put("Name", Name);
     }
 
     public ModelObject(int size){

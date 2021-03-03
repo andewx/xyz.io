@@ -43,7 +43,7 @@ public class ModelsController extends BaseController{
         if(name.equals("User")){
             String email = ctx.formParam("Email");
             String pass = ctx.formParam("Password");
-            String usern = ctx.formParam("Username");
+            String usern = ctx.formParam("Name");
             String first = ctx.formParam("First");
             String last = ctx.formParam("Last");
             User newUser = new User(email,pass,usern,first,last);

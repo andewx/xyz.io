@@ -2,6 +2,8 @@ package xyz.controllers;
 
 
 import io.javalin.http.Context;
+import org.eclipse.jetty.util.ajax.JSON;
+import org.json.JSONException;
 import xyz.app.AppManager;
 import xyz.dbkit.DBMain;
 import xyz.model.ModelKeys;
@@ -20,20 +22,35 @@ public class UserController extends BaseController{
     public void login(Context ctx){
         String password = ctx.formParam("Password");
         String email = ctx.formParam("Email");
-        User userObj = (User)mDB.findKey(mDB.GetNode("Users"), "User", email);
+        User userObj;
+        ModelObject thisModel;
+        thisModel  = mDB.findKey(mDB.GetNode("Users"), "User", email);
+        try {
+            userObj = (User) thisModel;
+        } catch(JSONException | ClassCastException e){
+            try {
+                userObj = new User(thisModel);
+            }catch(JSONException d){
+                System.out.println("Error: User Object Format Invalid");
+                System.out.println(thisModel.toString(3));
+                ctx.status(201);
+                return;
+            }
+        }
+
         //Generate SHA256 Secure Hash
        String entered = User.PasswordSHA(password);
        String userPass = userObj.getPassword();
-       if(entered != userPass){
-           ctx.cookie("error-message", "Email/Password does not match.");
-           ctx.status(201);
+       if(!entered.equals(userPass)){
+           ctx.cookie("ERROR", "NOMATCH");
+           ctx.status(203);
            return;
        }
-
+        System.out.println("User Logged In!");
         String GUID = mApp.AddSession(userObj.getEmail());
         ctx.cookieStore("GUID", GUID);
-        ctx.cookieStore("message", "User login successful");
-        ctx.redirect(this.mRouteFrom);
+        ctx.cookieStore("MESSAGE", "SUCCESS");
+        ctx.redirect("/admin");
     }
 
     public void Register(Context ctx){

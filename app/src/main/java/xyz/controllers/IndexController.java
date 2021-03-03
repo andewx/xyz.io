@@ -40,6 +40,23 @@ public class IndexController extends BaseController{
 
     }
 
+
+    public void Users(Context ctx){
+
+        SiteTemplate templatizer = new SiteTemplate();
+        SiteTemplate viewForms = new SiteTemplate();
+        StringBuilder htmlResponse = new StringBuilder();
+        templatizer.GetTemplate("templates/ion.html");
+        viewForms.GetTemplate("views/register-login.html");
+        templatizer.AddKey("controllerTitle", "Framework Login/Registration");
+        templatizer.AddKey("controllerContent", viewForms.GetHtml());
+        templatizer.ReplaceKeys();
+        htmlResponse.append(templatizer.GetHtml());
+
+        ctx.contentType("html");
+        ctx.result(htmlResponse.toString());
+    }
+
     public String WhatIP(){
         URL whatismyip = null;
         String ip = "";

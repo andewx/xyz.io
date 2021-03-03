@@ -33,16 +33,17 @@ public class App {
 
         //Build Model GET API
         myApp.AddGetRoute("/", IndexEndpoint::Index, "Index Main");
+        myApp.AddGetRoute("/users", IndexEndpoint::Users, "Login/Registration");
         myApp.AddGetRoute("/admin", adminController::main, "Admin Dashboard");
-        myApp.AddGetRoute("/user/login", userController::login, "User Login");
         myApp.AddGetRoute("/model/default/:name", modelController::DefaultModel, "Return Model JSON Properties for Model of :name type");
-        myApp.AddGetRoute("/model/edit/:name/:id", modelController::ModelEdit, "Return Model JSON where :name is the model type, :id is its UID", 4);
-        myApp.AddGetRoute("/model/delete/:name/:id", modelController::ModelDelete, "Delete Model were :name is the model type, :id is the the model UID", 4);
+        myApp.AddGetRoute("/model/edit/:name/:id", modelController::ModelEdit, "Return Model JSON where :name is the model type, :id is its UID");
+        myApp.AddGetRoute("/model/delete/:name/:id", modelController::ModelDelete, "Delete Model were :name is the model type, :id is the the model UID");
         myApp.AddGetRoute("/users/search/:name", userController::GetUser, "Find specfic user");
         myApp.AddGetRoute("/users/find/:name", userController::GetUserStarts, "Find specfic user");
         //Build Model POST API
-        myApp.AddPostRoute("/model/create/:name", modelController::ModelCreate, "Post params with Model Properties to create model :name type", 3);
-        myApp.AddPostRoute("/model/update/:name/:id", modelController::ModelUpdate, "Post params to update model :name type", 4);
+        myApp.AddPostRoute("/model/create/:name", modelController::ModelCreate, "Post params with Model Properties to create model :name type");
+        myApp.AddPostRoute("/model/update/:name/:id", modelController::ModelUpdate, "Post params to update model :name type");
+        myApp.AddPostRoute("/users/login", userController::login, "User Login");
 
         //Javalin Pre/Pos
         app.before("/user/*", userController::pre);
