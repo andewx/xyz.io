@@ -25,7 +25,7 @@ public class AppManager {
    public String AddSession(String email){
        DBNode userNode = mDB.GetNode("Users");
        DBNode grpNode = mDB.GetNode("Groups");
-       User userObj = (User)mDB.findKey(userNode, "User", email);
+       User userObj = new User(mDB.findKey(userNode, "User", email));
        if(userObj != null) {
            Group grpObj = (Group) mDB.findKey(grpNode, "Group", userObj.getGroupID());
            Integer access = grpObj.GetAccessLevel();
