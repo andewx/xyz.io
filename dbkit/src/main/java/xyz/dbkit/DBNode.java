@@ -2,7 +2,6 @@ package xyz.dbkit;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import xyz.model.FileMap;
 import xyz.model.ModelObject;
 
 import java.io.IOException;
@@ -29,6 +28,10 @@ public class DBNode {
             throw new JSONException("Model: " + ModelName + " not found in immediate root graph");
         }
         return retObj;
+    }
+
+    public ModelObject GetRoot(){
+        return rootGraph;
     }
 
     public static DBNode CreateDBNode(String name, String path) throws IOException {

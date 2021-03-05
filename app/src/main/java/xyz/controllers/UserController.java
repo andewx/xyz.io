@@ -2,10 +2,9 @@ package xyz.controllers;
 
 
 import io.javalin.http.Context;
-import org.eclipse.jetty.util.ajax.JSON;
-import org.json.JSONException;
 import xyz.app.AppManager;
 import xyz.dbkit.DBMain;
+import xyz.dbkit.DBNode;
 import xyz.model.ModelKeys;
 import xyz.model.ModelObject;
 import xyz.model.User;
@@ -27,10 +26,12 @@ public class UserController extends BaseController{
         thisModel  = mDB.findKey(mDB.GetNode("Users"), "User", email);
         try {
             userObj = new User(thisModel);
-        } catch(JSONException | ClassCastException e){
+        } catch(Exception e){
                 System.out.println("Error: User Object Format Invalid");
                 System.out.println(thisModel.toString(3));
+                ctx.cookie("ERROR", "User or Group Policy Not Found");
                 ctx.status(201);
+                ctx.redirect("/");
                 return;
         }
 
@@ -38,13 +39,18 @@ public class UserController extends BaseController{
        String entered = User.PasswordSHA(password);
        String userPass = userObj.getPassword();
        if(!entered.equals(userPass)){
-           ctx.cookie("ERROR", "NOMATCH");
+           System.out.println("User password doesn't match");
+           ctx.cookie("ERROR", "INVALPASS");
            ctx.status(203);
+           ctx.redirect("/users");
            return;
        }
         System.out.println("User Logged In!");
         String GUID = mApp.AddSession(userObj.getEmail());
         ctx.cookieStore("GUID", GUID);
+        ctx.cookieStore("USER", userObj.getUID());
+        ctx.cookie("USER", userObj.getUID());
+        ctx.cookie("GUID", GUID);
         ctx.cookieStore("MESSAGE", "SUCCESS");
         ctx.redirect("/admin");
     }
@@ -54,6 +60,20 @@ public class UserController extends BaseController{
        String content = defaultUser.Form();
        ctx.contentType("text/html");
        ctx.result(content);
+    }
+
+    public void SubmitUser(Context ctx){
+        String email = ctx.formParam("Email");
+        String pass = ctx.formParam("Password");
+        String usern = ctx.formParam("Name");
+        String first = ctx.formParam("FirstName");
+        String last = ctx.formParam("LastName");
+        User newUser = new User(email,pass,usern,first,last);
+        DBNode users = mDB.GetNode("Users");
+        mDB.AddModel(users, newUser);
+        ctx.cookieStore("MESSAGE", "ADDED");
+        ctx.cookie("MESSAGE", "ADDED");
+        ctx.redirect("/users");
     }
 
     public void GetLogin(Context ctx){

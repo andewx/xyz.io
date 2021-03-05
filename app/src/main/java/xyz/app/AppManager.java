@@ -16,6 +16,16 @@ public class AppManager {
    private RouteManager mRouteManager;
    private String mName;
 
+    public String getRemoteURL() {
+        return remoteURL;
+    }
+
+    public void setRemoteURL(String remoteURL) {
+        this.remoteURL = remoteURL;
+    }
+
+    private String remoteURL;
+
    public AppManager(DBMain db, RouteManager router){
        mSessions = new Sessions();
        mDB = db;
@@ -32,17 +42,22 @@ public class AppManager {
    }
 
 
+
    public String AddSession(String email){
        DBNode userNode = mDB.GetNode("Users");
        DBNode grpNode = mDB.GetNode("Groups");
-       User userObj = (User)mDB.findKey(userNode, "User", email);
+       User userObj = new User(mDB.findKey(userNode, "User", email));
        if(userObj != null) {
            Group grpObj = new Group(mDB.findKey(grpNode, "Group", userObj.getGroupID()));
-           Integer access = grpObj.GetAccessLevel();
-           return mSessions.AddSession(userObj.getEmail(), access); //return GUID
+           if(grpObj !=null) {
+               Integer access = grpObj.GetAccessLevel();
+               return mSessions.AddSession(userObj.getEmail(), access);
+           }else{
+               return mSessions.AddSession(userObj.getEmail(),6);
+           }
        }
 
-       return null;
+       return "NONE";
    }
 
    public void AddGetRoute(String route, Handler handle, String desc){

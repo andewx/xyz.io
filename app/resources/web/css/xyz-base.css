@@ -930,5 +930,13 @@ textarea {
     text-align: center;
 }
 
+.bad{
+   color: #FF0000;
+}
+
+.good{
+  color: #00FF00;
+}
+
 
 /*# sourceMappingURL=base.css.map */

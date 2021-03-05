@@ -21,11 +21,13 @@ public class App {
         DBMain myDB = new DBMain("xyz-db");
         RouteManager myRouter = new RouteManager();
         AppManager myApp = new AppManager(myDB, myRouter);
+        myApp.setRemoteURL("http://localhost:8080");
         BaseController BaseEndpoint = new BaseController(myDB, myApp);
         IndexController IndexEndpoint = new IndexController(myDB, myApp);
         UserController userController = new UserController(myDB, myApp);
         ModelsController modelController = new ModelsController(myDB, myApp);
         AdminController adminController = new AdminController(myDB,myApp);
+        GroupController groupController = new GroupController(myDB, myApp);
 
 
         myDB.start();
@@ -34,16 +36,19 @@ public class App {
         //Build Model GET API
         myApp.AddGetRoute("/", IndexEndpoint::Index, "Index Main");
         myApp.AddGetRoute("/users", IndexEndpoint::Users, "Login/Registration");
-        myApp.AddGetRoute("/admin", adminController::main, "Admin Dashboard");
+        myApp.AddGetRoute("/admin", adminController::main, "Admin Dashboard",3);
+        myApp.AddGetRoute("/usergroups", adminController::UsersGroups, "Dashboard Users",3);
         myApp.AddGetRoute("/model/default/:name", modelController::DefaultModel, "Return Model JSON Properties for Model of :name type");
-        myApp.AddGetRoute("/model/edit/:name/:id", modelController::ModelEdit, "Return Model JSON where :name is the model type, :id is its UID");
-        myApp.AddGetRoute("/model/delete/:name/:id", modelController::ModelDelete, "Delete Model were :name is the model type, :id is the the model UID");
+        myApp.AddGetRoute("/model/edit/:name/:id", modelController::ModelEdit, "Return Model JSON where :name is the model type, :id is its UID", 3);
+        myApp.AddGetRoute("/model/delete/:name/:id", modelController::ModelDelete, "Delete Model were :name is the model type, :id is the the model UID", 3);
         myApp.AddGetRoute("/users/search/:name", userController::GetUser, "Find specfic user");
         myApp.AddGetRoute("/users/find/:name", userController::GetUserStarts, "Find specfic user");
+        myApp.AddGetRoute("/groups/list", groupController::GetGroups, "Lists All Groups", 3);
         //Build Model POST API
-        myApp.AddPostRoute("/model/create/:name", modelController::ModelCreate, "Post params with Model Properties to create model :name type");
-        myApp.AddPostRoute("/model/update/:name/:id", modelController::ModelUpdate, "Post params to update model :name type");
+        myApp.AddPostRoute("/model/create/:name", modelController::ModelCreate, "Post params with Model Properties to create model :name type", 3);
+        myApp.AddPostRoute("/model/update/:name/:id", modelController::ModelUpdate, "Post params to update model :name type", 3);
         myApp.AddPostRoute("/users/login", userController::login, "User Login");
+        myApp.AddPostRoute("/users/submit", userController::SubmitUser, "Creates user with default privileges");
 
         //Javalin Pre/Pos
         app.before("/user/*", userController::pre);

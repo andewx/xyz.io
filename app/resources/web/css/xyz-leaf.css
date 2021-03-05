@@ -322,6 +322,8 @@ Light UI/UX
 .vnav-light a{
  padding: 5px;
  margin: 0 auto;
+ color: inherit;
+ background: inherit;
 }
 
 .vnav-light .fa{
@@ -414,7 +416,8 @@ font-size: 0.7em;
 }
 
 .dash-section{
-    display:block;
+    display: flex;
+    align-items: flex-start;
     padding: 20px 0;
 }
 
@@ -428,6 +431,13 @@ font-size: 0.7em;
  font-size: 0.9em;
  padding: 20px 0;
  margin: 10px 0;
+}
+
+.dash-icon{
+display: inline;
+float: right;
+font-size: 0.8em;
+font-family: "FontAwesome";
 }
 
 .dash ul{
@@ -471,12 +481,87 @@ color: var(--light-text);
 color: var(--heavy-text);
 }
 
+.dash .itemName{
+    font-family: "Barlow-Bold", sans-serif;
+}
+
+.dash .itemCaption{
+    font-family: "Barlow-Thin", sans-serif;
+    font-size: 0.9em;
+    color: var(--light-text);
+}
+
+.dash .item{
+    display: block;
+}
+
+.dash .itemFields{
+    padding: 10px 15px;
+    display: none;
+}
+
+.dash .itemField{
+    color: var(--midnight);
+}
+
+.itemIcons a{
+ padding: 0 10px;
+ color: var(--light-text);
+}
+
+.itemIcons a:hover{
+ color: var(--midnight);
+}
+
+.dash .itemLabel{
+ display: inline-block;
+ width: 20%;
+ margin-right: 4%;
+}
+
+.dash .itemField input{
+ display: inline-block;
+ width: 75%;
+ color: var(--light-text);
+}
+
+.dash .itemField input:hover{
+    background: var(--light-olive);
+}
+
+.dash itemButton{
+ display: block;
+ width: 200px;
+ background: var(--midnight);
+ color: white;
+}
+
+.dash itemButton:hover{
+ background: var(--light-olive);
+ cursor: pointer;
+}
+
+.message{
+ color: var(--light-olive);
+ font-size: 1.3em;
+}
+
 .dash-element-3{
+  display: inline-block;
   background: white;
   padding: 10px;
   margin: 10px;
   border-radius: 3px;
   width: 28%;
+}
+
+.dash-element-2{
+  display: inline-block;
+  background: white;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 3px;
+  width: 48%;
 }
 
 /* ===================================================================

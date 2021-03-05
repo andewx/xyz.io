@@ -24,7 +24,6 @@ public class ModelObject extends JSONObject {
 
 
     public ModelObject(JSONObject jObj){
-        super(jObj);
 
         for(String key : jObj.keySet()){
             put(key, jObj.getString(key));
@@ -36,6 +35,9 @@ public class ModelObject extends JSONObject {
             }
             if(key.equals("Name")){
                 Name = jObj.getString(key);
+            }
+            if(key.equalsIgnoreCase("empty")){
+                remove(key);
             }
         }
     }

@@ -1,6 +1,5 @@
 package xyz.model;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Group extends ModelObject {
@@ -30,24 +29,27 @@ public class Group extends ModelObject {
     }
 
     public Group(JSONObject jObj){
-
-        for(String key : jObj.keySet()){
-            put(key, jObj.getString(key));
-            if(key.equals("UID")){
-                UID = jObj.getString(key);
+        try {
+            for (String key : jObj.keySet()) {
+                put(key, jObj.get(key));
+                if (key.equals("UID")) {
+                    UID = jObj.getString(key);
+                }
+                if (key.equals("ClassName")) {
+                    ClassName = jObj.getString(key);
+                }
+                if (key.equals("Name")) {
+                    Name = jObj.getString(key);
+                }
+                if (key.equals("AccessDescription")) {
+                    AccessDescription = jObj.getString(key);
+                }
+                if (key.equals("AccessLevel")) {
+                    AccessLevel = jObj.getInt("AccessLevel");
+                }
             }
-            if(key.equals("ClassName")){
-                ClassName = jObj.getString(key);
-            }
-            if(key.equals("Name")){
-                Name = jObj.getString(key);
-            }
-            if(key.equals("AccessDescription")){
-                AccessDescription = jObj.getString(key);
-            }
-            if(key.equals("AccessLevel")){
-                AccessLevel= Integer.valueOf(jObj.getString(key));
-            }
+        }catch(NullPointerException e){
+            System.out.println("new Group(JSONObject jObj) failed. jObj is null");
         }
 
     }

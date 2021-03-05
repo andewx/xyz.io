@@ -91,36 +91,27 @@ public class User extends ModelObject{
     }
 
     public User(JSONObject jObj){
-
+        super(jObj);
         for(String key : jObj.keySet()){
-            put(key, jObj.getString(key));
-            if(key.equals("UID")){
-                UID = jObj.getString(key);
-            }
-            if(key.equals("ClassName")){
-                ClassName = jObj.getString(key);
-            }
-            if(key.equals("Name")){
-                Name = jObj.getString(key);
-            }
             if(key.equals("Email")){
-                Email = jObj.getString(key);
+                Email = getString(key);
             }
             if(key.equals("Password")){
-                Password = jObj.getString(key);
+                Password = getString(key);
             }
             if(key.equals("GroupID")){
-                GroupID = jObj.getString(key);
+                GroupID = getString(key);
             }
             if(key.equals("FirstName")){
-                FirstName = jObj.getString(key);
+                FirstName = getString(key);
             }
             if(key.equals("LastName")){
-                LastName = jObj.getString(key);
+                LastName = getString(key);
             }
             if(key.equals("LoginLast")){
-                LoginLast = jObj.getString(key);
+                LoginLast = getString(key);
             }
+
         }
 
     }

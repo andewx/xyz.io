@@ -37,20 +37,20 @@ public class ModelsController extends BaseController{
             Group groupObj = new Group(grpID, descr, acc);
             DBNode groupNode = mDB.GetNode("Groups");
             mDB.AddModel(groupNode, groupObj);
-            ctx.cookieStore("message", "Group added");
+            ctx.cookieStore("MESSAGE", "ADDED");
             ctx.redirect("/users");
         }
         if(name.equals("User")){
             String email = ctx.formParam("Email");
             String pass = ctx.formParam("Password");
             String usern = ctx.formParam("Name");
-            String first = ctx.formParam("First");
-            String last = ctx.formParam("Last");
+            String first = ctx.formParam("FirstName");
+            String last = ctx.formParam("LastName");
             User newUser = new User(email,pass,usern,first,last);
             DBNode users = mDB.GetNode("Users");
             mDB.AddModel(users, newUser);
-            ctx.cookieStore("message", "User added");
-            ctx.redirect("/users");
+            ctx.cookieStore("MESSAGE", "ADDED");
+            ctx.redirect(ctx.fullUrl());
         }
         if(name.equals("Site")){
             String desc = ctx.formParam("Description");
