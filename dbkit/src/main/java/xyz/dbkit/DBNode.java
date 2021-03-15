@@ -53,6 +53,14 @@ public class DBNode {
          return m;
     }
 
+    public ModelObject UpdateModel(ModelObject m){
+        JSONObject groupModel = rootGraph.getModels(m.getModelName());
+        groupModel.remove(m.getUID());
+        groupModel.put(m.getUID(), m);
+        hasChanged = true;
+        return m;
+    }
+
     public void DeleteModel(ModelObject m){
        String mUID = m.getUID();
        rootGraph.Remove(m.getModelName(), mUID);

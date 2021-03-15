@@ -6,7 +6,9 @@ import xyz.app.AppManager;
 import xyz.dbkit.DBMain;
 import xyz.dbkit.DBNode;
 import xyz.model.Group;
+import xyz.model.ModelKeys;
 import xyz.model.ModelObject;
+import xyz.model.User;
 
 import java.util.ArrayList;
 
@@ -73,5 +75,12 @@ public class GroupController extends BaseController {
         }
         sb.append("]");
         ctx.result(sb.toString());
+    }
+
+    public void Form(Context ctx){
+        User defaultUser = (User) ModelKeys.Default("Group");
+        String content = defaultUser.Form();
+        ctx.contentType("text/html");
+        ctx.result(content);
     }
 }

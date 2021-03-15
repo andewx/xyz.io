@@ -180,9 +180,10 @@ public class ModelObject extends JSONObject {
         return (JSONObject)this;
     }
 
-    
-    public Object updateKey(String key, Object value) {
-       return put(key,value);
+
+    public void updateKey(String key, Object value) {
+        remove(key);
+        put(key, value);
     }
 
     

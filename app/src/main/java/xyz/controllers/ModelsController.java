@@ -9,6 +9,7 @@ import xyz.dbkit.DBMain;
 import xyz.dbkit.DBNode;
 import xyz.model.*;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
 public class ModelsController extends BaseController{
@@ -106,7 +107,7 @@ public class ModelsController extends BaseController{
         }
     }
 
-    public void ModelUpdate(Context ctx){
+    public void ModelUpdate(Context ctx) throws IOException {
         String ModelKey = ctx.pathParam("id");
         String ModelName = ctx.pathParam("name");
         DBNode modelNode = mDB.GetNode(ModelKeys.pluralize(ModelName));
@@ -117,26 +118,40 @@ public class ModelsController extends BaseController{
             String descr = ctx.formParam("AccessDescription");
             String access = ctx.formParam("AccessLevel");
             int acc = Integer.valueOf(access).intValue();
-            Group groupObj = (Group)myObj;
-            groupObj.setGroupID(grpID);
-            groupObj.setAccessDescription(descr);
-            groupObj.setAccessLevel(acc);
+
+            myObj.updateKey("GroupID", grpID);
+            myObj.updateKey("AccessDescription", descr);
+            myObj.updateKey("AccessLevel", access);
+            myObj.updateKey("Name", grpID);
+            myObj.updateKey("UID", grpID);
+
+            modelNode.UpdateModel(myObj);
+            mDB.RunSync();
+
             ctx.result("Group Edited");
         }
         if(ModelName.equals("User")){
             String email = ctx.formParam("Email");
-            String pass = ctx.formParam("Password");
-            String usern = ctx.formParam("Username");
-            String first = ctx.formParam("First");
-            String last = ctx.formParam("Last");
-            User editUser = (User)myObj;
+            String usern = ctx.formParam("Name");
+            String first = ctx.formParam("FirstName");
+            String last = ctx.formParam("LastName");
+            String gid = ctx.formParam("GroupID");
 
-            HashFunction f =  Hashing.sha256();
-            HashCode passHash = f.hashString(pass, Charset.defaultCharset());
-            editUser.setPassword(passHash.toString());
-            editUser.setEmail(email);
-            editUser.setFirstName(first);
-            editUser.setLastName(last);
+            myObj.updateKey("Email", email);
+            myObj.updateKey("UID", email);
+            myObj.updateKey("Name", usern);
+            myObj.updateKey("FirstName", first);
+            myObj.updateKey("LastName", last);
+            myObj.updateKey("GroupID", gid);
+
+            try {
+                modelNode.UpdateModel(myObj);
+                mDB.RunSync();
+            }catch(Exception e){
+                System.out.println("Error saving newly created user");
+                ctx.result("Error: Not stored");
+            }
+            System.out.println("User added!");
             ctx.result("User Edited");
         }
         if(ModelName.equals("Site")){
@@ -182,7 +197,6 @@ public class ModelsController extends BaseController{
             ctx.result("Edge Edited");
         }
 
-        mDB.UpdateModel(modelNode, myObj);
 
     }
 

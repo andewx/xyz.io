@@ -65,13 +65,24 @@ public class User extends ModelObject{
 
     public User(ModelObject mObj)throws JSONException{
         super(mObj);
-
-        Email = mObj.GetString("Email");
-        Password = mObj.GetString("Password");
-        GroupID = mObj.GetString("GroupID");
-        FirstName = mObj.GetString("FirstName");
-        LastName = mObj.GetString("LastName");
-        LoginLast = mObj.GetString("LoginLast");
+        try {
+            Email = mObj.GetString("Email");
+        }catch(Exception e){ Email = "";}
+        try {
+            FirstName = mObj.GetString("FirstName");
+        }catch(Exception e){FirstName = "";}
+        try {
+            LastName = mObj.GetString("LastName");
+        }catch(Exception e){LastName = "";}
+        try {
+            Password = mObj.GetString("Password");
+        }catch(Exception e){Password = "";}
+        try {
+            GroupID = mObj.GetString("GroupID");
+        }catch(Exception e){ GroupID = "";}
+        try {
+            LoginLast = mObj.GetString("Email");
+        }catch(Exception e){LoginLast = "";}
 
 
         put("Email", Email);

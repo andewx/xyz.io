@@ -456,15 +456,23 @@ font-family: "Barlow-Bold", sans-serif;
 color: var(--midnight);
 }
 
-.dash li:first-child{
- background: var(--light-olive);
-}
-
 .dash li:hover{
- background: var(--sky);
+ background: var(--fog);
  cursor: pointer;
  animation: fadeIn;
  animation-duration: 1.0s;
+}
+
+.dash textarea{
+  background: #fafafa;
+  width: 75%;
+  font-size: 0.8em;
+  border-radius: 5px;
+  border: 0px solid transparent;
+}
+
+.dash textarea:focus:hover{
+ background: white;
 }
 
 .dash input{
@@ -515,29 +523,31 @@ color: var(--heavy-text);
 
 .dash .itemLabel{
  display: inline-block;
- width: 20%;
+ width: 30%;
  margin-right: 4%;
 }
 
 .dash .itemField input{
  display: inline-block;
- width: 75%;
+ width: 68%;
  color: var(--light-text);
+ border-radius: 5px;
 }
 
 .dash .itemField input:hover{
-    background: var(--light-olive);
+    background: white;
 }
 
-.dash itemButton{
- display: block;
- width: 200px;
+.itemFields .itemButton{
+ width: 20%;
  background: var(--midnight);
  color: white;
+ padding: 10px;
+ border-radius: 5px;
 }
 
-.dash itemButton:hover{
- background: var(--light-olive);
+.dash .itemButton:hover{
+ background: var(--charcoal);
  cursor: pointer;
 }
 
@@ -563,6 +573,15 @@ color: var(--heavy-text);
   border-radius: 3px;
   width: 48%;
 }
+
+.dash form{
+    font-family: 'montserrat', sans-serif;
+    border-radius: 5px;
+    padding: 15px;
+    width: 90%;
+    border: 1px solid #f9f9f9;
+}
+
 
 /* ===================================================================
  * # reusable and common theme styles
