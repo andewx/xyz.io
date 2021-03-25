@@ -64,5 +64,57 @@ public class AdminController extends BaseController{
         ctx.result(htmlResponse.toString());
     }
 
+    public void Sites(Context ctx){
+        User thisUser = UserFromSession(ctx);
+        if(thisUser == null){
+            ctx.redirect("/");
+            return;
+        }
+        SiteTemplate templatizer = new SiteTemplate();
+        SiteTemplate dashView = new SiteTemplate();
+        dashView.GetTemplate("views/sites-page.html");
+        StringBuilder htmlResponse = new StringBuilder();
+        String ini = thisUser.getFirstName().substring(0,1) + thisUser.getLastName().substring(0,1);
+        templatizer.GetTemplate("templates/dashboard.html");
+        templatizer.AddKey("dashcontent",dashView.GetHtml());
+        templatizer.AddKey("title", "Hi, " + thisUser.getFirstName());
+        templatizer.AddKey("dashTitle", "Hello, " + thisUser.getFirstName());
+        templatizer.AddKey("Init", ini);
+        templatizer.AddKey("dashSubtitle", "Here are your sites");
+        templatizer.AddKey("UserFirstLast", thisUser.getFirstName() + " " + thisUser.getLastName());
+        templatizer.AddKey("UserEmail", thisUser.getEmail());
+        templatizer.ReplaceKeys();
+        htmlResponse.append(templatizer.GetHtml());
+
+        ctx.contentType("html");
+        ctx.result(htmlResponse.toString());
+    }
+
+    public void Theme(Context ctx){
+        User thisUser = UserFromSession(ctx);
+        if(thisUser == null){
+            ctx.redirect("/");
+            return;
+        }
+        SiteTemplate templatizer = new SiteTemplate();
+        SiteTemplate dashView = new SiteTemplate();
+        dashView.GetTemplate("views/theme-page.html");
+        StringBuilder htmlResponse = new StringBuilder();
+        String ini = thisUser.getFirstName().substring(0,1) + thisUser.getLastName().substring(0,1);
+        templatizer.GetTemplate("templates/dashboard.html");
+        templatizer.AddKey("dashcontent",dashView.GetHtml());
+        templatizer.AddKey("title", "Hi, " + thisUser.getFirstName());
+        templatizer.AddKey("dashTitle", "Hello, " + thisUser.getFirstName());
+        templatizer.AddKey("Init", ini);
+        templatizer.AddKey("dashSubtitle", "Theme");
+        templatizer.AddKey("UserFirstLast", thisUser.getFirstName() + " " + thisUser.getLastName());
+        templatizer.AddKey("UserEmail", thisUser.getEmail());
+        templatizer.ReplaceKeys();
+        htmlResponse.append(templatizer.GetHtml());
+
+        ctx.contentType("html");
+        ctx.result(htmlResponse.toString());
+    }
+
 
 }

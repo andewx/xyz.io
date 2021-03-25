@@ -93,34 +93,50 @@ Light UI/UX
  font-family: "Barlow-Bold", sans-serif;
  color: var(--dark);
  padding: 1.5em;
+ margin: 0px 0px 15px 0px;
  font-size: 2.3em;
  }
 
- h2, h3{
+ h2{
  font-family: "Barlow-Bold", sans-serif;
  color: var(--heavy-text)
+ margin: 0px 0px 10px 0px;
  padding: 1.5em;
- font-size: 1.5em;
+ font-size: 1.2em;
+ color: var(--charcoal);
  }
+
+ h3{
+  font-family: "Barlow-Bold", sans-serif;
+  color: var(--heavy-text)
+  padding: 1.5em;
+  font-size: 1.0em;
+  margin: 0px 0px 10px 00px;
+   color: var(--midnight);
+  }
 
  h4{
  font-family: "Barlow-Bold", sans-serif;
  color: var(--persian-blue)
  padding: 1.5em;
- font-size: 1.5em;
+margin: 0px 0px 10px 0px;
+ font-size: 0.9em;
+  color: var(--charcoal);
  }
 
  h5{
  font-family: "Barlow-Bold", sans-serif;
- color: var(--charcoal)
+ color: var(--fog)
  padding: 1.5em;
- font-size: 1.5em;
+ margin: 0px 0px 10px 0px;
+ font-size: 0.8em;
  }
 
  h6{
  font-family: "Barlow-Bold", sans-serif;
  color: --byzantine;
  padding: 1.5em;
+ margin: 0px 0px 10px 0px;
  font-size: 1.5em;
  }
 
@@ -226,6 +242,7 @@ Light UI/UX
      color: white;
      animation: fadeIn;
      animation-duration: 0.5s;
+     cursor: pointer;
 }
 
  .context-white{
@@ -309,10 +326,10 @@ Light UI/UX
     font-family: "Barlow-Bold", sans-serif;
     padding: 8px;
     display:inline-block;
-    background: white;
-    color: var(--light-text);
-    font-size: 0.8em;
-    width: 20%;
+    background: var(--charcoal);
+    color: white;
+    font-size: 0.5em;
+    width: 12%;
     height: 100%;
     overflow-x: hidden;
     padding-top: 20px;
@@ -328,13 +345,13 @@ Light UI/UX
 
 .vnav-light .fa{
 font-family: "FontAwesome";
-font-size: 1.2em;
-padding: 0 20px 0 20px;
+font-size: 1.0em;
+padding: 0 5px 0 5px;
 }
 
 .vnav-light .label{
 font-family: "Barlow-Bold", sans-serif;
-color: var(--midnight);
+color: white;
 }
 
 
@@ -363,7 +380,7 @@ color: var(--midnight);
     display:block;
     padding: 20px 15px 20px 15px;
     margin-top: 10px;
-    border-top: 1px solid var(--feather);
+    border-top: 1px solid var(--midnight);
 }
 
 .vnav-section:first-child{
@@ -378,7 +395,7 @@ color: var(--midnight);
 .vnav-section ul li{
     display: block;
     padding: 20px;
-    margin: 20px 0;
+    margin: 5px 0;
     border-radius: 5px;
     list-style:none;
 }
@@ -416,7 +433,9 @@ font-size: 0.7em;
 }
 
 .dash-section{
+
     display: flex;
+    width: 100%;
     align-items: flex-start;
     padding: 20px 0;
 }
@@ -559,10 +578,10 @@ color: var(--heavy-text);
 .dash-element-3{
   display: inline-block;
   background: white;
-  padding: 10px;
-  margin: 10px;
-  border-radius: 3px;
-  width: 28%;
+  padding: 20px;
+  border-radius: 10px;
+  width: 26%;
+  margin: 2%;
 }
 
 .dash-element-2{
@@ -580,6 +599,31 @@ color: var(--heavy-text);
     padding: 15px;
     width: 90%;
     border: 1px solid #f9f9f9;
+}
+
+.dash-button{
+   width: 40px;
+   height: 40px;
+   padding: 5px;
+   border-radius: 10px;
+   background: var(--midnight);
+   color: white;
+}
+
+.dash-button:hover{
+   background: var(--charcoal);
+   color: white;
+   cursor: pointer;
+}
+
+.selectable-light{
+    background: white;
+    color: var(--charcoal);
+}
+
+.selectable-light:hover{
+    background: var(--denim);
+    cursor: pointer;
 }
 
 

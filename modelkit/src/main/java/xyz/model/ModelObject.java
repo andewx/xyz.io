@@ -209,13 +209,11 @@ public class ModelObject extends JSONObject {
     public boolean Remove(String mClass, String uid){
         String collection = pluralize(mClass);
         JSONObject internal = getChildren(collection);
-        if (internal == null){
-            return false;
-        }
 
-        ModelObject val = (ModelObject)internal.remove(uid);
-        if (val == null){
+        if(! internal.has(uid)){
             return false;
+        }else{
+            internal.remove(uid);
         }
 
         return true;

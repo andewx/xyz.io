@@ -45,8 +45,9 @@ public final class ModelKeys { //Static Model Methods
         keySet.add("Theme");
         keySet.add("Edge");
         keySet.add("Site");
-        keySet.add("Template");
         keySet.add("FileMap");
+        keySet.add("Menu");
+        keySet.add("Page");
         return keySet;
     }
 
@@ -68,14 +69,17 @@ public final class ModelKeys { //Static Model Methods
         if(name.equals("Site")){
             return new Site("","","", "");
         }
-        if(name.equals("Template")){
-            return new Template("");
-        }
         if(name.equals("Theme")){
-            return new Theme("","");
+            return new Theme("","", "");
         }
         if(name.equals("Edge")){
             return new Edge("","","","", "");
+        }
+        if(name.equals("Menu")){
+            return new Menu("","");
+        }
+        if(name.equals("Page")){
+            return new Page("", "");
         }
 
         return null;

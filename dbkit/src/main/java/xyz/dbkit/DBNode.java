@@ -76,6 +76,7 @@ public class DBNode {
     public void WriteNode(String url) throws IOException {
         Path file = Path.of(url);
         boolean exists = Files.exists(file);
+
         if(!exists){
             Files.createFile(file);
             Files.writeString(file,rootGraph.toString());

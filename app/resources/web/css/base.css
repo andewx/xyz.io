@@ -999,5 +999,16 @@ DASHBOARD
     text-align: center;
 }
 
+.section{
+    display: block;
+    width: 100%;
+    margin: 20px 0px;
+}
+
+.widget-small{
+    width:25px;
+    height: 25px;
+}
+
 
 /*# sourceMappingURL=base.css.map */
