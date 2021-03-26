@@ -65,7 +65,7 @@ public class ThemeController extends BaseController{
     public void CreateTheme(Context ctx){
 
         String themeName = ctx.formParam("name");
-        String palette = ctx.formParam("palette");
+        JSONObject palette = new JSONObject(ctx.formParam("palette"));
 
         //Create Directories
         String srcPath = "/themes/" + themeName;
@@ -102,7 +102,7 @@ public class ThemeController extends BaseController{
                 }
             }
 
-            ModelObject myTheme = new Theme(themeName, htmlFilename, palette);
+            ModelObject myTheme = new Theme(themeName, htmlFilename, palette.toString());
             DBNode themeNode = mDB.GetNode("Themes");
             themeNode.AddModel(myTheme);
             mDB.RunSync();

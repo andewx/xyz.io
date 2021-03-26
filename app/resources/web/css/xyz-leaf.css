@@ -56,6 +56,7 @@ Light UI/UX
 --lavender: #f2edfd;
 --denim: #e2e9f5;
 --gray: #e8ecf3;
+--light-gray: #eeeeee;
 --light-text: #a3a3a3;
 --light-alt: #9faab6;
 --feather: #d3d3d3;
@@ -90,58 +91,50 @@ Light UI/UX
  }
 
  h1{
- font-family: "Barlow-Bold", sans-serif;
- color: var(--dark);
- padding: 1.5em;
+font-family: 'montserrat', sans-serif;
+ color: var(--fog);
  margin: 0px 0px 15px 0px;
  font-size: 2.3em;
  }
 
  h2{
- font-family: "Barlow-Bold", sans-serif;
- color: var(--heavy-text)
+ font-family: 'montserrat', sans-serif;
+ color: var(--light-olive);
  margin: 0px 0px 10px 0px;
- padding: 1.5em;
- font-size: 1.2em;
- color: var(--charcoal);
+ font-size: 1.5em;
  }
 
  h3{
-  font-family: "Barlow-Bold", sans-serif;
-  color: var(--heavy-text)
-  padding: 1.5em;
+ font-family: 'Barlow-Thin', sans-serif;
   font-size: 1.0em;
   margin: 0px 0px 10px 00px;
    color: var(--midnight);
   }
 
  h4{
- font-family: "Barlow-Bold", sans-serif;
+ font-family: 'Barlow-Thin', sans-serif;
  color: var(--persian-blue)
  padding: 1.5em;
 margin: 0px 0px 10px 0px;
  font-size: 0.9em;
-  color: var(--charcoal);
  }
 
  h5{
- font-family: "Barlow-Bold", sans-serif;
+ font-family: 'Barlow-Thin', sans-serif;
  color: var(--fog)
- padding: 1.5em;
  margin: 0px 0px 10px 0px;
  font-size: 0.8em;
  }
 
  h6{
- font-family: "Barlow-Bold", sans-serif;
- color: --byzantine;
- padding: 1.5em;
+ font-family: 'montserrat', sans-serif;
+ color: var(--byzantine);
  margin: 0px 0px 10px 0px;
  font-size: 1.5em;
  }
 
  i {
- font-family: "Barlow-Italic", sans-serif;
+ font-family: 'montserrat', sans-serif;
  }
 
  .sub-headerfont{
@@ -239,11 +232,12 @@ margin: 0px 0px 10px 0px;
 
 .header-block:hover{
      background: var(--midnight);
-     color: white;
+     color: white !important;
      animation: fadeIn;
      animation-duration: 0.5s;
      cursor: pointer;
 }
+
 
  .context-white{
   background: white;
@@ -436,15 +430,9 @@ font-size: 0.7em;
 
     display: flex;
     width: 100%;
-    align-items: flex-start;
-    padding: 20px 0;
+    padding: 30px;
 }
 
-.dash h3{
- color: var(--charcoal);
- margin: 10px 0;
- font-size: 0.9em;
-}
 
 .dash form{
  font-size: 0.9em;
@@ -457,6 +445,12 @@ display: inline;
 float: right;
 font-size: 0.8em;
 font-family: "FontAwesome";
+}
+
+.dash-header{
+    padding: 40px;
+    font-size: 1.2em;
+    color: var(--light-olive);
 }
 
 .dash ul{
@@ -593,6 +587,15 @@ color: var(--heavy-text);
   width: 48%;
 }
 
+.dash-element-1{
+  display: inline-block;
+  background: transparent;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 3px;
+  width: 100%;
+}
+
 .dash form{
     font-family: 'montserrat', sans-serif;
     border-radius: 5px;
@@ -602,18 +605,53 @@ color: var(--heavy-text);
 }
 
 .dash-button{
-   width: 40px;
+   display: inline;
+   width: 20%;
    height: 40px;
-   padding: 5px;
-   border-radius: 10px;
-   background: var(--midnight);
-   color: white;
+   padding: 15px;
+   border-radius: 35px;
+   background: var(--gray);
+   color: var(--feather);
+   vertical-align: middle;
+   text-align: center;
 }
 
 .dash-button:hover{
    background: var(--charcoal);
-   color: white;
    cursor: pointer;
+}
+
+.dash-item-large{
+    display:inline-block;
+    width: 150px;
+    height: 150px;
+}
+
+.dash-item-large:hover{
+    background-image: linear-gradient(rgba(0, 0, 180, 0.5), rgba(70, 140, 220, 0.5));
+    display:inline-block;
+    width: 150px;
+    height: 150px;
+}
+
+.lighten-overlay{
+    background: rgba(255,255,255,0.0);
+    z-index: 1000;
+    width:100%
+    height: 100%;
+}
+
+.lighten-overlay:hover{
+   background: rgba(255,255,255,0.3);
+}
+
+.dash-item-caption{
+    display: block;
+    width:100%;
+    vertical-align: bottom
+    background: rgba(0,0,0, 0.3);
+    color: white;
+    font-size: 0.7em;
 }
 
 .selectable-light{

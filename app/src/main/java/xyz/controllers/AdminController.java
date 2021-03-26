@@ -106,7 +106,7 @@ public class AdminController extends BaseController{
         templatizer.AddKey("title", "Hi, " + thisUser.getFirstName());
         templatizer.AddKey("dashTitle", "Hello, " + thisUser.getFirstName());
         templatizer.AddKey("Init", ini);
-        templatizer.AddKey("dashSubtitle", "Theme");
+        templatizer.AddKey("dashSubtitle", "Lets create a new theme");
         templatizer.AddKey("UserFirstLast", thisUser.getFirstName() + " " + thisUser.getLastName());
         templatizer.AddKey("UserEmail", thisUser.getEmail());
         templatizer.ReplaceKeys();

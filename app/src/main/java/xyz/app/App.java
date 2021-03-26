@@ -29,6 +29,8 @@ public class App {
         AdminController adminController = new AdminController(myDB,myApp);
         GroupController groupController = new GroupController(myDB, myApp);
         SiteController sitesController = new SiteController(myDB,myApp);
+        ThemeController themesController = new ThemeController(myDB, myApp);
+        PageController pagesController = new PageController(myDB, myApp);
 
 
         myDB.start();
@@ -47,11 +49,14 @@ public class App {
         myApp.AddGetRoute("/users/find/:name", userController::GetUserStarts, "Find specfic user");
         myApp.AddGetRoute("/groups/list", groupController::GetGroups, "Lists All Groups", 3);
         myApp.AddGetRoute("/sites/get", sitesController::Get, "Gets all sites", 3);
+        myApp.AddGetRoute("/theme", adminController::Theme, "New theme page", 3);
         //Build Model POST API
         myApp.AddPostRoute("/model/create/:name", modelController::ModelCreate, "Post params with Model Properties to create model :name type", 3);
         myApp.AddPostRoute("/model/update/:name/:id", modelController::ModelUpdate, "Post params to update model :name type", 3);
         myApp.AddPostRoute("/users/login", userController::login, "User Login");
         myApp.AddPostRoute("/users/submit", userController::SubmitUser, "Creates user with default privileges");
+        myApp.AddPostRoute("/themes/create", themesController::CreateTheme, "Create Theme", 3);
+        myApp.AddPostRoute("/themes/addFiles", themesController::AddFiles, "Add Files to Theme", 3);
 
         //Javalin Pre/Pos
         app.before("/user/*", userController::pre);

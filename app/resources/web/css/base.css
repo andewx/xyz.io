@@ -60,6 +60,7 @@ header,
 nav,
 section {
     display: block;
+    padding:40px;
 }
 
 h1 {
@@ -963,6 +964,10 @@ DASHBOARD
 
 .add-bottom {
     margin-bottom: 3rem !important;
+}
+
+.add-top {
+    margin-top: 3rem !important;
 }
 
 .no-border {
