@@ -127,7 +127,13 @@ public class AppManager {
 
    private synchronized void Remove(String guid){
        mSessions.RemoveSession(guid);
-    }
+   }
+   public void SetSessionMessage(String msg, String GUID){
+     mSessions.SetMessage(msg, GUID);
+   }
+   public String GetSessionMessage(String GUID){
+    return mSessions.GetMessage(GUID);
+   }
 
    private void syncSessions(){
        for(String key : mSessions.GetSessions()){

@@ -50,6 +50,14 @@ public class App {
         myApp.AddGetRoute("/groups/list", groupController::GetGroups, "Lists All Groups", 3);
         myApp.AddGetRoute("/sites/get", sitesController::Get, "Gets all sites", 3);
         myApp.AddGetRoute("/theme", adminController::Theme, "New theme page", 3);
+        myApp.AddGetRoute("/compl", adminController::compl, "Success Page");
+        myApp.AddGetRoute("/themes/getKeys", themesController::GetKeys, "List Themes", 3);
+        myApp.AddGetRoute("/themes/get", themesController::GetAll, "Get All Themes", 3);
+        myApp.AddGetRoute("/themes/get/:name", themesController::GetID, "Get Theme JSON", 3);
+        myApp.AddGetRoute("/themes", themesController::Display, "Themes Dashboard", 3);
+        myApp.AddGetRoute("/themes/get_files/:name", themesController::GetFiles, "Get files for theme", 3);
+        myApp.AddGetRoute("/themes/delete/:name", themesController::DeleteTheme, "Delete theme", 3);
+        myApp.AddGetRoute("/themes/deleteFile/:name/:path", themesController::DeleteFile, "Delete File", 3);
         //Build Model POST API
         myApp.AddPostRoute("/model/create/:name", modelController::ModelCreate, "Post params with Model Properties to create model :name type", 3);
         myApp.AddPostRoute("/model/update/:name/:id", modelController::ModelUpdate, "Post params to update model :name type", 3);

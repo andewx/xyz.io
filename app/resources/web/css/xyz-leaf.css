@@ -429,6 +429,7 @@ font-size: 0.7em;
 .dash-section{
 
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
     padding: 30px;
 }
@@ -456,17 +457,21 @@ font-family: "FontAwesome";
 .dash ul{
 list-style: none;
 display: block;
+text-align: left;
+padding: 10px;
+font-size: 0.8em;
 }
 
 .dash li{
 list-style: none;
 display: block;
 padding: 10px;
-margin: 10px 0;
+margin: 10px 20px;
 border-radius: 5px;
-font-size: 0.8em;
 font-family: "Barlow-Bold", sans-serif;
 color: var(--midnight);
+text-align: left;
+
 }
 
 .dash li:hover{
@@ -662,6 +667,12 @@ color: var(--heavy-text);
 .selectable-light:hover{
     background: var(--denim);
     cursor: pointer;
+}
+
+.palette-banner{
+    display:inline-block;
+    width:35px;
+    height:80px;
 }
 
 

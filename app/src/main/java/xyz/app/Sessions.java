@@ -23,6 +23,22 @@ public class Sessions {
         return GUID;
     }
 
+    public void SetMessage(String s, String GUID){
+        UserKeyState myUser = mUserMap.get(GUID);
+        if (myUser != null){
+            myUser.setMessage(s);
+        }
+
+    }
+
+    public String GetMessage(String GUID){
+        UserKeyState myUser = mUserMap.get(GUID);
+        if (myUser != null){
+            return myUser.getMessage();
+        }
+        return "";
+    }
+
     public String GetUsername(String GUID){
         UserKeyState myUser = mUserMap.get(GUID);
         if (myUser != null){
@@ -64,6 +80,24 @@ public class Sessions {
         String key;
         String lastLogin;
         Integer access;
+        String message;
+        String log;
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        public String getLog() {
+            return log;
+        }
+
+        public void setLog(String log) {
+            this.log = log;
+        }
 
         public UserKeyState(String k, Integer g){
             key = k;

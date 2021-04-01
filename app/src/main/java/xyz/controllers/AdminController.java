@@ -116,5 +116,34 @@ public class AdminController extends BaseController{
         ctx.result(htmlResponse.toString());
     }
 
+    public void compl(Context ctx){
+        User thisUser = UserFromSession(ctx);
+        if(thisUser == null){
+            ctx.redirect("/");
+            return;
+        }
+
+        String guid = ctx.cookie("GUID");
+        String message = mApp.GetSessionMessage(guid);
+        String content = "<div class='complete'><h1 class='success'>"+message+". Congrats</h1></div>";
+        SiteTemplate templatizer = new SiteTemplate();
+        SiteTemplate dashView = new SiteTemplate();
+        StringBuilder htmlResponse = new StringBuilder();
+        String ini = thisUser.getFirstName().substring(0,1) + thisUser.getLastName().substring(0,1);
+        templatizer.GetTemplate("templates/dashboard.html");
+        templatizer.AddKey("dashcontent",content);
+        templatizer.AddKey("title", "Hi, " + thisUser.getFirstName());
+        templatizer.AddKey("dashTitle", "Hello, " + thisUser.getFirstName());
+        templatizer.AddKey("Init", ini);
+        templatizer.AddKey("dashSubtitle", "Completed!");
+        templatizer.AddKey("UserFirstLast", thisUser.getFirstName() + " " + thisUser.getLastName());
+        templatizer.AddKey("UserEmail", thisUser.getEmail());
+        templatizer.ReplaceKeys();
+        htmlResponse.append(templatizer.GetHtml());
+
+        ctx.contentType("html");
+        ctx.result(htmlResponse.toString());
+    }
+
 
 }

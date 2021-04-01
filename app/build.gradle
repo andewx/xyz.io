@@ -35,4 +35,5 @@ task xyzrun (type: JavaExec){
     classpath = sourceSets.main.runtimeClasspath
     main = 'xyz.app.App'
     mainClass = 'xyz.app.App'
+    enableAssertions = true
 }

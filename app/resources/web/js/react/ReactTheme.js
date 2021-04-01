@@ -20,7 +20,7 @@ class ReactTheme extends React.Component{
         event.preventDefault();
         var url = "http://colormind.io/api/";
         var data = {
-            model : "default"
+            model : "ui"
         }
 
         var http = new XMLHttpRequest();
@@ -48,7 +48,7 @@ class ReactTheme extends React.Component{
         var name = $("#name").val();
         var files = $("#files").val();
         formData.append("name", name);
-        formData.append("palette", this.state.palette);
+        formData.append("palette", JSON.stringify(this.state.palette))
         var url = '/themes/create';
         $.ajax(url, {
             type: 'POST',
@@ -56,6 +56,8 @@ class ReactTheme extends React.Component{
             cache: false,
             processData: false,
             contentType: false
+        }).done(function(){
+            window.location.replace("http://localhost:8080/compl");
         });
     }
 
@@ -81,7 +83,7 @@ class ReactTheme extends React.Component{
                     <div className="section"><div className="dash-button" style={{padding: "20px", marginLeft:"150px"}} onClick={this.colors}><div className="fa fa-refresh" style={{margin:"0px 10px 0px 0px"}}></div>Generate</div></div>
                 <div className="dash-section">
                     <div className="dash-element-2">
-                        <div className="dash-item"><h3>Theme Name</h3> <input type="text" name="name" defaultValue="Theme Name" maxLength="45" required pattern="[a-zA-Z0-9]+"/></div>
+                        <div className="dash-item"><h3>Theme Name</h3> <input type="text" id="name" name="name" defaultValue="Theme Name" maxLength="45" required pattern="[a-zA-Z0-9]+"/></div>
                     </div>
                     <div className="dash-element-2"> <div className="dash-item"><h3>Theme Files</h3><form encType="multipart/form-data"><input type="file" name="files"  multiple/></form></div></div>
 
