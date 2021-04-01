@@ -60,6 +60,7 @@ header,
 nav,
 section {
     display: block;
+    padding:40px;
 }
 
 h1 {
@@ -965,6 +966,10 @@ DASHBOARD
     margin-bottom: 3rem !important;
 }
 
+.add-top {
+    margin-top: 3rem !important;
+}
+
 .no-border {
     border: none;
 }
@@ -997,6 +1002,17 @@ DASHBOARD
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+}
+
+.section{
+    display: block;
+    width: 100%;
+    margin: 20px 0px;
+}
+
+.widget-small{
+    width:25px;
+    height: 25px;
 }
 
 

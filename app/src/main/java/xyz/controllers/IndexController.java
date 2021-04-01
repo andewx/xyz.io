@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 
 public class IndexController extends BaseController{
 
@@ -38,6 +37,35 @@ public class IndexController extends BaseController{
         ctx.contentType("html");
         ctx.result(htmlResponse.toString());
 
+    }
+
+
+    public void Users(Context ctx){
+
+        SiteTemplate templatizer = new SiteTemplate();
+        SiteTemplate viewForms = new SiteTemplate();
+        StringBuilder htmlResponse = new StringBuilder();
+        String message = "";
+
+        try{
+            String recieve = ctx.cookie("MESSAGE");
+            if(recieve.equals("ADDED")){
+                message = "User added!";
+            }
+        }catch(Exception e){
+            //Do nothing
+        }
+        templatizer.GetTemplate("templates/ion.html");
+        viewForms.GetTemplate("views/register-login.html");
+        templatizer.AddKey("controllerTitle", "Framework Login/Registration");
+        viewForms.AddKey("Message", message);
+        viewForms.ReplaceKeys();
+        templatizer.AddKey("controllerContent", viewForms.GetHtml());
+        templatizer.ReplaceKeys();
+        htmlResponse.append(templatizer.GetHtml());
+
+        ctx.contentType("html");
+        ctx.result(htmlResponse.toString());
     }
 
     public String WhatIP(){

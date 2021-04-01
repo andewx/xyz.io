@@ -4,6 +4,7 @@ package xyz.controllers;
 import io.javalin.http.Context;
 import xyz.app.AppManager;
 import xyz.dbkit.DBMain;
+import xyz.dbkit.DBNode;
 import xyz.model.ModelKeys;
 import xyz.model.ModelObject;
 import xyz.model.User;
@@ -20,20 +21,38 @@ public class UserController extends BaseController{
     public void login(Context ctx){
         String password = ctx.formParam("Password");
         String email = ctx.formParam("Email");
-        User userObj = (User)mDB.findKey(mDB.GetNode("Users"), "User", email);
+        User userObj;
+        ModelObject thisModel;
+        thisModel  = mDB.findKey(mDB.GetNode("Users"), "User", email);
+        try {
+            userObj = new User(thisModel);
+        } catch(Exception e){
+                System.out.println("Error: User Object Format Invalid");
+                System.out.println(thisModel.toString(3));
+                ctx.cookie("ERROR", "User or Group Policy Not Found");
+                ctx.status(201);
+                ctx.redirect("/");
+                return;
+        }
+
         //Generate SHA256 Secure Hash
        String entered = User.PasswordSHA(password);
        String userPass = userObj.getPassword();
-       if(entered != userPass){
-           ctx.cookie("error-message", "Email/Password does not match.");
-           ctx.status(201);
+       if(!entered.equals(userPass)){
+           System.out.println("User password doesn't match");
+           ctx.cookie("ERROR", "INVALPASS");
+           ctx.status(203);
+           ctx.redirect("/users");
            return;
        }
-
+        System.out.println("User Logged In!");
         String GUID = mApp.AddSession(userObj.getEmail());
         ctx.cookieStore("GUID", GUID);
-        ctx.cookieStore("message", "User login successful");
-        ctx.redirect(this.mRouteFrom);
+        ctx.cookieStore("USER", userObj.getUID());
+        ctx.cookie("USER", userObj.getUID());
+        ctx.cookie("GUID", GUID);
+        ctx.cookieStore("MESSAGE", "SUCCESS");
+        ctx.redirect("/admin");
     }
 
     public void Register(Context ctx){
@@ -41,6 +60,20 @@ public class UserController extends BaseController{
        String content = defaultUser.Form();
        ctx.contentType("text/html");
        ctx.result(content);
+    }
+
+    public void SubmitUser(Context ctx){
+        String email = ctx.formParam("Email");
+        String pass = ctx.formParam("Password");
+        String usern = ctx.formParam("Name");
+        String first = ctx.formParam("FirstName");
+        String last = ctx.formParam("LastName");
+        User newUser = new User(email,pass,usern,first,last);
+        DBNode users = mDB.GetNode("Users");
+        mDB.AddModel(users, newUser);
+        ctx.cookieStore("MESSAGE", "ADDED");
+        ctx.cookie("MESSAGE", "ADDED");
+        ctx.redirect("/users");
     }
 
     public void GetLogin(Context ctx){

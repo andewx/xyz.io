@@ -19,16 +19,21 @@
     </div>
 </div>
 <div id='user-context' class='inline-context-wrapper row'>
-    <form id='user-form' action='model/create/User' method='post' value='Register'  enctype='multipart/form-data' class="align-center">
+    <form id='user-form' action='/users/submit' method='post' value='Register'  enctype='multipart/form-data' class="align-center">
         <div class="form-item">
             <div class="form-item-label">Email: </div>
             <input type="email" name="Email" value="myemail@email.com" maxlength="45"/>
+            <div class="form-item-label">Username </div>
+            <input type="text" name="Name" value="myname" maxlength="45"/>
+            <div class="form-item-label">FirstName </div>
+            <input type="text" name="FirstName" value="first" maxlength="45"/>
+            <div class="form-item-label">LastName </div>
+            <input type="text" name="LastName" value="last" maxlength="45"/>
             <div class="form-item-label">Password:  </div>
             <input type="password" name="Password" maxlength="45"/>
             <input type="submit" value="submit"/>
         </div>
     </form>
-    <div class='form-caption align-center'>Register</div>
 </div>
 <div id='group-context' class='inline-context-wrapper row'>
     <form id='group-form' action='users/login' method='post' value='Login'  enctype='multipart/form-data' class="align-center">
@@ -40,7 +45,6 @@
             <input type="submit" value="Login"/>
         </div>
     </form>
-    <div class='form-caption align-center'>Login</div>
-    <div class="error-message"></div>
 </div>
 </div>
+<div class="message align-center"> @:Message </div>

@@ -14,12 +14,33 @@ public class AppManager {
    private Sessions mSessions;
    private DBMain mDB;
    private RouteManager mRouteManager;
+   private String mName;
+
+    public String getRemoteURL() {
+        return remoteURL;
+    }
+
+    public void setRemoteURL(String remoteURL) {
+        this.remoteURL = remoteURL;
+    }
+
+    private String remoteURL;
 
    public AppManager(DBMain db, RouteManager router){
        mSessions = new Sessions();
        mDB = db;
        mRouteManager = router;
+       mName = "xyzServer";
    }
+
+   public String GetName(){
+       return mName;
+   }
+
+   public void SetName(String m){
+       mName = m;
+   }
+
 
 
    public String AddSession(String email){
@@ -27,12 +48,16 @@ public class AppManager {
        DBNode grpNode = mDB.GetNode("Groups");
        User userObj = new User(mDB.findKey(userNode, "User", email));
        if(userObj != null) {
-           Group grpObj = (Group) mDB.findKey(grpNode, "Group", userObj.getGroupID());
-           Integer access = grpObj.GetAccessLevel();
-           return mSessions.AddSession(userObj.getEmail(), access); //return GUID
+           Group grpObj = new Group(mDB.findKey(grpNode, "Group", userObj.getGroupID()));
+           if(grpObj !=null) {
+               Integer access = grpObj.GetAccessLevel();
+               return mSessions.AddSession(userObj.getEmail(), access);
+           }else{
+               return mSessions.AddSession(userObj.getEmail(),6);
+           }
        }
 
-       return null;
+       return "NONE";
    }
 
    public void AddGetRoute(String route, Handler handle, String desc){
@@ -102,7 +127,13 @@ public class AppManager {
 
    private synchronized void Remove(String guid){
        mSessions.RemoveSession(guid);
-    }
+   }
+   public void SetSessionMessage(String msg, String GUID){
+     mSessions.SetMessage(msg, GUID);
+   }
+   public String GetSessionMessage(String GUID){
+    return mSessions.GetMessage(GUID);
+   }
 
    private void syncSessions(){
        for(String key : mSessions.GetSessions()){

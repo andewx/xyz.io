@@ -3,13 +3,11 @@ package xyz.controllers;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 import xyz.app.AppManager;
 import xyz.app.Security;
 import xyz.dbkit.DBMain;
-
-
-import java.util.HashMap;
-import java.util.Map;
+import xyz.model.User;
 
 public class BaseController implements Handler {
 
@@ -25,34 +23,72 @@ public class BaseController implements Handler {
         mSecurity = 6;
     }
 
+    public User UserFromSession(Context ctx){
+        User thisUser;
+        try{
+            String userID = ctx.cookie("USER");
+            JSONObject thisModel  = mDB.findKey(mDB.GetNode("Users"), "User", userID);
+            thisUser = new User(thisModel);
+            return thisUser;
+        }catch(Exception e){
+            return null;
+        }
+    }
+
     public void pre(Context ctx){
-        Security securityObj = new Security();
-        String securityGroup = "";
+
         try {
-            securityGroup = ctx.cookie("GUID");
-            if(securityGroup != null) {
-                mSecurity = mApp.GetSessionSecurity(securityGroup);
-            }else{
+            Security securityObj = new Security();
+            String securityGroup = "";
+            mSecurity = 6; //DEFAULT
+
+            int routeSecurity = mApp.GetRouteSecurity(ctx.matchedPath());
+            if(routeSecurity == 6){
+                return;
+            }
+
+            try {
+                securityGroup = ctx.cookie("GUID");
+                ctx.cookie("ERROR", "");
+                ctx.cookie("MESSAGE", "");
+                if (securityGroup != null) {
+                    mSecurity = mApp.GetSessionSecurity(securityGroup);
+                } else {
+                    mSecurity = 6;
+                }
+            } catch (Exception e) {//Do nothing
+                ctx.cookie("ERROR", "NOEXIST");
+                ctx.cookie("MESSAGE", "NOPRIV");
                 mSecurity = 6;
             }
-        }catch(Exception e){//Do nothing
-            mSecurity = 6;
-        }
 
-        int routeSecurity = mApp.GetRouteSecurity(ctx.matchedPath());
-        Security.Resolver myResolver = securityObj.HasPermission(mSecurity, routeSecurity );
-
-        if(!myResolver.IsValid()){
-            ctx.redirect("/", 501); //Redirect home with error.
-        }else{
-            if(myResolver.NeedsResolve()){
-                resolve(ctx);
+            if (mSecurity != null) {
+                Security.Resolver myResolver = securityObj.HasPermission(mSecurity, routeSecurity);
+                if (!myResolver.IsValid()) {
+                    ctx.cookie("MESSAGE", "DENIED");
+                    ctx.redirect("http://localhost:8080/", 200); //Redirect home with error.
+                } else {
+                    if (myResolver.NeedsResolve()) {
+                        resolve(ctx);
+                    }
+                }
+            } else {
+                ctx.cookie("ERROR", "NOPRIV");
+                ctx.cookie("MESSAGE", "DENIED");
+                ctx.redirect("http://localhost:8080/", 200); //Redirect home with error.
             }
+        }catch(Exception e){
+            ctx.cookie("ERROR", "DENIED");
+            ctx.cookie("MESSAGE", "DENIED");
+            ctx.redirect("http://localhost:8080/", 200); //Redirect home with error.
         }
+
     }
 
     public void post(Context ctx){
         mRouteFrom = ctx.url(); //Sets the last url
+        ctx.removeCookie("MESSAGE");
+        ctx.removeCookie("ERROR");
     }
 
     public void resolve(Context ctx){

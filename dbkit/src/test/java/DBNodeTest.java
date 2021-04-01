@@ -3,7 +3,6 @@ import xyz.dbkit.*;
 import org.junit.jupiter.api.Test;
 import xyz.model.ModelObject;
 import xyz.model.Site;
-import xyz.model.Template;
 
 
 import java.io.IOException;

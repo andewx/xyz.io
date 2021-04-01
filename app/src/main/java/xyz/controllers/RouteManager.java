@@ -2,6 +2,7 @@ package xyz.controllers;
 
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -68,7 +69,13 @@ public class RouteManager {
 
 
     public Integer getRouteSecurity(String route){
-        return RouteConfigs.get(route).getSecurity();
+        String routeParse = route.replace("*","");
+        try {
+            Integer sec = RouteConfigs.get(routeParse).getSecurity();
+            return sec;
+        }catch(NullPointerException e){
+            return 6;
+        }
     }
 
     public String getRouteDesc(String route){

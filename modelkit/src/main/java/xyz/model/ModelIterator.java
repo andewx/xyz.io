@@ -21,10 +21,14 @@ public class ModelIterator implements Iterator<ModelObject> {
         index = -1;
         childIndex = 0;
         childKeys = new ArrayList<>();
-        while(childList == null){
+        while(childList == null && index < ModelKeys.ModelKeys().size() - 1){
             index++;
             modelKey = ModelKeys.ModelKeys().get(index);
             childList = curr.getModels(modelKey);
+        }
+
+        if(index > ModelKeys.ModelKeys().size() - 1){
+            isDone = true;
         }
 
         if(childList != null){
@@ -37,18 +41,22 @@ public class ModelIterator implements Iterator<ModelObject> {
 
     @Override
     public boolean hasNext() {
-        if(childIndex > childList.keySet().size()-1){
-            childIndex = 0;
-            index++;
-        }
-        if(index > ModelKeys.ModelKeys().size() - 1){
-            isDone = true;
-        }else{
-            modelKey = ModelKeys.ModelKeys().get(index);
-            childList = curr.getModels(modelKey);
-        }
+        try {
+            if (childIndex > childList.keySet().size() - 1) {
+                childIndex = 0;
+                index++;
+            }
+            if (index > ModelKeys.ModelKeys().size() - 1) {
+                isDone = true;
+            } else {
+                modelKey = ModelKeys.ModelKeys().get(index);
+                childList = curr.getModels(modelKey);
+            }
 
-        if(childList == null){
+            if (childList == null) {
+                isDone = true;
+            }
+        }catch(NullPointerException e){
             isDone = true;
         }
 

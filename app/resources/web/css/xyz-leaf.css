@@ -56,6 +56,7 @@ Light UI/UX
 --lavender: #f2edfd;
 --denim: #e2e9f5;
 --gray: #e8ecf3;
+--light-gray: #eeeeee;
 --light-text: #a3a3a3;
 --light-alt: #9faab6;
 --feather: #d3d3d3;
@@ -90,42 +91,50 @@ Light UI/UX
  }
 
  h1{
- font-family: "Barlow-Bold", sans-serif;
- color: var(--dark);
- padding: 1.5em;
+font-family: 'montserrat', sans-serif;
+ color: var(--fog);
+ margin: 0px 0px 15px 0px;
  font-size: 2.3em;
  }
 
- h2, h3{
- font-family: "Barlow-Bold", sans-serif;
- color: var(--heavy-text)
- padding: 1.5em;
+ h2{
+ font-family: 'montserrat', sans-serif;
+ color: var(--light-olive);
+ margin: 0px 0px 10px 0px;
  font-size: 1.5em;
  }
 
+ h3{
+ font-family: 'Barlow-Thin', sans-serif;
+  font-size: 1.0em;
+  margin: 0px 0px 10px 00px;
+   color: var(--midnight);
+  }
+
  h4{
- font-family: "Barlow-Bold", sans-serif;
+ font-family: 'Barlow-Thin', sans-serif;
  color: var(--persian-blue)
  padding: 1.5em;
- font-size: 1.5em;
+margin: 0px 0px 10px 0px;
+ font-size: 0.9em;
  }
 
  h5{
- font-family: "Barlow-Bold", sans-serif;
- color: var(--charcoal)
- padding: 1.5em;
- font-size: 1.5em;
+ font-family: 'Barlow-Thin', sans-serif;
+ color: var(--fog)
+ margin: 0px 0px 10px 0px;
+ font-size: 0.8em;
  }
 
  h6{
- font-family: "Barlow-Bold", sans-serif;
- color: --byzantine;
- padding: 1.5em;
+ font-family: 'montserrat', sans-serif;
+ color: var(--byzantine);
+ margin: 0px 0px 10px 0px;
  font-size: 1.5em;
  }
 
  i {
- font-family: "Barlow-Italic", sans-serif;
+ font-family: 'montserrat', sans-serif;
  }
 
  .sub-headerfont{
@@ -223,10 +232,12 @@ Light UI/UX
 
 .header-block:hover{
      background: var(--midnight);
-     color: white;
+     color: white !important;
      animation: fadeIn;
      animation-duration: 0.5s;
+     cursor: pointer;
 }
+
 
  .context-white{
   background: white;
@@ -309,10 +320,10 @@ Light UI/UX
     font-family: "Barlow-Bold", sans-serif;
     padding: 8px;
     display:inline-block;
-    background: white;
-    color: var(--light-text);
-    font-size: 0.8em;
-    width: 20%;
+    background: var(--charcoal);
+    color: white;
+    font-size: 0.5em;
+    width: 12%;
     height: 100%;
     overflow-x: hidden;
     padding-top: 20px;
@@ -322,17 +333,19 @@ Light UI/UX
 .vnav-light a{
  padding: 5px;
  margin: 0 auto;
+ color: inherit;
+ background: inherit;
 }
 
 .vnav-light .fa{
 font-family: "FontAwesome";
-font-size: 1.2em;
-padding: 0 20px 0 20px;
+font-size: 1.0em;
+padding: 0 5px 0 5px;
 }
 
 .vnav-light .label{
 font-family: "Barlow-Bold", sans-serif;
-color: var(--midnight);
+color: white;
 }
 
 
@@ -361,7 +374,7 @@ color: var(--midnight);
     display:block;
     padding: 20px 15px 20px 15px;
     margin-top: 10px;
-    border-top: 1px solid var(--feather);
+    border-top: 1px solid var(--midnight);
 }
 
 .vnav-section:first-child{
@@ -376,7 +389,7 @@ color: var(--midnight);
 .vnav-section ul li{
     display: block;
     padding: 20px;
-    margin: 20px 0;
+    margin: 5px 0;
     border-radius: 5px;
     list-style:none;
 }
@@ -414,15 +427,13 @@ font-size: 0.7em;
 }
 
 .dash-section{
-    display:block;
-    padding: 20px 0;
+
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 30px;
 }
 
-.dash h3{
- color: var(--charcoal);
- margin: 10px 0;
- font-size: 0.9em;
-}
 
 .dash form{
  font-size: 0.9em;
@@ -430,31 +441,56 @@ font-size: 0.7em;
  margin: 10px 0;
 }
 
+.dash-icon{
+display: inline;
+float: right;
+font-size: 0.8em;
+font-family: "FontAwesome";
+}
+
+.dash-header{
+    padding: 40px;
+    font-size: 1.2em;
+    color: var(--light-olive);
+}
+
 .dash ul{
 list-style: none;
 display: block;
+text-align: left;
+padding: 10px;
+font-size: 0.8em;
 }
 
 .dash li{
 list-style: none;
 display: block;
 padding: 10px;
-margin: 10px 0;
+margin: 10px 20px;
 border-radius: 5px;
-font-size: 0.8em;
 font-family: "Barlow-Bold", sans-serif;
 color: var(--midnight);
-}
+text-align: left;
 
-.dash li:first-child{
- background: var(--light-olive);
 }
 
 .dash li:hover{
- background: var(--sky);
+ background: var(--fog);
  cursor: pointer;
  animation: fadeIn;
  animation-duration: 1.0s;
+}
+
+.dash textarea{
+  background: #fafafa;
+  width: 75%;
+  font-size: 0.8em;
+  border-radius: 5px;
+  border: 0px solid transparent;
+}
+
+.dash textarea:focus:hover{
+ background: white;
 }
 
 .dash input{
@@ -471,13 +507,174 @@ color: var(--light-text);
 color: var(--heavy-text);
 }
 
+.dash .itemName{
+    font-family: "Barlow-Bold", sans-serif;
+}
+
+.dash .itemCaption{
+    font-family: "Barlow-Thin", sans-serif;
+    font-size: 0.9em;
+    color: var(--light-text);
+}
+
+.dash .item{
+    display: block;
+}
+
+.dash .itemFields{
+    padding: 10px 15px;
+    display: none;
+}
+
+.dash .itemField{
+    color: var(--midnight);
+}
+
+.itemIcons a{
+ padding: 0 10px;
+ color: var(--light-text);
+}
+
+.itemIcons a:hover{
+ color: var(--midnight);
+}
+
+.dash .itemLabel{
+ display: inline-block;
+ width: 30%;
+ margin-right: 4%;
+}
+
+.dash .itemField input{
+ display: inline-block;
+ width: 68%;
+ color: var(--light-text);
+ border-radius: 5px;
+}
+
+.dash .itemField input:hover{
+    background: white;
+}
+
+.itemFields .itemButton{
+ width: 20%;
+ background: var(--midnight);
+ color: white;
+ padding: 10px;
+ border-radius: 5px;
+}
+
+.dash .itemButton:hover{
+ background: var(--charcoal);
+ cursor: pointer;
+}
+
+.message{
+ color: var(--light-olive);
+ font-size: 1.3em;
+}
+
 .dash-element-3{
+  display: inline-block;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 26%;
+  margin: 2%;
+}
+
+.dash-element-2{
+  display: inline-block;
   background: white;
   padding: 10px;
   margin: 10px;
   border-radius: 3px;
-  width: 28%;
+  width: 48%;
 }
+
+.dash-element-1{
+  display: inline-block;
+  background: transparent;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 3px;
+  width: 100%;
+}
+
+.dash form{
+    font-family: 'montserrat', sans-serif;
+    border-radius: 5px;
+    padding: 15px;
+    width: 90%;
+    border: 1px solid #f9f9f9;
+}
+
+.dash-button{
+   display: inline;
+   width: 20%;
+   height: 40px;
+   padding: 15px;
+   border-radius: 35px;
+   background: var(--gray);
+   color: var(--feather);
+   vertical-align: middle;
+   text-align: center;
+}
+
+.dash-button:hover{
+   background: var(--charcoal);
+   cursor: pointer;
+}
+
+.dash-item-large{
+    display:inline-block;
+    width: 150px;
+    height: 150px;
+}
+
+.dash-item-large:hover{
+    background-image: linear-gradient(rgba(0, 0, 180, 0.5), rgba(70, 140, 220, 0.5));
+    display:inline-block;
+    width: 150px;
+    height: 150px;
+}
+
+.lighten-overlay{
+    background: rgba(255,255,255,0.0);
+    z-index: 1000;
+    width:100%
+    height: 100%;
+}
+
+.lighten-overlay:hover{
+   background: rgba(255,255,255,0.3);
+}
+
+.dash-item-caption{
+    display: block;
+    width:100%;
+    vertical-align: bottom
+    background: rgba(0,0,0, 0.3);
+    color: white;
+    font-size: 0.7em;
+}
+
+.selectable-light{
+    background: white;
+    color: var(--charcoal);
+}
+
+.selectable-light:hover{
+    background: var(--denim);
+    cursor: pointer;
+}
+
+.palette-banner{
+    display:inline-block;
+    width:35px;
+    height:80px;
+}
+
 
 /* ===================================================================
  * # reusable and common theme styles
