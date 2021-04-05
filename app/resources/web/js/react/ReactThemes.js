@@ -22,8 +22,8 @@ function Themes(){
             return(
             <div>
                 <div className="dash-section align-center">
-                {list.map(item =>(
-                    <Theme key={item} name={item} ></Theme>
+                {list.map((item,index) =>(
+                    <Theme key={item} name={item} index={index} ></Theme>
                 ))}
 
                 </div>
@@ -42,9 +42,11 @@ function Themes(){
 
   function Theme(props){
    const [name, setName] = React.useState(props.name);
+   const [index, setIndex] = React.useState(props.index);
    const [request, setRequest] = React.useState({item: null, loaded: false});
    const [showDir, setShowDir] = React.useState(false);
    const [showEdit, setShowEdit] = React.useState(false);
+   const formRef = React.useRef(null);
 
    React.useEffect(() =>{
         var url = "/themes/get/"+name
@@ -65,6 +67,23 @@ function Themes(){
        console.log(format)
        return format
    }
+
+  function submit(){
+           var themeForm = formRef.current
+           var formData = new FormData(themeForm);
+           formData.append("name", name);
+           var url = '/themes/addFiles';
+           $.ajax(url, {
+                     type: 'POST',
+                     data: formData,
+                     cache: false,
+                     processData: false,
+                     contentType: false
+                 }).done(function(){
+                     window.location.reload();
+                 });
+
+    }
 
 
    function renderDirs(uid, directory){
@@ -93,7 +112,7 @@ function Themes(){
    try{
       let fileKeys = Object.keys(dirObj)
       const files = (fileKeys.map(file =>(
-        <li key={file}>{file} <div className="fa fa-trash"></div></li>
+        <li key={file}>{file} <div onClick={() => deleteFile(dirObj[file])}className="fa fa-trash"></div></li>
       )));
       return files;
      }
@@ -114,16 +133,27 @@ function Themes(){
         location.reload();
   }
 
-  async function deleteFile(name, file){
-       const res = await fetch("/themes/deleteFile/"+name+"/"+file);
-       location.reload();
+  async function deleteFile(f){
+
+       var formData = {'file' : f}
+       const res = await fetch("/themes/deleteFile/"+name,{
+           method: 'POST',
+           body: JSON.stringify(formData),
+           cache: 'no-cache'
+       });
+        console.log(res)
+        window.location.reload();
   }
 
    function renderEdit(){
      if(showEdit){
          return (
              <div id={request.item.UID+"-dir"} className="internal-block">
-                   <div id={request.item.UID+"-edit"}><form encType="multipart/form-data"><input type="file" name="files"  multiple/></form></div>
+                   <div id={request.item.UID+"-edit"}><form ref={formRef} name="file-form" encType="multipart/form-data">
+                    <input type="file" name="files"  multiple/>
+                    </form>
+                    <button onClick={submit}>Upload</button>
+                    </div>
              </div>
          );
          }else{
@@ -134,16 +164,16 @@ function Themes(){
    function renderFolder(){
     if(!showDir){
         return(
-            <div className="fa fa-folder pull-left style='padding:10px; margin-bottom:10px;'" onClick={() => setShowDir(!showDir)}></div>
+            <div className="fa fa-folder pull-left style='padding:10px; margin-bottom:10px;'" onClick={()=>setShowDir(!showDir)}></div>
         )
     }
    return(
-               <div className="fa fa-folder-open pull-left style='padding:10px; margin-bottom:10px;'" onClick={() => setShowDir(!showDir)}></div>
+               <div className="fa fa-folder-open pull-left style='padding:10px; margin-bottom:10px;'" onClick={()=>setShowDir(!showDir)}></div>
        )
    }
 
 
-   function renderItem(load){
+   function renderItem(load, index){
         if(load){
             return(
              <div id={request.item.UID} className="dash-element-3 item selectable-light" id={request.item.UID} key={request.item.UID}>

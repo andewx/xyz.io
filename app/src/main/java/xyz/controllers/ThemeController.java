@@ -14,18 +14,22 @@ import xyz.model.User;
 import xyz.webkit.SiteTemplate;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ThemeController extends BaseController{
 
+    protected String Root;
+
     public ThemeController(DBMain db_instance, AppManager app) {
         super(db_instance, app);
+        Root = "resources/web/themes";
     }
 
     public void Display(Context ctx){
@@ -109,7 +113,6 @@ public class ThemeController extends BaseController{
             return;
         }
     }
-
     public void GetID(Context ctx){
         String themeID = ctx.pathParam("name");
         DBNode themeNode = mDB.GetNode("Themes");
@@ -128,6 +131,7 @@ public class ThemeController extends BaseController{
         }
     }
 
+
     public void CreateTheme(Context ctx){
         try {
             String themeName = ctx.formParam("name");
@@ -137,7 +141,7 @@ public class ThemeController extends BaseController{
             assert themeName != null;
 
             //Create Directories
-            String srcPath = "themes/" + themeName;
+            String srcPath = Root+ "/" + themeName;
             Path url = Path.of(srcPath);
             try {
 
@@ -170,7 +174,7 @@ public class ThemeController extends BaseController{
                     if (uploadedFile.getFilename().endsWith(".html")) {
                         htmlFilename = uploadedFile.getFilename();
                         if(!Files.exists(Path.of(srcPath + "/" + htmlFilename).toAbsolutePath())) {
-                            FileUtil.streamToFile(uploadedFile.getContent(), srcPath + "/" + uploadedFile.getFilename());
+                            FileUtil.streamToFile(uploadedFile.getContent(), srcPath + "/index.html");
                         }
                     } else if (uploadedFile.getFilename().endsWith(".js")) {
                         if(!Files.exists(Path.of(jsPath + "/" + uploadedFile.getFilename()).toAbsolutePath())) {
@@ -187,7 +191,7 @@ public class ThemeController extends BaseController{
                     }
                 }
 
-                ModelObject myTheme = new Theme(themeName, htmlFilename, palString);
+                ModelObject myTheme = new Theme(themeName, "index.html", palString);
                 DBNode themeNode = mDB.GetNode("Themes");
                 themeNode.AddModel(myTheme);
                 mDB.RunSync();
@@ -221,7 +225,7 @@ public class ThemeController extends BaseController{
     public String GetThemeFiles(String themeId) {
         try {
             //List Directories
-            String srcPath = "themes/" + themeId;
+            String srcPath = Root + "/" + themeId;
 
 
             Path url = Path.of(srcPath);
@@ -318,8 +322,8 @@ public class ThemeController extends BaseController{
             return;
         }catch(Exception e){
             System.out.println("File / Theme Could Not Be Found");
-            ctx.contentType("text");
-            ctx.result("Bad Request");
+            ctx.contentType("application/json");
+            ctx.result("{\"message\":\"error getting contents\"}");
             return;
         }
     }
@@ -331,29 +335,30 @@ public class ThemeController extends BaseController{
             String content = ctx.formParam("content");
             assert content != null;
             Files.writeString(Path.of(filePath), content);
-            ctx.contentType("text");
-            ctx.result("File written");
+            ctx.contentType("application/json");
+            ctx.result("{\"message\":\"file written\"}");
             return;
         }catch(Exception e){
             System.out.println("File / Theme Could Not Be Found");
-            ctx.contentType("text");
-            ctx.result("Bad Request");
+            ctx.contentType("application/json");
+            ctx.result("{\"message\":\"error submitting\"}");
             return;
         }
     }
 
     public void DeleteFile(Context ctx){
         try {
-            String themeName = ctx.formParam("name");
-            String filePath = ctx.formParam("path");
+            String themeName = ctx.pathParam("name");
+            JSONObject postMap = new JSONObject(ctx.body());
+            String filePath = postMap.getString("file");
             Files.delete(Path.of(filePath));
-            ctx.contentType("text");
-            ctx.result("File written");
+            ctx.contentType("application/json");
+            ctx.result("{ \"message\":\"deleted\"}");
             return;
         }catch(Exception e){
             System.out.println("File not found");
-            ctx.contentType("text");
-            ctx.result("Bad Request");
+            ctx.contentType("application/json");
+            ctx.result("{\"message\":\"error deleting file\"}");
             return;
         }
     }
@@ -363,7 +368,19 @@ public class ThemeController extends BaseController{
             String themeName = ctx.formParam("name");
             DBNode themeNode = mDB.GetNode("Themes");
             Theme myTheme = new Theme(mDB.findKey(themeNode, "Theme", themeName));
-            String rootDir = "themes/" + themeName;
+            String rootDir = Root +"/" + themeName;
+            if(!Files.exists(Path.of(rootDir))){
+                Files.createDirectory(Path.of(rootDir));
+            }
+            if(!Files.exists(Path.of(rootDir+"/img"))){
+                Files.createDirectory(Path.of(rootDir+"/img"));
+            }
+            if(!Files.exists(Path.of(rootDir+"/js"))){
+                Files.createDirectory(Path.of(rootDir+"/js"));
+            }
+            if(!Files.exists(Path.of(rootDir+"/css"))){
+                Files.createDirectory(Path.of(rootDir+"/css"));
+            }
 
             for(UploadedFile uploadedFile : ctx.uploadedFiles("files")){
                 if(uploadedFile.getFilename().endsWith(".png") || uploadedFile.getFilename().endsWith(".jpg") ){
@@ -376,17 +393,20 @@ public class ThemeController extends BaseController{
                     FileUtil.streamToFile(uploadedFile.getContent(), rootDir + "/css/" + uploadedFile.getFilename());
                 }
                 else if(uploadedFile.getFilename().endsWith(".html")){
+                    myTheme.setHtmlFile(uploadedFile.getFilename());
                     FileUtil.streamToFile(uploadedFile.getContent(), rootDir + "/" + uploadedFile.getFilename());
                 }
             }
-            ctx.contentType("text");
-            ctx.result("success");
+            themeNode.UpdateModel(myTheme);
+            mDB.RunSync();
+            ctx.contentType("application/json");
+            ctx.result("{\"message\":\"success\"}");
             return;
 
         }catch(Exception e){
             System.out.println("Error adding files to theme");
-            ctx.contentType("text");
-            ctx.result("Bad Request");
+            ctx.contentType("application/json");
+            ctx.result("{\"message\":\"error on update\"}");
             return;
         }
 
@@ -398,16 +418,18 @@ public class ThemeController extends BaseController{
             DBNode themeNode = mDB.GetNode("Themes");
 
             //List Directories
-            String srcPath = "themes/" + themeName;
+            String srcPath = Root +"/" + themeName;
             DeleteVisitor fVisitor = new DeleteVisitor();
             Files.walkFileTree(Path.of(srcPath), fVisitor);
             themeNode.DeleteModel("Theme", themeName);
             mDB.RunSync();
+            ctx.contentType("application/json");
+            ctx.result("{\"message\":\"deleted theme\"}");
 
         }catch(Exception e){
             System.out.println("Error deleting theme");
-            ctx.contentType("text");
-            ctx.result("Bad Request");
+            ctx.contentType("application/json");
+            ctx.result("{\"message\":\"error deleting theme\"}");
             return;
         }
 

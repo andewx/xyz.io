@@ -79,7 +79,7 @@ public final class ModelKeys { //Static Model Methods
             return new Menu("","");
         }
         if(name.equals("Page")){
-            return new Page("", "");
+            return new Page("", "", "");
         }
 
         return null;

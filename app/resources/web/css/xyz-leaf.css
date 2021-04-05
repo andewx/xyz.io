@@ -495,7 +495,7 @@ text-align: left;
 
 .dash input{
 border: none;
-width: 100%;
+width: 25%;
 margin: 10px 0;
 font-size: 0.7em;
 padding: 5px;
@@ -607,6 +607,12 @@ color: var(--heavy-text);
     padding: 15px;
     width: 90%;
     border: 1px solid #f9f9f9;
+}
+
+label{
+    font-size: 0.9em;
+    margin-right: 10px;
+    display: inline-block;
 }
 
 .dash-button{

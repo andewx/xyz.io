@@ -49,6 +49,8 @@ public class App {
         myApp.AddGetRoute("/users/find/:name", userController::GetUserStarts, "Find specfic user");
         myApp.AddGetRoute("/groups/list", groupController::GetGroups, "Lists All Groups", 3);
         myApp.AddGetRoute("/sites/get", sitesController::Get, "Gets all sites", 3);
+        myApp.AddGetRoute("/sites/getKeys", sitesController::GetKeys, "Gets site keys", 3);
+        myApp.AddGetRoute("/sites/getSite/:name", sitesController::GetID, "Gets site by ID", 3);
         myApp.AddGetRoute("/theme", adminController::Theme, "New theme page", 3);
         myApp.AddGetRoute("/compl", adminController::compl, "Success Page");
         myApp.AddGetRoute("/themes/getKeys", themesController::GetKeys, "List Themes", 3);
@@ -57,7 +59,7 @@ public class App {
         myApp.AddGetRoute("/themes", themesController::Display, "Themes Dashboard", 3);
         myApp.AddGetRoute("/themes/get_files/:name", themesController::GetFiles, "Get files for theme", 3);
         myApp.AddGetRoute("/themes/delete/:name", themesController::DeleteTheme, "Delete theme", 3);
-        myApp.AddGetRoute("/themes/deleteFile/:name/:path", themesController::DeleteFile, "Delete File", 3);
+
         //Build Model POST API
         myApp.AddPostRoute("/model/create/:name", modelController::ModelCreate, "Post params with Model Properties to create model :name type", 3);
         myApp.AddPostRoute("/model/update/:name/:id", modelController::ModelUpdate, "Post params to update model :name type", 3);
@@ -65,6 +67,8 @@ public class App {
         myApp.AddPostRoute("/users/submit", userController::SubmitUser, "Creates user with default privileges");
         myApp.AddPostRoute("/themes/create", themesController::CreateTheme, "Create Theme", 3);
         myApp.AddPostRoute("/themes/addFiles", themesController::AddFiles, "Add Files to Theme", 3);
+        myApp.AddPostRoute("/themes/deleteFile/:name", themesController::DeleteFile, "Delete File", 3);
+        myApp.AddPostRoute("/sites/addSite", sitesController::CreateSite, "Create a new site", 3);
 
         //Javalin Pre/Pos
         app.before("/user/*", userController::pre);

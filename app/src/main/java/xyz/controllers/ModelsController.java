@@ -83,11 +83,12 @@ public class ModelsController extends BaseController{
             try {
                 String siteID = ctx.formParam("SiteID");
                 String mName = ctx.formParam("Name");
-                Page newPage = new Page(mName, siteID);
+                String mHtmlFile = ctx.formParam("Filename");
+                Page newPage = new Page(mName, siteID,mHtmlFile);
                 DBNode pageNode = mDB.GetNode("Pages");
                 DBNode siteNode = mDB.GetNode("Sites");
                 DBNode themeNode = mDB.GetNode("Themes");
-                Site mySite = new Site(mDB.findKey(siteNode, "Site", newPage.getSiteID()));
+                Site mySite = new Site(mDB.findKey(siteNode, "Site", siteID));
                 Theme myTheme = new Theme(mDB.findKey(themeNode, "Theme", mySite.getThemeID()));
                 String srcURL = "/themes/" + myTheme.getName() + "/" + myTheme.getHtmlFile();
                 String pageURL = "/sites" + mySite.getName() + "/" + mName + ".html";

@@ -65,11 +65,11 @@ public class Site extends ModelObject{
         super(jObj);
 
         try { //Assumes jObj is a ModelObject internally
-            Description= (String) jObj.get("Description");
-            RestURL = (String) jObj.get("RestURL");
-            Title = (String) jObj.get("Title");
+            Description= (String) jObj.getString("Description");
+            RestURL = (String) jObj.getString("RestURL");
+            Title = (String) jObj.getString("Title");
             UID = Name;
-            ThemeID = (String) jObj.get("ThemeID");
+            ThemeID = (String) jObj.getString("ThemeID");
             updateKey("UID", UID);
             put("Title", Title);
             put("Description", Description);

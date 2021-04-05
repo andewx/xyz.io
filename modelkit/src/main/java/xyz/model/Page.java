@@ -5,22 +5,26 @@ import org.json.JSONObject;
 
 public class Page extends ModelObject{
     protected String SiteID;
-
-    public Page(String name, String siteID){
+    protected String Filename;
+    public Page(String name, String siteID, String fileName){
         super();
         ClassName = "Page";
         Name = name;
         SiteID = siteID;
+        Filename = fileName;
         updateKey("Name", Name);
         updateKey("ClassName", ClassName);
         put("SiteID", SiteID);
+        put("Filename", Filename);
     }
 
 
     public Page(String json){
         super(json);
         SiteID = (String)get("SiteID");
+        Filename = getString("Filename");
         put("SiteID", SiteID);
+        put("Filename", Filename);
     }
 
     public Page(JSONObject jObj){
@@ -28,7 +32,9 @@ public class Page extends ModelObject{
 
         try { //Assumes jObj is a ModelObject internally
             SiteID = (String)jObj.get("SiteID");
+            Filename = jObj.getString("Filename");
             put("SiteID", SiteID);
+            put("Filename", Filename);
 
         }catch(JSONException e){
             for (String key : jObj.keySet()){
@@ -47,6 +53,12 @@ public class Page extends ModelObject{
     public void setSiteID(String siteID){
         SiteID = siteID;
         updateKey("SiteID", SiteID);
+    }
+
+    public String getFilename(){ return Filename;}
+    public void setFilename(String file){
+        Filename = file;
+        updateKey("Filename", Filename);
     }
 
 

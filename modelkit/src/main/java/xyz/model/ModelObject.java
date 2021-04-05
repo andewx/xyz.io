@@ -26,7 +26,11 @@ public class ModelObject extends JSONObject {
     public ModelObject(JSONObject jObj){
 
         for(String key : jObj.keySet()){
-            put(key, jObj.getString(key));
+            try {
+                put(key, jObj.getString(key));
+            }catch(JSONException e){
+                put(key, jObj.getJSONObject(key));
+            }
             if(key.equals("UID")){
                 UID = jObj.getString(key);
             }
