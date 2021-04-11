@@ -51,6 +51,7 @@ public class App {
         myApp.AddGetRoute("/sites/get", sitesController::Get, "Gets all sites", 3);
         myApp.AddGetRoute("/sites/getKeys", sitesController::GetKeys, "Gets site keys", 3);
         myApp.AddGetRoute("/sites/getSite/:name", sitesController::GetID, "Gets site by ID", 3);
+        myApp.AddGetRoute("/sites/delete/:name", sitesController::DeleteSite, "Deletes Site", 3);
         myApp.AddGetRoute("/theme", adminController::Theme, "New theme page", 3);
         myApp.AddGetRoute("/compl", adminController::compl, "Success Page");
         myApp.AddGetRoute("/themes/getKeys", themesController::GetKeys, "List Themes", 3);
@@ -69,6 +70,8 @@ public class App {
         myApp.AddPostRoute("/themes/addFiles", themesController::AddFiles, "Add Files to Theme", 3);
         myApp.AddPostRoute("/themes/deleteFile/:name", themesController::DeleteFile, "Delete File", 3);
         myApp.AddPostRoute("/sites/addSite", sitesController::CreateSite, "Create a new site", 3);
+        myApp.AddPostRoute("/sites/addFiles/:name", sitesController::AddFiles, "Add Files To Site", 3);
+        myApp.AddPostRoute("/sites/deleteFile/:name", sitesController::DeleteFile, "Delete Site File", 3);
 
         //Javalin Pre/Pos
         app.before("/user/*", userController::pre);

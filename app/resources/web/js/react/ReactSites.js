@@ -209,8 +209,7 @@ function Sites(){
   function submit(){
            var siteForm = formRef.current
            var formData = new FormData(siteForm);
-           formData.append("name", name);
-           var url = '/sites/addFiles';
+           var url = '/sites/addFiles/'+name;
            $.ajax(url, {
                      type: 'POST',
                      data: formData,

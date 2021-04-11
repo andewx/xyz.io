@@ -124,6 +124,15 @@ public class Site extends ModelObject{
         return "Name";
     }
 
+    public void AddPage(Page pgObj){
+        try{
+            JSONObject pages = this.getJSONObject("Pages");
+            pages.put(pgObj.getUID(), pgObj);
+        }catch(Exception e){
+            System.out.println("Could not add page to site");
+        }
+    }
+
     @Override
     public String Form(){ //Override for custom form element processing
         StringBuilder sb = new StringBuilder();

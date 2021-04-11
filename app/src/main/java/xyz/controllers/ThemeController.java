@@ -3,6 +3,7 @@ package xyz.controllers;
 import io.javalin.core.util.FileUtil;
 import io.javalin.http.Context;
 import io.javalin.http.UploadedFile;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import xyz.app.AppManager;
@@ -191,6 +192,10 @@ public class ThemeController extends BaseController{
                     }
                 }
 
+                String CSSPAL = PaletteToCSS(palString);
+                assert CSSPAL != null;
+                Files.writeString(Path.of(Root+"/css/palette.css"), CSSPAL);
+
                 ModelObject myTheme = new Theme(themeName, "index.html", palString);
                 DBNode themeNode = mDB.GetNode("Themes");
                 themeNode.AddModel(myTheme);
@@ -220,6 +225,29 @@ public class ThemeController extends BaseController{
 
 
 
+    }
+
+    public String PaletteToCSS(String palette){
+        try {
+            JSONArray palObj = new JSONArray(palette);
+            String cssString = "root:{\n";
+
+            for (int i = 0; i < palObj.length(); i++) {
+                String internPal = "--pal" + Integer.toString(i) + ": rgb(";
+                JSONArray internArray = palObj.getJSONArray(i);
+                internPal = internPal.concat(internArray.getString(0) + ",");
+                internPal = internPal.concat(internArray.getString(1)+",");
+                internPal = internPal.concat(internArray.getString(2));
+                internPal = internPal.concat(");\n");
+                cssString = cssString.concat(internPal);
+            }
+            cssString = cssString.concat("}");
+            return cssString;
+
+        }catch(Exception e){
+            System.out.println("Could not parse JSONArray for Palette");
+            return null;
+        }
     }
 
     public String GetThemeFiles(String themeId) {
@@ -435,7 +463,7 @@ public class ThemeController extends BaseController{
 
     }
 
-    private class DeleteVisitor extends SimpleFileVisitor<Path> {
+    protected class DeleteVisitor extends SimpleFileVisitor<Path> {
         @Override
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
             Files.deleteIfExists(file);

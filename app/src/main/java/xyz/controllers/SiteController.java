@@ -1,6 +1,8 @@
 package xyz.controllers;
 
+import io.javalin.core.util.FileUtil;
 import io.javalin.http.Context;
+import io.javalin.http.UploadedFile;
 import org.json.JSONException;
 import org.json.JSONObject;
 import xyz.app.AppManager;
@@ -9,10 +11,14 @@ import xyz.dbkit.DBNode;
 import xyz.model.ModelObject;
 import xyz.model.Page;
 import xyz.model.Site;
+import xyz.model.Theme;
 
 import java.io.IOException;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,8 +42,9 @@ public class SiteController extends BaseController{
             String desc = ctx.formParam("Description");
             String url = ctx.formParam("RestURL");
             String site = ctx.formParam("site");
+            String theme = ctx.formParam("Theme");
 
-            Site mySite = new Site(name,desc, url, title, site);
+            Site mySite = new Site(name,desc, url, title, theme);
             DBNode siteNode = mDB.GetNode("Sites");
             DBNode pageNode = mDB.GetNode("Pages");
 
@@ -59,8 +66,8 @@ public class SiteController extends BaseController{
                     Files.createDirectory(Path.of(Root+"/"+name+"/js"));
                 }
 
-                //Request path to site index file - Copy site Index contents to /sites/index.html
-                Files.copy(Path.of("resources/web/sites/"+site+"/index.html"), Path.of(Root+"/"+name+"/index.html"));
+                //Request path to site index file - Copy site Index contents to /sites/index.htmls
+                Files.copy(Path.of("resources/web/themes/"+mySite.getThemeID()+"/index.html"), Path.of(Root+"/"+name+"/index.html"));
                 Page myPage = new Page("Main", name, "index.html");
                 mySite.addModel(myPage);
                 siteNode.AddModel(mySite);
@@ -69,7 +76,7 @@ public class SiteController extends BaseController{
             }catch(Exception e) {
                 System.out.println("Error creating site contents");
                 ctx.contentType("application/json");
-                ctx.result("{\"message\": \"Error creating site contents\"");
+                ctx.result("{\"message\": \"Error creating site contents\"}");
                 return;
             }
 
@@ -82,6 +89,77 @@ public class SiteController extends BaseController{
             System.out.println("Error creating site");
             ctx.contentType("application/json");
             ctx.result("{\"message\": \"Error creating site\"");
+        }
+    }
+
+    public void AddFiles(Context ctx){
+        try {
+            String siteName = ctx.pathParam("name");
+            DBNode siteNode = mDB.GetNode("Sites");
+            Site mySite = new Site(mDB.findKey(siteNode, "Site", siteName));
+            String rootDir = Root +"/" + siteName;
+            if(!Files.exists(Path.of(rootDir))){
+                Files.createDirectory(Path.of(rootDir));
+            }
+            if(!Files.exists(Path.of(rootDir+"/img"))){
+                Files.createDirectory(Path.of(rootDir+"/img"));
+            }
+            if(!Files.exists(Path.of(rootDir+"/js"))){
+                Files.createDirectory(Path.of(rootDir+"/js"));
+            }
+            if(!Files.exists(Path.of(rootDir+"/css"))){
+                Files.createDirectory(Path.of(rootDir+"/css"));
+            }
+
+            for(UploadedFile uploadedFile : ctx.uploadedFiles("files")){
+                if(uploadedFile.getFilename().endsWith(".png") || uploadedFile.getFilename().endsWith(".jpg") ){
+                    FileUtil.streamToFile(uploadedFile.getContent(), rootDir + "/img/" + uploadedFile.getFilename());
+                }
+                else if(uploadedFile.getFilename().endsWith(".js")){
+                    FileUtil.streamToFile(uploadedFile.getContent(), rootDir + "/js/" + uploadedFile.getFilename());
+                }
+                else if(uploadedFile.getFilename().endsWith(".css")){
+                    FileUtil.streamToFile(uploadedFile.getContent(), rootDir + "/css/" + uploadedFile.getFilename());
+                }
+                else if(uploadedFile.getFilename().endsWith(".html")){
+                   // mySite.setHtmlFile(uploadedFile.getFilename()); -- Site Model Adds Its Own Pages
+                    FileUtil.streamToFile(uploadedFile.getContent(), rootDir + "/" + uploadedFile.getFilename());
+                }
+            }
+            siteNode.UpdateModel(mySite);
+            mDB.RunSync();
+            ctx.contentType("application/json");
+            ctx.result("{\"message\":\"success\"}");
+            return;
+
+        }catch(Exception e){
+            System.out.println("Error adding files to site");
+            ctx.contentType("application/json");
+            ctx.result("{\"message\":\"error on update\"}");
+            return;
+        }
+
+    }
+
+    public void DeleteFile(Context ctx){ //Shouldn't be able to delete HTML objects
+        try {
+            String siteName = ctx.pathParam("name");
+            JSONObject postMap = new JSONObject(ctx.body());
+            String filePath = postMap.getString("file");
+            if(!filePath.endsWith(".html")){
+                Files.delete(Path.of(filePath));
+                ctx.contentType("application/json");
+                ctx.result("{ \"message\":\"deleted\"}");
+                return;
+            }
+            ctx.contentType("application/json");
+            ctx.result("{ \"message\":\"file is HTML and associated with a page so it could not be deleted\"}");
+            return;
+        }catch(Exception e){
+            System.out.println("File not found");
+            ctx.contentType("application/json");
+            ctx.result("{\"message\":\"error deleting file\"}");
+            return;
         }
     }
 
@@ -102,7 +180,28 @@ public class SiteController extends BaseController{
         }
     }
 
+    public void DeleteSite(Context ctx){
+        try {
+            String siteName = ctx.pathParam("name");
+            DBNode siteNode = mDB.GetNode("Sites");
 
+            //List Directories
+            String srcPath = Root +"/" + siteName;
+            SiteController.DeleteVisitor fVisitor = new SiteController.DeleteVisitor();
+            Files.walkFileTree(Path.of(srcPath), fVisitor);
+            siteNode.DeleteModel("site", siteName);
+            mDB.RunSync();
+            ctx.contentType("application/json");
+            ctx.result("{\"message\":\"deleted site\"}");
+
+        }catch(Exception e){
+            System.out.println("Error deleting site");
+            ctx.contentType("application/json");
+            ctx.result("{\"message\":\"error deleting site\"}");
+            return;
+        }
+
+    }
 
     public void Get(Context ctx){
         ArrayList<ModelObject> siteList = new ArrayList<>();
@@ -313,6 +412,20 @@ public class SiteController extends BaseController{
             }
             return false;
         }).collect(Collectors.toSet());
+    }
+
+    private class DeleteVisitor extends SimpleFileVisitor<Path> {
+        @Override
+        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+            Files.deleteIfExists(file);
+            return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+            Files.delete(dir);
+            return FileVisitResult.CONTINUE;
+        }
     }
 
 }
