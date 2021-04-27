@@ -3,32 +3,32 @@ package xyz.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Template extends ModelObject {
-    protected String HTML;
+public class Menu extends ModelObject{
+    protected String URL;
 
-    public Template(String name, String html){
-        ClassName = "Template";
+    public Menu(String name, String url){
+        super();
+        ClassName = "Menu";
         Name = name;
-        UID = name; //We should check for uniqueness
-        HTML = html;
-        updateKey("ClassName", ClassName);
+        URL = url;
         updateKey("Name", Name);
-        updateKey("UID", UID);
-        put("HTML", HTML);
+        updateKey("ClassName", ClassName);
+        put("URL", URL);
     }
 
-    public Template(String json){
+
+    public Menu(String json){
         super(json);
-        HTML = (String)get("HTML");
-        put("HTML", HTML);
+        URL = (String)get("URL");
+        put("URL", URL);
     }
 
-    public Template(JSONObject jObj){
+    public Menu(JSONObject jObj){
         super(jObj);
 
         try { //Assumes jObj is a ModelObject internally
-            HTML= (String) jObj.get("HTML");
-            put("HTML", HTML);
+            URL = (String)jObj.get("URL");
+            put("URL", URL);
 
         }catch(JSONException e){
             for (String key : jObj.keySet()){
@@ -40,18 +40,15 @@ public class Template extends ModelObject {
 
     }
 
-    public void setHTML(String html){
-        HTML = html;
-        updateKey("HTML", HTML);
+    public String getURL(){
+        return URL;
     }
 
-    public String getHTML(){
-        return HTML;
+    public void setURL(String URL){
+        URL = URL;
+        updateKey("URL", URL);
     }
 
-    public String getKey(){
-        return "Name";
-    }
 
     @Override
     public String Form(){ //Override for custom form element processing
@@ -59,7 +56,7 @@ public class Template extends ModelObject {
         sb.append("<form id='" + getModelName() + "' class='model-form'><ul><li><div class='form-label'>");
         boolean required = false;
         for(String key : keySet()){ //No UID / ClassName
-            if (!key.equals("UID") && !key.equals("ClassName")){
+            if (!key.equals("UID") && !key.equals("ClassName")){ //Hidden Fields
                 sb.append(key);
                 sb.append(GetInputTag(key));
                 sb.append( "</div></li>");
@@ -71,10 +68,11 @@ public class Template extends ModelObject {
 
     @Override
     public String GetInputTag(String key){
-        String type = "<input type='text' maxLength='45'" +" value='" + get(key) + " id='" + key + "' name='" + key + "' required></input>";
-        if(key.equals("HTML")){
-            type = "<textarea rows='50' cols='3'" +" value='" + get(key) + " id='" + key + "' name='" + key + "'></textarea>";
+        String type = "<input type='text' maxLength='45'" +" value='" + get(key) + " id='" + key + "' name='" + key + "'></input>";
+        if(key.equals("URL")){
+            type = "<textarea rows='50' cols'10'" +" value='" + get(key) + " id='" + key + "' name='" + key + "' required></input>";
         }
         return type;
     }
+
 }

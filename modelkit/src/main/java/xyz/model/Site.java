@@ -7,6 +7,7 @@ public class Site extends ModelObject{
     protected String Description;
     protected String RestURL;
     protected String Title;
+    protected String ThemeID;
 
     public Site(String name, String description, String restURL, String title){
         super();
@@ -16,6 +17,7 @@ public class Site extends ModelObject{
         Name = name;
         UID = name;
         Title = title;
+        ThemeID = "";
 
         updateKey("Name", Name);
         updateKey("ClassName", ClassName);
@@ -23,29 +25,56 @@ public class Site extends ModelObject{
         put("Description", Description);
         put("RestURL", RestURL);
         put("Title", Title);
+        put("ThemeID", ThemeID);
+    }
 
+    public Site(String name, String description, String restURL, String title, String theme){
+        super();
+        Description = description;
+        RestURL = restURL;
+        ClassName = "Site";
+        Name = name;
+        UID = name;
+        Title = title;
+        ThemeID = theme;
+
+        updateKey("Name", Name);
+        updateKey("ClassName", ClassName);
+        updateKey("UID", UID);
+        put("Description", Description);
+        put("RestURL", RestURL);
+        put("Title", Title);
+        put("ThemeID", ThemeID);
     }
 
     public Site(String json){
         super(json);
         Description = (String)get("Description");
         RestURL = (String)get("RestURL");
+        UID = Name;
         Title = (String)get("Title");
+        ThemeID = (String)get("ThemeID");
+        updateKey("UID", UID);
         put("Description", Description);
         put("RestURL", RestURL);
         put("Title", Title);
+        put("ThemeID", ThemeID);
     }
 
     public Site(JSONObject jObj){
         super(jObj);
 
         try { //Assumes jObj is a ModelObject internally
-            Description= (String) jObj.get("Description");
-            RestURL = (String) jObj.get("RestURL");
-            Title = (String) jObj.get("Title");
+            Description= (String) jObj.getString("Description");
+            RestURL = (String) jObj.getString("RestURL");
+            Title = (String) jObj.getString("Title");
+            UID = Name;
+            ThemeID = (String) jObj.getString("ThemeID");
+            updateKey("UID", UID);
             put("Title", Title);
             put("Description", Description);
             put("RestURL", RestURL);
+            put("ThemeID", ThemeID);
 
         }catch(JSONException e){
             for (String key : jObj.keySet()){
@@ -64,6 +93,13 @@ public class Site extends ModelObject{
     public void setDescription(String description) {
         Description = description;
         updateKey("Description", Description);
+    }
+
+    public String getThemeID(){return ThemeID;}
+
+    public void setThemeID(String theme){
+        ThemeID = theme;
+        updateKey("ThemeID", ThemeID);
     }
 
     public String getRestURL() {
@@ -86,6 +122,15 @@ public class Site extends ModelObject{
 
     public String getKey(){
         return "Name";
+    }
+
+    public void AddPage(Page pgObj){
+        try{
+            JSONObject pages = this.getJSONObject("Pages");
+            pages.put(pgObj.getUID(), pgObj);
+        }catch(Exception e){
+            System.out.println("Could not add page to site");
+        }
     }
 
     @Override

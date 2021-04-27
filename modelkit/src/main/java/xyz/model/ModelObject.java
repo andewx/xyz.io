@@ -3,8 +3,6 @@ package xyz.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.Instant;
-
 public class ModelObject extends JSONObject {
 
     protected String UID;
@@ -27,34 +25,60 @@ public class ModelObject extends JSONObject {
 
     public ModelObject(JSONObject jObj){
 
-        super();
+        for(String key : jObj.keySet()){
+            try {
+                put(key, jObj.getString(key));
+            }catch(JSONException e){
+                put(key, jObj.getJSONObject(key));
+            }
+            if(key.equals("UID")){
+                UID = jObj.getString(key);
+            }
+            if(key.equals("ClassName")){
+                ClassName = jObj.getString(key);
+            }
+            if(key.equals("Name")){
+                Name = jObj.getString(key);
+            }
+            if(key.equalsIgnoreCase("empty")){
+                remove(key);
+            }
+        }
+    }
 
+    public String GetString(String Key){
+        try{
+           return this.getString(Key);
+        }catch(JSONException e){
+           return "";
+        }
+    }
+
+    public ModelObject(ModelObject mObj) throws JSONException{ //Shallow Copies
+        super();
         try { //Assumes jObj is a ModelObject internally
-            UID = (String) jObj.get("UID");
-            ClassName = (String) jObj.get("ClassName");
-            Name = (String) jObj.get("Name");
+            UID = mObj.GetString("UID");
+            ClassName = mObj.GetString("ClassName");
+            Name = mObj.GetString("Name");
             put("UID", UID);
             put("ClassName", ClassName);
             put("Name", Name);
 
-        }catch(JSONException e){
-            for (String key : jObj.keySet()){
-                JSONObject jModel = (JSONObject)jObj.get(key);
-                ModelObject mModel = new ModelObject(jModel);
-                addModel(mModel);
-            }
+        }catch(JSONException | NullPointerException e){
+
         }
-
-
     }
+
 
     public ModelObject(String json){
         super(json);
 
-        UID = (String)get("UID");
-        ClassName = (String)get("ClassName");
-        Name = (String)get("Name");
-
+        UID = getString("UID");
+        ClassName = getString("ClassName");
+        Name =  getString("Name");
+        put("UID", UID);
+        put("ClassName", ClassName);
+        put("Name", Name);
     }
 
     public ModelObject(int size){
@@ -65,6 +89,24 @@ public class ModelObject extends JSONObject {
         put("UID", UID);
         put("ClassName", ClassName);
         put("Name", Name);
+    }
+
+    public static ModelObject GetModelObj(JSONObject obj, String uid){
+        ModelObject thisModel;
+        try{
+            thisModel = (ModelObject)obj.get(uid);
+        }catch(JSONException | ClassCastException e){
+            try {
+                thisModel = new ModelObject((JSONObject) obj.get(uid));
+            }catch(JSONException | ClassCastException d){
+               try{
+                   thisModel = new ModelObject(((JSONObject)obj.get(uid)).toString());
+               }catch(JSONException | ClassCastException c){
+                    return null;
+               }
+            }
+        }
+        return thisModel;
     }
 
     public JSONObject getChildren(String Pluralized){ //Expects the Plura
@@ -142,9 +184,10 @@ public class ModelObject extends JSONObject {
         return (JSONObject)this;
     }
 
-    
-    public Object updateKey(String key, Object value) {
-       return put(key,value);
+
+    public void updateKey(String key, Object value) {
+        remove(key);
+        put(key, value);
     }
 
     
@@ -156,18 +199,13 @@ public class ModelObject extends JSONObject {
     public ModelObject getModel(String mClass, String uid) {
         JSONObject internal = getChildren(pluralize(mClass));
         if(internal == null){
-            throw new JSONException("Model not found");
+            return null;
         }
-        try {
-            ModelObject mObj = (ModelObject) internal.get(uid);
-            if(mObj == null){
-                throw new JSONException("Model: "+mClass+ "[ " + uid + "] not found\n");
-            }
-            return mObj;
-        }catch(ClassCastException e){
-            JSONObject jObj = (JSONObject)internal.get(uid);
-            return new ModelObject(jObj);
+        ModelObject mObj = ModelObject.GetModelObj(internal, uid);
+        if(mObj == null){
+            return null;
         }
+        return mObj;
 
     }
 
@@ -175,13 +213,11 @@ public class ModelObject extends JSONObject {
     public boolean Remove(String mClass, String uid){
         String collection = pluralize(mClass);
         JSONObject internal = getChildren(collection);
-        if (internal == null){
-            return false;
-        }
 
-        ModelObject val = (ModelObject)internal.remove(uid);
-        if (val == null){
+        if(! internal.has(uid)){
             return false;
+        }else{
+            internal.remove(uid);
         }
 
         return true;

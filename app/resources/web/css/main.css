@@ -622,10 +622,10 @@ textarea,
 select {
   padding: 15px;
     height: 6rem;
-    padding: 1.5rem 0;
+    padding: 1.5rem 1.5rem;
     border: 0;
     outline: none;
-    color: #333333;
+    color: #cccccc;
     font-family: "montserrat-light", sans-serif;
     font-size: 1.4rem;
     line-height: 3rem;
@@ -705,7 +705,7 @@ input[type="url"]:focus,
 input[type="password"]:focus,
 textarea:focus,
 select:focus {
-    color: #000000;
+    color: #ffffff;
     border-bottom: 2px solid black;
 }
 
@@ -1467,8 +1467,6 @@ button::-moz-focus-inner, input::-moz-focus-inner {
     outline: 0;
     border: none;
     width: 80px;
-    -webkit-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
 }
 
 

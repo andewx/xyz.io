@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <title> @:title </title>
+    <meta name="description" content="portable java web framework">
+    <meta name="author" content="Brian Anderson">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="css/xyz-base.css">
+    <link rel="stylesheet" href="css/vendor.css">
+    <link rel="stylesheet" href="css/xyz-leaf.css">
+    <link rel="stylesheet" href="css/pace/barber-shop.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="js/config.js"></script>
+    <script src="js/modernizr.js"></script>
+    <script src="js/pace.min.js"></script>
+
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+</head>
+<body>
+
+
+<div class="body-container">
+<div class="vnav-light">
+    <div class="vnav-header"><a href="http://localhost:8080/"> xyz<span style="color: var(--sky)">.io</span></a></div>
+    <div class="vnav-section"><div class="vnav-label">Application</div>
+    <ul>
+        <li><span class="fa-globe fa" ></span><span class="link"><a href="/sites">Sites</a></span></li>
+        <li><span class="fa-book fa" ></span><span class="link"><a href="/theme">Create</a></span></li>
+        <li><span class="fa-coffee fa" ></span><span class="link"><a href="/themes">Themes</a></span></li>
+
+    </ul>
+    </div>
+    <div class="vnav-section"><div class="vnav-label">Framework</div>
+        <ul>
+            <li><span class="fa-lock fa" ></span><a href="/usergroups">Users</a></li>
+            <li><span class="fa-folder fa" ></span><span class="link">Files</span></li>
+            <li><span class="fa-flask fa" ></span><span class="link">Schema</span></li>
+        </ul>
+    </div>
+</div>
+    <section class="s-header">
+
+        <div class="header-right-elements">
+            <div class="header-element"><div class="header-block search"><div class="fa-search fa vertical-center"></div></div></div>
+            <div class="header-element"><div class="header-block context-blue"><div class="vertical-center"> @:Init <div class="notify"></div></div></div></div>
+            <div class="header-element"><div class="header-block context-white"><div class="vertical-center"><div class="fa-inbox fa"></div></div></div></div>
+            <div class="header-element"><div class="header-block context-transparent">@:UserFirstLast <br> @:UserEmail <div class="fa-caret-down fa"></div></div></div>
+        </div>
+
+        <div class="dash">
+            <div class="dash-header">
+                <h2>@:dashTitle </h2><h3> @:dashSubtitle</h3>
+            </div>
+
+            @:dashcontent
+
+        </div>
+
+    </section>
+</div>
+
+<footer>
+
+    <div class='footer-main'>
+        <div class="footer-element-wide">
+            <h4>About</h4><p>This project was developed for a Software Engineering Capstone course at the University of Illinois - Springfield. Software is licensed under the GNU GPL 3.0 for general use and the application may be developed and used freely.</p></div>
+
+    <div class="footer-element-narrow">
+    <h4>Get Notified</h4><p>This project will be maintained freely and open source at <a href='github.com/andewx/xyzio'>Github Andewx</a> If you wish to become a contributor please contact the owner at bande9@uis.edu</p>
+    </div>
+    <div class="footer-element-wide">
+        <div class="big-text">XYZ.IO</div>
+    </div>
+
+    </div> <!-- end footer-main -->
+
+    <div class='row footer-bottom'>
+
+        <div class='col-twelve'>
+            <div class='copyright'>
+                <span>Copyright None 2021</span>
+                <span>xyz.io</a></span>
+            </div>
+
+            <div class='go-top'>
+                <a class='smoothscroll' title='Back to Top' href='#top'><i class='icon-arrow-up' aria-hidden='true'></i></a>
+            </div>
+        </div>
+
+    </div> <!-- end footer-bottom -->
+
+</footer> <!-- end footer -->
+
+
+<div id="preloader">
+    <div id="loader">
+        <div class="line-scale-pulse-out">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+</body>
+</html>

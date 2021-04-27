@@ -1,6 +1,7 @@
 package xyz.controllers;
 
 import io.javalin.http.Context;
+import xyz.app.AppManager;
 import xyz.dbkit.DBMain;
 import xyz.webkit.SiteTemplate;
 
@@ -9,14 +10,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 
 public class IndexController extends BaseController{
 
-    RouteManager Router;
-    public IndexController(DBMain db_instance, RouteManager router) {
-        super(db_instance);
-        Router = router;
+    public IndexController(DBMain db_instance, AppManager app) {
+        super(db_instance, app);
     }
 
     public void Index(Context ctx){
@@ -26,11 +24,11 @@ public class IndexController extends BaseController{
         templatizer.AddKey("servername", "xyz-javalin-server");
         templatizer.AddKey("port", String.format("%d",ctx.port()));
         templatizer.AddKey("listening", WhatIP());
-        templatizer.AddKey("dbnodes", db.NumberNodes());
-        templatizer.AddKey("dbname", db.GetName());
-        templatizer.AddKey("endpoints", Router.PrintAPI());
+        templatizer.AddKey("dbnodes", mDB.NumberNodes());
+        templatizer.AddKey("dbname", mDB.GetName());
+        templatizer.AddKey("endpoints", mApp.PrintApi());
 
-        templatizer.AddKey("numnodes", db.NumberNodes());
+        templatizer.AddKey("numnodes", mDB.NumberNodes());
         templatizer.AddKey("ip", WhatIP());
         templatizer.AddKey("username", "andewx");
         templatizer.ReplaceKeys();
@@ -41,8 +39,38 @@ public class IndexController extends BaseController{
 
     }
 
+
+    public void Users(Context ctx){
+
+        SiteTemplate templatizer = new SiteTemplate();
+        SiteTemplate viewForms = new SiteTemplate();
+        StringBuilder htmlResponse = new StringBuilder();
+        String message = "";
+
+        try{
+            String recieve = ctx.cookie("MESSAGE");
+            if(recieve.equals("ADDED")){
+                message = "User added!";
+            }
+        }catch(Exception e){
+            //Do nothing
+        }
+        templatizer.GetTemplate("templates/ion.html");
+        viewForms.GetTemplate("views/register-login.html");
+        templatizer.AddKey("controllerTitle", "Framework Login/Registration");
+        viewForms.AddKey("Message", message);
+        viewForms.ReplaceKeys();
+        templatizer.AddKey("controllerContent", viewForms.GetHtml());
+        templatizer.ReplaceKeys();
+        htmlResponse.append(templatizer.GetHtml());
+
+        ctx.contentType("html");
+        ctx.result(htmlResponse.toString());
+    }
+
     public String WhatIP(){
         URL whatismyip = null;
+        String ip = "";
         try {
             whatismyip = new URL("http://checkip.amazonaws.com");
         } catch (MalformedURLException e) {
@@ -53,14 +81,14 @@ public class IndexController extends BaseController{
             in = new BufferedReader(new InputStreamReader(
                     whatismyip.openStream()));
         } catch (IOException e) {
-            e.printStackTrace();
+            ip = "No Internet Connection";
+            return ip;
         }
 
-        String ip = null; //you get the IP as a String
         try {
             ip = in.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            ip = "No Internet Connection";
         }
        return ip;
     }

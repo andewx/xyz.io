@@ -69,6 +69,22 @@ public class ModelTest {
 
     }
 
+    @Test
+    public void TestIterator(){
+        Site site = (Site)myTemplates.get(3);
+        int i = 0;
+        ModelIterator myIter = new ModelIterator(site);
+        while(myIter.hasNext()){
+            ModelObject thisModel = myIter.next();
+            if(thisModel.getModelName().equals("Template")){
+                Template myTemplate = (Template)thisModel;
+                assertNotNull(myTemplate);
+                i++;
+            }
+        }
+        assertEquals(i,3);
+    }
+
 
 
 

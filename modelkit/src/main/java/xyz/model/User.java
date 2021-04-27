@@ -27,12 +27,7 @@ public class User extends ModelObject{
         FirstName = first;
         LastName = last;
         GroupID = "User";
-
-
-        //Generate SHA256 Secure Hash
-        HashFunction f =  Hashing.sha256();
-        HashCode passHash = f.hashString(initialPassword, Charset.defaultCharset());
-        Password = passHash.toString();
+        Password = User.PasswordSHA(initialPassword);
         UID = Email;
 
         //Login Last Now
@@ -65,31 +60,69 @@ public class User extends ModelObject{
         put("GroupID", GroupID);
         put("Password", Password);
         put("LoginLast", LoginLast);
+        put("Name", Name);
+    }
+
+    public User(ModelObject mObj)throws JSONException{
+        super(mObj);
+        try {
+            Email = mObj.GetString("Email");
+        }catch(Exception e){ Email = "";}
+        try {
+            FirstName = mObj.GetString("FirstName");
+        }catch(Exception e){FirstName = "";}
+        try {
+            LastName = mObj.GetString("LastName");
+        }catch(Exception e){LastName = "";}
+        try {
+            Password = mObj.GetString("Password");
+        }catch(Exception e){Password = "";}
+        try {
+            GroupID = mObj.GetString("GroupID");
+        }catch(Exception e){ GroupID = "";}
+        try {
+            LoginLast = mObj.GetString("Email");
+        }catch(Exception e){LoginLast = "";}
+
+
+        put("Email", Email);
+        put("FirstName", FirstName);
+        put("LastName", LastName);
+        put("GroupID", GroupID);
+        put("Password", Password);
+        put("LoginLast", LoginLast);
+
+    }
+
+    public static String PasswordSHA(String pass){
+        //Generate SHA256 Secure Hash
+        HashFunction f =  Hashing.sha256();
+        HashCode passHash = f.hashString(pass, Charset.defaultCharset());
+        return passHash.toString();
     }
 
     public User(JSONObject jObj){
         super(jObj);
-
-        try { //Assumes jObj is a ModelObject internally
-            Email = (String)jObj.get("Email");
-            Password = (String)jObj.get("Password");
-            GroupID = (String)jObj.get("GroupID");
-            FirstName = (String)jObj.get("FirstName");
-            LastName = (String)jObj.get("LastName");
-            LoginLast = (String)jObj.get("LoginLast");
-            put("Email", Email);
-            put("FirstName", FirstName);
-            put("LastName", LastName);
-            put("GroupID", GroupID);
-            put("Password", Password);
-            put("LoginLast", LoginLast);
-
-        }catch(JSONException e){
-            for (String key : jObj.keySet()){
-                JSONObject jModel = (JSONObject)jObj.get(key);
-                ModelObject mModel = new ModelObject(jModel);
-                addModel(mModel);
+        for(String key : jObj.keySet()){
+            if(key.equals("Email")){
+                Email = getString(key);
             }
+            if(key.equals("Password")){
+                Password = getString(key);
+            }
+            if(key.equals("GroupID")){
+                GroupID = getString(key);
+            }
+            if(key.equals("FirstName")){
+                FirstName = getString(key);
+            }
+            if(key.equals("LastName")){
+                LastName = getString(key);
+            }
+            if(key.equals("LoginLast")){
+                LoginLast = getString(key);
+            }
+
         }
 
     }
@@ -158,8 +191,7 @@ public class User extends ModelObject{
     @Override
     public String Form(){ //Override for custom form element processing
         StringBuilder sb = new StringBuilder();
-        sb.append("<div style='width:100%'><div style='float:right'><div class='form-close' onclick='clCloseUser()'>X</div></div></div>" );
-        sb.append("<form id='user-form' action='model/user_submit/User' method='post' value='Submit'  enctype='multipart/form-data' class='model-form'><legend><label> Create User</label></legend>");
+        sb.append("<form id='user-form' action='model/user_submit/User' method='post' value='Submit'  enctype='multipart/form-data'>");
         boolean required = false;
         for(String key : keySet()){ //No UID / ClassName
             if (!key.equals("UID") && !key.equals("ClassName") && !key.equals("GroupID") && !key.equals("LoginLast")){
