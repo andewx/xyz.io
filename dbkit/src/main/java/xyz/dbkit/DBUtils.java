@@ -4,8 +4,16 @@ import xyz.model.ModelKeys;
 
 import java.io.IOException;
 
+/**
+ * DBUtils file for Database algorithms includes similarity and distance algorithms for string queries
+ */
 public final class DBUtils {
 
+    /**
+     * Instantiates a new DBNode based on the ModelObject Class Name as a pluralized Class identifier
+     * @param ModelName Class of ModelObject
+     * @return Instantiated DBNode
+     */
     public static DBNode InitNode(String ModelName){
         String Name = ModelKeys.pluralize(ModelName);
         String srcPath = "resources/";
@@ -17,6 +25,12 @@ public final class DBUtils {
         }
     }
 
+    /**
+     * Similiarity of string distance between two strings
+     * @param s1 String 1
+     * @param s2 String 2
+     * @return Heuristic value of string similarity returned between 0.0 - 1.0
+     */
     public static double similarity(String s1, String s2) {
         String longer = s1, shorter = s2;
         if (s1.length() < s2.length()) { // longer should always have greater length
@@ -27,6 +41,13 @@ public final class DBUtils {
         return (longerLength - editDistance(longer, shorter)) / (double) longerLength;
     }
 
+    /**
+     * Calculates heuristic of distance between two strings using a combination of string lengths and
+     * char code similarity
+     * @param s1 String 1
+     * @param s2 String 2
+     * @return Heuristic distance between to strings as integer
+     */
     public static int editDistance(String s1, String s2) {
         s1 = s1.toLowerCase();
         s2 = s2.toLowerCase();

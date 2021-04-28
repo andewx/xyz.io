@@ -1,9 +1,10 @@
 import org.json.JSONObject;
-import xyz.dbkit.*;
 import org.junit.jupiter.api.Test;
+import xyz.dbkit.DBMain;
+import xyz.dbkit.DBNode;
 import xyz.model.ModelObject;
+import xyz.model.Page;
 import xyz.model.Site;
-
 
 import java.io.IOException;
 
@@ -30,32 +31,32 @@ public class DBNodeTest {
         mDataBase.CreateNode("Node1");
         mDataBase.CreateNode("Node2");
 
-        DBNode TemplateNode = mDataBase.GetNode("Sites");
+        DBNode PageNode = mDataBase.GetNode("Sites");
 
-       assertNotNull(TemplateNode);
+       assertNotNull(PageNode);
 
-        Template Header = new Template("Light-UI-Header", "");
-        Template Body = new Template("Light-UI-Body", "");
-        Template Footer = new Template("Light-UI-Footer", "");
+        Page Header = new Page("Light-UI-Header", "","");
+        Page Body = new Page("Light-UI-Body", "","");
+        Page Footer = new Page("Light-UI-Footer", "","");
         Site MySite = new Site("MySite", "Example Site", "/mysite", "My Site Is Awesome");
         MySite.addModel(Header);
         MySite.addModel(Body);
         MySite.addModel(Footer);
-        TemplateNode.AddModel(MySite);
+        PageNode.AddModel(MySite);
 
-        ModelObject modelSite= mDataBase.findKey(TemplateNode,"Site", MySite.getUID());
+        ModelObject modelSite= mDataBase.findKey(PageNode,"Site", MySite.getUID());
         assertNotNull(modelSite);
-        JSONObject myTemplates = modelSite.getModels("Template");
-        System.out.print("Template: " + modelSite.getName() + "{\n");
-        for(String key : myTemplates.keySet()){
-            Template mObj = (Template)myTemplates.get(key);
+        JSONObject myPages = modelSite.getModels("Page");
+        System.out.print("Page: " + modelSite.getName() + "{\n");
+        for(String key : myPages.keySet()){
+            Page mObj = (Page)myPages.get(key);
             assertNotNull(mObj);
             System.out.println(mObj.getName());
         }
 
         System.out.println("}");
 
-        TemplateNode.WriteNode(TemplateNode.GetFile());
+        PageNode.WriteNode(PageNode.GetFile());
 
     }
 

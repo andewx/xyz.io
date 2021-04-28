@@ -1,9 +1,80 @@
-<div class="dash-section">
-    <div id="rootUsers" class="dash-element-2"></div>
-    <div id="rootGroups" class="dash-element-2"></div>
+
+
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html class='no-js oldie' lang='en'> <![endif]-->
+<!--[if IE 9 ]><html class='no-js oldie ie9' lang='en'> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class='no-js' lang='en'>
+<!--<![endif]-->
+
+<head>
+
+    <!--- basic page needs
+    ================================================== -->
+    <meta charset='utf-8'>
+    <title> @:Title </title>
+    <meta name='description' content='Virgo Theme'>
+    <meta name='author' content='Brian Anderson'>
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+    <!-- CSS
+    ================================================== -->
+    <link rel='stylesheet' href='http://localhost:8080/css/base.css'>
+    <link rel='stylesheet' href='http://localhost:8080/css/vendor.css'>
+    <link rel='stylesheet' href='http://localhost:8080/themes/Virgo/css/palette.css'>
+    <link rel='stylesheet' href='http://localhost:8080/themes/Virgo/css/main.css'>
+
+    @:EditorCSS
+    @:PageCSS
+
+    <!-- script
+    ================================================== -->
+    <script src='http://localhost:8080/js/modernizr.js'></script>
+    <script src='http://localhost:8080/js/pace.min.js'></script>
+    @:PagePreJS
+
+
+    <!-- favicons
+    ================================================== -->
+    <link rel='shortcut icon' href='favicon.ico' type='image/x-icon'>
+    <link rel='icon' href='favicon.ico' type='image/x-icon'>
+
+</head>
+
+<body id='page-root'>
+
+@:EditorBody
+
+@:PageBody
+
+<!-- preloader
+================================================== -->
+<div id='preloader'>
+    <div id='loader'>
+        <div class='line-scale-pulse-out'>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
 </div>
 
-<script type="text/babel" src="js/react/ReactUsers.js"></script>
-<script type="text/babel" src="js/react/ReactGroups.js"></script>
 
+<!-- Java Script
+================================================== -->
+<script src='http://localhost:8080/js/jquery-3.2.1.min.js'></script>
+<script src='http://localhost:8080/js/plugins.js'></script>
+<script src='http://localhost:8080/js/main.js'></script>
+
+@:EditorPostJS
+@:PagePostJS
+
+</body>
+
+</html>
 

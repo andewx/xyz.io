@@ -2,6 +2,10 @@ plugins {
     id 'java'
 }
 
+javadoc{
+    source = sourceSets.main.allJava
+}
+
 group 'org.bernard'
 version '0.0'
 

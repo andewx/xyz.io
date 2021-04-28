@@ -1,7 +1,7 @@
 function Themes(){
     const [request, setRequest] = React.useState({items:[], loaded:false});
     let mounted = true
-    const url ="/themes/getKeys"
+    const url ="/theme/getKeys"
 
     React.useEffect(() => {
          let mounted = true
@@ -49,7 +49,7 @@ function Themes(){
    const formRef = React.useRef(null);
 
    React.useEffect(() =>{
-        var url = "/themes/get/"+name
+        var url = "/theme/get/"+name
         let mounted = true
         async function load(){
             const res = await fetch(url);
@@ -72,7 +72,7 @@ function Themes(){
            var themeForm = formRef.current
            var formData = new FormData(themeForm);
            formData.append("name", name);
-           var url = '/themes/addFiles';
+           var url = '/theme/addFiles';
            $.ajax(url, {
                      type: 'POST',
                      data: formData,
@@ -129,14 +129,14 @@ function Themes(){
 
 
   async function deleteItem(name){
-        const res = await fetch("/themes/delete/"+name);
+        const res = await fetch("/theme/delete/"+name);
         location.reload();
   }
 
   async function deleteFile(f){
 
        var formData = {'file' : f}
-       const res = await fetch("/themes/deleteFile/"+name,{
+       const res = await fetch("/theme/deleteFile/"+name,{
            method: 'POST',
            body: JSON.stringify(formData),
            cache: 'no-cache'

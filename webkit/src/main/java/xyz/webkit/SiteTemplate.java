@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+/**
+ * SiteTemplate does the lifting for the parsing of Template HTML files (does not need to be HTML) replacing keys
+ * identified with @:SomeKey to be replaced. This helps our Framework inject, combine, and format HTML responses.
+ */
 public class SiteTemplate {
     String PathFolder;
     String HTML;
@@ -17,6 +19,9 @@ public class SiteTemplate {
     Pattern KeyPattern;
     Matcher KeyMatcher;
 
+    /**
+     * Constructor for Site Template, looks to path folder templates when loading in Files
+     */
     public SiteTemplate(){
         PathFolder = "templates";
         HTML = "";
@@ -25,10 +30,19 @@ public class SiteTemplate {
         KeyMatcher = null;
     }
 
+    /**
+     * Returns file string HTML
+     * @return HTML string
+     */
     public String GetHtml(){
         return HTML;
     }
 
+    /**
+     * Adds a key/value pair identifier into the object for searching and replacing raw HTML string
+     * @param key @:SomeKey
+     * @param Value Value to replace with
+     */
     public void AddKey(String key, String Value){
         String val = PropertyMap.get(key);
         if(val == null){
@@ -39,10 +53,19 @@ public class SiteTemplate {
         }
     }
 
+    /**
+     * Gets @:SomeKey map stored in the current object
+     * @return
+     */
     public HashMap<String,String> GetMap(){
         return PropertyMap;
     }
 
+    /**
+     * Loads in a template file from the given string path
+     * @param Name string path of the file to be loaded
+     * @return loaded HTML
+     */
     public String GetTemplate(String Name){
         String TemplateFile = Name;
         Path TemplatePath = Path.of(TemplateFile);
@@ -56,10 +79,18 @@ public class SiteTemplate {
         }
     }
 
+    /**
+     * Sets HTML content of the SiteTemplate Object
+     * @param html
+     */
     public void setHTML(String html){
         HTML = html;
     }
 
+    /**
+     * Replaces keys from the stored Key/Value pair map
+     * @return HTML string
+     */
     public String ReplaceKeys(){
         KeyMatcher = KeyPattern.matcher(HTML);
         StringBuffer sb = new StringBuffer();
@@ -77,6 +108,10 @@ public class SiteTemplate {
         return HTML;
     }
 
+    /**
+     * Gets the associated keys in the current SiteTemplate object
+     * @return
+     */
     public ArrayList<String> GetKeys(){
         ArrayList<String> myList = new ArrayList<String>();
         KeyMatcher = KeyPattern.matcher(HTML);

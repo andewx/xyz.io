@@ -10,8 +10,8 @@ class RenderOptions extends React.Component{
     }
 
     componentDidMount(){
-      var url = "/themes/getKeys"
-      fetch("/themes/getKeys")
+      var url = "/theme/getKeys"
+      fetch("/theme/getKeys")
            .then(res => res.json())
            .then(
              (result) => {
@@ -74,7 +74,7 @@ class SiteForm extends React.Component{
 
            $("#siteForm").toggle();
            $.ajax({
-            url: "/sites/addSite",
+            url: "/site/addSite",
             type: "POST",
             data: formData,
             processData: false,
@@ -135,7 +135,7 @@ class SiteForm extends React.Component{
 function Sites(){
     const [request, setRequest] = React.useState({items:[], loaded:false});
     let mounted = true
-    const url ="/sites/getKeys"
+    const url ="/site/getKeys"
 
     React.useEffect(() => {
          let mounted = true
@@ -181,16 +181,18 @@ function Sites(){
    const [request, setRequest] = React.useState({item: null, theme: null, loaded: false});
    const [showDir, setShowDir] = React.useState(false);
    const [showEdit, setShowEdit] = React.useState(false);
+   const [showForm, setShowForm] = React.useState(false);
    const formRef = React.useRef(null);
+   const pageFormRef = React.useRef(null);
 
    React.useEffect(() =>{
-        var url = "/sites/getSite/"+name
+        var url = "/site/getSite/"+name
         let mounted = true
         async function load(){
             const res = await fetch(url);
             const result = await res.json();
             console.log(result)
-            const themeRes = await fetch("themes/get/"+ result.ThemeID);
+            const themeRes = await fetch("theme/get/"+ result.ThemeID);
             const themeResult = await themeRes.json();
             if(mounted){
                 setRequest({item: result, theme:themeResult, loaded:true});
@@ -209,7 +211,7 @@ function Sites(){
   function submit(){
            var siteForm = formRef.current
            var formData = new FormData(siteForm);
-           var url = '/sites/addFiles/'+name;
+           var url = '/site/addFiles/'+name;
            $.ajax(url, {
                      type: 'POST',
                      data: formData,
@@ -221,6 +223,22 @@ function Sites(){
                  });
 
     }
+
+      function submitPage(){
+               var siteForm = pageFormRef.current
+               var formData = new FormData(siteForm);
+               var url = '/site/addPage/'+name;
+               $.ajax(url, {
+                         type: 'POST',
+                         data: formData,
+                         cache: false,
+                         processData: false,
+                         contentType: false
+                     }).done(function(){
+                         window.location.reload();
+                     });
+
+        }
 
 
    function renderDirs(uid, directory){
@@ -266,14 +284,14 @@ function Sites(){
 
 
   async function deleteItem(name){
-        const res = await fetch("/sites/delete/"+name);
+        const res = await fetch("/site/delete/"+name);
         location.reload();
   }
 
   async function deleteFile(f){
 
        var formData = {'file' : f}
-       const res = await fetch("/sites/deleteFile/"+name,{
+       const res = await fetch("/site/deleteFile/"+name,{
            method: 'POST',
            body: JSON.stringify(formData),
            cache: 'no-cache'
@@ -285,7 +303,7 @@ function Sites(){
    function renderEdit(){
      if(showEdit){
          return (
-             <div id={request.item.UID+"-dir"} className="internal-block">
+             <div id={request.item.UID+"-fileForm"} className="internal-block">
                    <div id={request.item.UID+"-edit"}><form ref={formRef} name="file-form" encType="multipart/form-data">
                     <input type="file" name="files"  multiple/>
                     </form>
@@ -296,6 +314,22 @@ function Sites(){
          }else{
            return <div></div>
          }
+   }
+
+   function renderForm(){
+    if(showForm){
+             return (
+                 <div id={request.item.UID+"-pageForm"} className="internal-block">
+                       <div id={request.item.UID+"-edit"}><form ref={pageFormRef} name="html-form" encType="multipart/form-data">
+                        <label>Page Name</label><input type="text" name="page" required></input><br></br>
+                        </form>
+                        <button onClick={submitPage}>Submit</button>
+                        </div>
+                 </div>
+             );
+             }else{
+               return <div></div>
+             }
    }
 
    function renderFolder(){
@@ -316,7 +350,9 @@ function Sites(){
              <div id={request.item.UID} className="dash-element-3 item selectable-light" id={request.item.UID} key={request.item.UID}>
                                   <div className="fa fa-trash pull-right"  onClick={() => deleteItem(request.item.UID)}></div>
                                   <div className="fa fa-upload pull-right"  onClick={() => setShowEdit(!showEdit)}></div>
+                                  <div className="fa fa-plus pull-right"  onClick={() => setShowForm(!showForm)}></div>
                                   <br></br>
+                                  {renderForm()}
                                   {renderEdit()}
                                   <br></br>
                                   <div className="palette-banner" style={{background : convertRgbCss(JSON.parse(request.theme.Palette)[0])}}></div>
@@ -324,11 +360,10 @@ function Sites(){
                                   <div className="palette-banner" style={{background : convertRgbCss(JSON.parse(request.theme.Palette)[2])}}></div>
                                   <div className="palette-banner" style={{background : convertRgbCss(JSON.parse(request.theme.Palette)[3])}}></div>
                                   <div className="palette-banner" style={{background : convertRgbCss(JSON.parse(request.theme.Palette)[4])}}></div>
-                                   <h3 className="text-center">{request.item.Name}</h3><div className="caption">{request.item.Description}</div>
+                                   <h3 className="text-center"><a href={"/site/editSite/"+ request.item.UID + "/Main"}>{request.item.Name}</a></h3><div className="caption">{request.item.Description}</div>
                               {renderFolder()}
                               <br></br>
                               {renderDirs(request.item.UID, JSON.parse(request.item.Dir))}
-
                     </div>
             )
         }

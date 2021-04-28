@@ -59,8 +59,11 @@
 
             <ul class="header-nav__list">
                 <li class="current"><a class="smoothscroll"  href="#home" title="home">Home</a></li>
-                <li><a class="smoothscroll"  href="#about" title="about">Explore</a></li>
-                <li><a class="smoothscroll"  href="#services" title="services">API Documentation</a></li>
+                <li><a class="smoothscroll"  href="#services" title="services">Framework Guide</a></li>
+                <li><a class="smoothscroll"  href="docs/app/index.html" title="services">App API Reference</a></li>
+                <li><a class="smoothscroll"  href="docs/webkit/index.html" title="services">Webkit API Reference</a></li>
+                <li><a class="smoothscroll"  href="docs/dbkit/index.html" title="services">DBKit API Reference</a></li>
+                <li><a class="smoothscroll"  href="docs/modelkit/index.html" title="services">ModelKit API Reference</a></li>
                 <li><a class="smoothscroll"  href="#works" title="works">User Guide</a></li>
                 <li><a class="smoothscroll"  href="#clients" title="clients">System Configuration</a></li>
                 <li><a class="smoothscroll"  href="#contact" title="contact">Admin</a></li>
@@ -75,7 +78,6 @@
                 <li><a class="smoothscroll"  href="#about" title="about">Status: </a> <span>@:listening<span> </li>
                 <spanli><a class="smoothscroll"  href="#services" title="services">Database: </a><span> @:dbname </span> <li>
                     <li><a class="smoothscroll"  href="#works" title="works">Nodes: </a> <span> @:dbnodes </span></li>
-                    <li><a class="smoothscroll"  href="#clients" title="clients">Api: </a> @:endpoints </li>
             </ul>
             <ul class="header-nav__social">
                 <li>
@@ -154,19 +156,7 @@
 
     <ul class="home-social">
         <li>
-            <a href="#0"><i class="fa fa-facebook" aria-hidden="true"></i><span>Facebook</span></a>
-        </li>
-        <li>
-            <a href="#0"><i class="fa fa-twitter" aria-hidden="true"></i><span>Twiiter</span></a>
-        </li>
-        <li>
-            <a href="#0"><i class="fa fa-instagram" aria-hidden="true"></i><span>Instagram</span></a>
-        </li>
-        <li>
-            <a href="#0"><i class="fa fa-behance" aria-hidden="true"></i><span>Behance</span></a>
-        </li>
-        <li>
-            <a href="#0"><i class="fa fa-dribbble" aria-hidden="true"></i><span>Dribbble</span></a>
+            <a href="https://www.instagram.com/xyz.ion/"><i class="fa fa-instagram" aria-hidden="true"></i><span>Instagram</span></a>
         </li>
     </ul>
     <!-- end home-social -->
@@ -239,8 +229,8 @@
             <div class="service-text">
                 <h3 class="h2">ModelKit</h3>
                 <p>Modelkit <i>ModelObject</i> class objects are self-replication JSON stores for storing all of your
-                    application model. When you add a new model class you can automatically integrate into the database.
-                    It also gets automatically handles by the REST CRUD framework for Server API model handling.
+                    application models. When you add a new model class you can automatically integrate into the database.
+                    It can easily be added to the REST CRUD framework for Server API model handling.
                 </p>
             </div>
         </div>
@@ -278,7 +268,7 @@
             <div class="service-text">
                 <h3 class="h2">Route Registration</h3>
                 <p>xyz.io has one main dependency, Javalin.io for implementing HTTP handlers. Add your route names
-                    to the RouteManager along with the handler and xyz.io does the rest for you.
+                    to the AppManager along with the handler and xyz.io does the rest for you.
                 </p>
             </div>
         </div>
@@ -289,9 +279,10 @@
                 <i class="icon-megaphone"></i>
             </div>
             <div class="service-text">
-                <h3 class="h2">Notifications</h3>
-                <p>Xyz.io ships with a notification database tasking that sync in its own thread. Notifications simply
-                    deposit messages from one object to another. Once a message has been read it is cleaned up by the database.
+                <h3 class="h2">Templates</h3>
+                <p>Templates allow users to easily start creating new sites by providing a endpoint for uploading and sharing
+                    your main template structure. You can also auto-generate new and interesting palettes with our Template
+                    palette generator.
                 </p>
             </div>
         </div>
@@ -309,200 +300,6 @@
     </div> <!-- end services-list -->
 
 </section> <!-- end s-services -->
-
-
-<!-- works
-================================================== -->
-<section id='works' class="s-works">
-
-    <div class="intro-wrap">
-
-        <div class="row section-header has-bottom-sep light-sep" data-aos="fade-up">
-            <div class="col-full">
-                <h3 class="subhead">Examples</h3>
-                <h1 class="display-2 display-2--light">See some of what xyz.io can do</h1>
-            </div>
-        </div> <!-- end section-header -->
-
-    </div> <!-- end intro-wrap -->
-
-    <div class="row works-content">
-        <div class="col-full masonry-wrap">
-            <div class="masonry">
-
-                <div class="masonry__brick" data-aos="fade-up">
-                    <div class="item-folio">
-
-                        <div class="item-folio__thumb">
-                            <a href="images/portfolio/gallery/culinary.jpg" class="thumb-link" title="Shutterbug" data-size="1400x2100">
-                                <img src="images/portfolio/culinary.jpg"
-                                     srcset="images/portfolio/culinary.jpg 1x, images/portfolio/culinary@2x.jpg 2x" alt="">
-                            </a>
-                        </div>
-
-                        <div class="item-folio__text">
-                            <h3 class="item-folio__title">
-                                Recipes
-                            </h3>
-                            <p class="item-folio__cat">
-                                Productivity
-                            </p>
-                        </div>
-
-                        <a href="https://www.github.com/andewx/" class="item-folio__project-link" title="Project link">
-                            <i class="icon-link"></i>
-                        </a>
-
-                        <div class="item-folio__caption">
-                            <p>A simple recipes application and productivity planner.</p>
-                        </div>
-
-                    </div>
-                </div> <!-- end masonry__brick -->
-
-                <div class="masonry__brick" data-aos="fade-up">
-                    <div class="item-folio">
-
-                        <div class="item-folio__thumb">
-                            <a href="images/portfolio/gallery/news.jpg" class="thumb-link" title="News" data-size="1000x1033">
-                                <img src="images/portfolio/news.jpg"
-                                     srcset="images/portfolio/news.jpg 1x, images/portfolio/news@2x.jpg 2x" alt="">
-                            </a>
-                        </div>
-
-                        <div class="item-folio__text">
-                            <h3 class="item-folio__title">
-                                Postr
-                            </h3>
-                            <p class="item-folio__cat">
-                                Communal News
-                            </p>
-                        </div>
-
-                        <a href="" class="item-folio__project-link" title="Project link">
-                            <i class="icon-link"></i>
-                        </a>
-
-                        <div class="item-folio__caption">
-                            <p>A community driven news social network</p>
-                        </div>
-
-                    </div>
-                </div> <!-- end masonry__brick -->
-
-                <div class="masonry__brick" data-aos="fade-up">
-                    <div class="item-folio">
-
-                        <div class="item-folio__thumb">
-                            <a href="images/portfolio/gallery/nodal.jpg" class="thumb-link" title="Palmeira" data-size="1150x767">
-                                <img src="images/portfolio/nodal.jpg"
-                                     srcset="images/portfolio/nodal.jpg 1x, images/portfolio/nodal@2x.jpg 2x" alt="">
-                            </a>
-                        </div>
-
-                        <div class="item-folio__text">
-                            <h3 class="item-folio__title">
-                                Topography
-                            </h3>
-                            <p class="item-folio__cat">
-                                Scientific Visualization / Plotting
-                            </p>
-                        </div>
-
-                        <a href="https://github.com/andewx" class="item-folio__project-link" title="Project link">
-                            <i class="icon-link"></i>
-                        </a>
-
-                        <div class="item-folio__caption">
-                            <p>Visualize Graph Data for exploring network topography</p>
-                        </div>
-
-                    </div>
-                </div> <!-- end masonry__brick -->
-
-            </div> <!-- end masonry -->
-        </div> <!-- end col-full -->
-    </div> <!-- end works-content -->
-
-</section> <!-- end s-works -->
-
-
-<!-- clients
-================================================== -->
-<section id="clients" class="s-clients">
-
-    <div class="row section-header" data-aos="fade-up">
-        <div class="col-full">
-            <h3 class="subhead">Multi-platform Tools</h3>
-            <h1 class="display-2">XYZ.io is a multiplatform solution. See how to integrate into these platforms.</h1>
-        </div>
-    </div> <!-- end section-header -->
-
-    <div class="row clients-outer" data-aos="fade-up">
-        <div class="col-full">
-            <div class="clients">
-
-                <a href="#0" title="" class="clients__slide"><img src="images/clients/apple.png" /></a>
-                <a href="#0" title="" class="clients__slide"><img src="images/clients/atom.png" /></a>
-                <a href="#0" title="" class="clients__slide"><img src="images/clients/blackberry.png" /></a>
-                <a href="#0" title="" class="clients__slide"><img src="images/clients/dropbox.png" /></a>
-                <a href="#0" title="" class="clients__slide"><img src="images/clients/envato.png" /></a>
-                <a href="#0" title="" class="clients__slide"><img src="images/clients/firefox.png" /></a>
-                <a href="#0" title="" class="clients__slide"><img src="images/clients/joomla.png" /></a>
-                <a href="#0" title="" class="clients__slide"><img src="images/clients/magento.png" /></a>
-
-            </div> <!-- end clients -->
-        </div> <!-- end col-full -->
-    </div> <!-- end clients-outer -->
-
-    <div class="row clients-testimonials" data-aos="fade-up">
-        <div class="col-full">
-            <div class="testimonials">
-
-                <div class="testimonials__slide">
-
-                    <p>Since XYZ.io is executed purely in the JVM, it can be hosted on virtually any device. Extend
-                        functionality to include your own web application by forking the Git repository and building off
-                        of the Gradle build tools.</p>
-
-                    <img src="images/avatars/user-01.jpg" alt="Author image" class="testimonials__avatar">
-                    <div class="testimonials__info">
-                        <span class="testimonials__name">Tim Cook</span>
-                        <span class="testimonials__pos">CEO, Apple</span>
-                    </div>
-
-                </div>
-
-                <div class="testimonials__slide">
-
-                    <p>It's pretty damn cool.</p>
-
-                    <img src="images/avatars/user-05.jpg" alt="Author image" class="testimonials__avatar">
-                    <div class="testimonials__info">
-                        <span class="testimonials__name">Sundar Pichai</span>
-                        <span class="testimonials__pos">CEO, Google</span>
-                    </div>
-
-                </div>
-
-                <div class="testimonials__slide">
-
-                    <p>I can use it to build a small web-framework application and deploy anywhere even in the cloud with minimal setup. Thanks!</p>
-
-                    <img src="images/avatars/user-02.jpg" alt="Author image" class="testimonials__avatar">
-                    <div class="testimonials__info">
-                        <span class="testimonials__name">Satya Nadella</span>
-                        <span class="testimonials__pos">CEO, Microsoft</span>
-                    </div>
-
-                </div>
-
-            </div><!-- end testimonials -->
-
-        </div> <!-- end col-full -->
-    </div> <!-- end client-testimonials -->
-
-</section> <!-- end s-clients -->
 
 
 <!-- contact

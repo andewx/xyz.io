@@ -24,15 +24,37 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Themes controller class manages themes in its resources/web/themes filesystem. Themes are stored in the
+ * resources/web/themes/themeName directory and may have their own associated resources which would be referenced
+ * in their HTML files themes/themeName/file.myFile or http://localhost:8080/themes/themeName/file.myFile.
+ * When creating themes a Palette JSON object is store with the theme and saved as a palette.css file in
+ * themes/themeName/css folder as (--pal1, --pal2, --pal3, --pal4, --pal5). Use the CSS syntax color: var(--pal1); to reference
+ * these palette theme values from your site.
+ */
 public class ThemeController extends BaseController{
 
+    /**
+     * The Root.
+     */
     protected String Root;
 
+    /**
+     * Constructor
+     *
+     * @param db_instance Database DBMain
+     * @param app         AppManager
+     */
     public ThemeController(DBMain db_instance, AppManager app) {
         super(db_instance, app);
         Root = "resources/web/themes";
     }
 
+    /**
+     * Displays Theme
+     *
+     * @param ctx the ctx
+     */
     public void Display(Context ctx){
         User thisUser = UserFromSession(ctx);
         if(thisUser == null){
@@ -59,7 +81,11 @@ public class ThemeController extends BaseController{
         ctx.result(htmlResponse.toString());
     }
 
-
+    /**
+     * Gets theme keys JSON return
+     *
+     * @param ctx the ctx
+     */
     public void GetKeys(Context ctx){
         Set<String> themeList = new HashSet<>();
         JSONObject children;
@@ -89,7 +115,11 @@ public class ThemeController extends BaseController{
         }
     }
 
-
+    /**
+     * Gets all themes JSON returns object
+     *
+     * @param ctx the ctx
+     */
     public void GetAll(Context ctx){
         ArrayList<ModelObject> themeList = new ArrayList<>();
         JSONObject children;
@@ -97,8 +127,6 @@ public class ThemeController extends BaseController{
             DBNode themesNode = mDB.GetNode("Themes");
             ModelObject root = themesNode.GetRoot();
             children = root.getChildren("Themes");
-            String retJson = "[";
-            int index = 0;
             for(String key : children.keySet()) {
                JSONObject jObj = children.getJSONObject(key);
                Theme gObj = new Theme(jObj);
@@ -114,6 +142,12 @@ public class ThemeController extends BaseController{
             return;
         }
     }
+
+    /**
+     * Gets Theme By ID
+     *
+     * @param ctx the ctx
+     */
     public void GetID(Context ctx){
         String themeID = ctx.pathParam("name");
         DBNode themeNode = mDB.GetNode("Themes");
@@ -132,7 +166,11 @@ public class ThemeController extends BaseController{
         }
     }
 
-
+    /**
+     * Creates theme
+     *
+     * @param ctx the ctx
+     */
     public void CreateTheme(Context ctx){
         try {
             String themeName = ctx.formParam("name");
@@ -146,8 +184,8 @@ public class ThemeController extends BaseController{
             Path url = Path.of(srcPath);
             try {
 
-                if (!Files.exists(Path.of("themes").toAbsolutePath())) {
-                    Files.createDirectory(Path.of("themes"));
+                if (!Files.exists(Path.of(Root).toAbsolutePath())) {
+                    Files.createDirectory(Path.of(Root));
                 }
 
                 if (!Files.exists(Path.of(srcPath).toAbsolutePath())) {
@@ -194,7 +232,7 @@ public class ThemeController extends BaseController{
 
                 String CSSPAL = PaletteToCSS(palString);
                 assert CSSPAL != null;
-                Files.writeString(Path.of(Root+"/css/palette.css"), CSSPAL);
+                Files.writeString(Path.of(srcPath+"/css/palette.css"), CSSPAL);
 
                 ModelObject myTheme = new Theme(themeName, "index.html", palString);
                 DBNode themeNode = mDB.GetNode("Themes");
@@ -227,6 +265,12 @@ public class ThemeController extends BaseController{
 
     }
 
+    /**
+     * Converts a Palette JSON String into CSS and writes file to palette.css
+     *
+     * @param palette JSON generated palette array, [[0,0,0]...] Five palettes expected
+     * @return string
+     */
     public String PaletteToCSS(String palette){
         try {
             JSONArray palObj = new JSONArray(palette);
@@ -235,9 +279,9 @@ public class ThemeController extends BaseController{
             for (int i = 0; i < palObj.length(); i++) {
                 String internPal = "--pal" + Integer.toString(i) + ": rgb(";
                 JSONArray internArray = palObj.getJSONArray(i);
-                internPal = internPal.concat(internArray.getString(0) + ",");
-                internPal = internPal.concat(internArray.getString(1)+",");
-                internPal = internPal.concat(internArray.getString(2));
+                internPal = internPal.concat(internArray.getInt(0) + ",");
+                internPal = internPal.concat(internArray.getInt(1)+",");
+                internPal = internPal.concat(internArray.getInt(2)+"");
                 internPal = internPal.concat(");\n");
                 cssString = cssString.concat(internPal);
             }
@@ -250,6 +294,12 @@ public class ThemeController extends BaseController{
         }
     }
 
+    /**
+     * Gets theme files
+     *
+     * @param themeId the theme id
+     * @return string
+     */
     public String GetThemeFiles(String themeId) {
         try {
             //List Directories
@@ -313,6 +363,11 @@ public class ThemeController extends BaseController{
         }
     }
 
+    /**
+     * Gets Files
+     *
+     * @param ctx the ctx
+     */
     public void GetFiles(Context ctx){
 
         try {
@@ -330,6 +385,13 @@ public class ThemeController extends BaseController{
 
     }
 
+    /**
+     * Lists files
+     *
+     * @param dir Directory
+     * @return File Set
+     * @throws IOException BOOOOOOOO
+     */
     Set<Path> listFiles(String dir) throws IOException {
         Stream<Path> list = Files.list(Path.of(dir));
         return list.filter(path -> {
@@ -340,6 +402,11 @@ public class ThemeController extends BaseController{
             }).collect(Collectors.toSet());
     }
 
+    /**
+     * Lists filecontents
+     *
+     * @param ctx the ctx
+     */
     public void FileContents(Context ctx){
         try {
             String themeName = ctx.formParam("name");
@@ -356,6 +423,11 @@ public class ThemeController extends BaseController{
         }
     }
 
+    /**
+     * Edits file contents
+     *
+     * @param ctx the ctx
+     */
     public void EditFileContents(Context ctx){
         try {
             String themeName = ctx.formParam("name");
@@ -374,6 +446,11 @@ public class ThemeController extends BaseController{
         }
     }
 
+    /**
+     * Deletes Theme File
+     *
+     * @param ctx the ctx
+     */
     public void DeleteFile(Context ctx){
         try {
             String themeName = ctx.pathParam("name");
@@ -391,6 +468,11 @@ public class ThemeController extends BaseController{
         }
     }
 
+    /**
+     * Adds file to theme
+     *
+     * @param ctx the ctx
+     */
     public void AddFiles(Context ctx){
         try {
             String themeName = ctx.formParam("name");
@@ -440,6 +522,11 @@ public class ThemeController extends BaseController{
 
     }
 
+    /**
+     * Deletes a theme
+     *
+     * @param ctx the ctx
+     */
     public void DeleteTheme(Context ctx){
         try {
             String themeName = ctx.pathParam("name");
@@ -463,13 +550,30 @@ public class ThemeController extends BaseController{
 
     }
 
+    /**
+     * FILE UTILITY
+     */
     protected class DeleteVisitor extends SimpleFileVisitor<Path> {
+        /**
+         * FILE VISITOR Visits file directory
+         * @param file Filepath
+         * @param attrs File attrbs
+         * @return FileVisit Result
+         * @throws IOException
+         */
         @Override
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
             Files.deleteIfExists(file);
             return FileVisitResult.CONTINUE;
         }
 
+        /**
+         * File Visit Post action
+         * @param dir Direectory
+         * @param exc Exception
+         * @return File Visit Result
+         * @throws IOException Exceptional
+         */
         @Override
         public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
             Files.delete(dir);

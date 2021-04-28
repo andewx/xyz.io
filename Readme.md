@@ -1,4 +1,4 @@
-# XYZ Recipes
+# XYZ.IO Framework Guide
 ## Overview
 Java Web Framework for deploying a self contained Web Framework in Java. Built on top of Javalin.io API.
 
@@ -17,9 +17,12 @@ To compile and build the project in your respective IDE please download and inst
 ```brew install gradle``` command in bash. 
 
 Additionally most modern IDE's support or come installed with native Gradle handling. You can clone this project with
-```git clone https://github.com/andewx/xyzRecipes```
+```git clone https://github.com/andewx/xyz.io```
 
-And then Open & Import the root directory in your IDE. It may take several minutes to index your files and download dependencies. 
+Gradle can be run with different task options you should run gradle from the root of your idea under the task ``xyzrun`` to
+compile and run the project. Tests can be run inside different gradle components with the ``./gradle test`` command inside that package.
+
+And then Open & Import the root directory in your IDE. It may take several minutes to index your files and download dependencies.
 
 ---
 ### ``Module Concepts``
@@ -48,9 +51,18 @@ XYZ Framework is a fully self-encapsulated framework capable of deploying an in 
 
 Standard Web Framework MVC architecture is expanded by integrating a Data Permanence solution with a JSON Database. 
 
-``xyz.webkit`` is responsible for managing ``Template`` file operations such as filling html files with keyed data.
+``xyz.webkit`` is responsible for managing ``SiteTemplate`` file operations such as filling html files with keyed data.
 
 ``xyz.app`` manages a lightweight server with REST controller routes and exposes APIs to consumers. Security handling is managed via simple groupID exclusion security levels rather than ACL tree lists. 
+
+``xyz.dbkit`` manages the database instance for the framework and helps setup and configure JSON data.
+
+``xyz.modelkit`` Is the application Model representation for JSON Objects, adding models to your application is as simple as extending the ModelObject class.
+
+For more information on each package please refer to that packages README.md file.
+
+To run the latest build clone the repository, cd into the main project folder, and run ``./gradlew run`` this will start the main
+server which can be accessed on ``http://localhost:8080/`` in your browser of choice. 
 
 
 

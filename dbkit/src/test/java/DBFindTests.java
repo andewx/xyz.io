@@ -24,26 +24,26 @@ public class DBFindTests {
            throw e;
        }
 
-       DBNode TemplateNode = mDatabase.GetNode("Sites");
+       DBNode PageNode = mDatabase.GetNode("Sites");
 
-       assertNotNull(TemplateNode);
+       assertNotNull(PageNode);
 
-       Template Header = new Template("Light-UI-Header", "<div>");
-       Template Body = new Template("Light-UI-Body", "<div>");
-       Template Footer = new Template("Light-UI-Footer", "<div>");
+       Page Header = new Page("Light-UI-Header", "<div>","");
+       Page Body = new Page("Light-UI-Body", "<div>","");
+       Page Footer = new Page("Light-UI-Footer", "<div>","");
        headerUID = Header.getUID();
        Site MySite = new Site("MySite", "Example Site", "/mysite", "My Site Is Awesome");
        MySite.addModel(Header);
        MySite.addModel(Body);
        MySite.addModel(Footer);
-       TemplateNode.AddModel(MySite);
+       PageNode.AddModel(MySite);
 
    }
 
     @Test
     public void FindModelID(){
        DBNode Sites = mDatabase.GetNode("Sites");
-       Template header =(Template) mDatabase.findKey(Sites,"Template", "Light-UI-Header");
+       Page header =(Page) mDatabase.findKey(Sites,"Page", "Light-UI-Header");
         if(header != null) {
             assertEquals(0, header.getUID().compareTo(headerUID));
         }else{
@@ -58,9 +58,9 @@ public class DBFindTests {
        HashMap<String,String> propVals = new HashMap<>();
        propVals.put("Name", "Light-UI-Header");
        DBNode Sites = mDatabase.GetNode("Sites");
-       ArrayList<ModelObject> templates = mDatabase.findExact(Sites, "Template", propVals);
-       for(ModelObject i : templates){
-           Template myTemplate = (Template)i;
+       ArrayList<ModelObject> Pages = mDatabase.findExact(Sites, "Page", propVals);
+       for(ModelObject i : Pages){
+           Page myPage = (Page)i;
            String name = (String)i.get("Name");
            assertEquals(0, name.compareTo("Light-UI-Header"));
        }
@@ -72,15 +72,15 @@ public class DBFindTests {
         propVals.put("Name", "Light-UIX");
         propVals.put("HTML", "<div>");
         DBNode Sites = mDatabase.GetNode("Sites");
-        ArrayList<ModelObject> templates = mDatabase.findSome(Sites, "Template", propVals);
-        assertEquals(3, templates.size());
+        ArrayList<ModelObject> Pages = mDatabase.findSome(Sites, "Page", propVals);
+        assertEquals(3, Pages.size());
     }
 
     @Test
     public void FindSimilar(){
         DBNode Sites = mDatabase.GetNode("Sites");
-        ArrayList<ModelObject> templates = mDatabase.findStartsWith(Sites, "Template","Light");
-        assertEquals(3, templates.size());
+        ArrayList<ModelObject> Pages = mDatabase.findStartsWith(Sites, "Page","Light");
+        assertEquals(3, Pages.size());
     }
 
 

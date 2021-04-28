@@ -15,12 +15,30 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
+/**
+ * Page controller provides basic page functionality but most page logic is handled by its owner
+ * the site. We provide some Page specific endpoints here however since we store pages by our business logic
+ * inside of other Site objects these pages are not generally visible to the DBKIT query interface. You must reference
+ * the SiteID of a page and get that site to get the associated Page JSON object.
+ */
 public class PageController extends BaseController{
 
+    /**
+     * Instantiates a new Page controller.
+     *
+     * @param db_instance the db instance
+     * @param app         the app
+     */
     public PageController(DBMain db_instance, AppManager app) {
         super(db_instance, app);
     }
 
+    /**
+     * Gets all pages in the Pages DBNode, this route should not typically be used since sites store
+     * pages.
+     *
+     * @param ctx the ctx
+     */
     public void Get(Context ctx){
         ArrayList<ModelObject> PageList = new ArrayList<>();
         JSONObject children;
@@ -43,6 +61,11 @@ public class PageController extends BaseController{
         ctx.result(PageList.toString());
     }
 
+    /**
+     * Gets page by UID using path parameter id
+     *
+     * @param ctx the ctx
+     */
     public void GetID(Context ctx){
         String PageID = ctx.pathParam("id");
         DBNode PageNode = mDB.GetNode("Pages");
@@ -58,6 +81,12 @@ public class PageController extends BaseController{
         }
     }
 
+    /**
+     * Gets a page from an associated site. This is the typical method you should use when dealing with
+     * sites. Takes the form param (name) for a PageName  and gets the associated Site from SiteID
+     *
+     * @param ctx the ctx
+     */
     public void GetPage(Context ctx){
 
         try {
@@ -87,6 +116,11 @@ public class PageController extends BaseController{
 
     }
 
+    /**
+     * Gets Page file contents from form params (name) PageName, & (path) filepath
+     *
+     * @param ctx the ctx
+     */
     public void FileContents(Context ctx){
         try {
             String PageName = ctx.formParam("name");
@@ -103,6 +137,11 @@ public class PageController extends BaseController{
         }
     }
 
+    /**
+     * Edits a pages file contents with the provide POST form parameter contents
+     *
+     * @param ctx the ctx
+     */
     public void EditFileContents(Context ctx){
         try {
             String PageName = ctx.formParam("name");
@@ -121,6 +160,11 @@ public class PageController extends BaseController{
         }
     }
 
+    /**
+     * Adds page file to the sites filesystem
+     *
+     * @param ctx the ctx
+     */
     public void AddFiles(Context ctx){
         try {
             String PageName = ctx.formParam("name");
@@ -158,6 +202,11 @@ public class PageController extends BaseController{
 
     }
 
+    /**
+     * Updates a pages contents
+     *
+     * @param ctx the ctx
+     */
     public void UpdatePage(Context ctx){
         try{
             String PageName = ctx.formParam("name");
