@@ -589,7 +589,7 @@ color: var(--heavy-text);
   padding: 10px;
   margin: 10px;
   border-radius: 3px;
-  width: 48%;
+  width: 40%;
 }
 
 .dash-element-1{
@@ -765,6 +765,44 @@ label{
     margin-right: 10px;
     font-size: 1.2rem;
 }
+
+/*--------------------------------
+Menu Tree Table Display
+----------------------------------*/
+.menu-tree{
+ display: block;
+ margin: 0px auto;
+ width: 100%;
+}
+
+.menu-tree-header{
+    padding: 10px;
+    font-family: 'Barlow-Bold', Sans;
+    font-size: 1.2em;
+    background: var(--midnight);
+    color: white;
+}
+
+.submenu-1{
+    padding:10px;
+    display:block;
+    font-family: 'Barlow-Italic', Sans;
+    background-color: var(--light-olive);
+    color: charcoal;
+    font-size:0.8em;
+    margin: 5px 0px 5px 0px;
+}
+
+.submenu-2{
+    padding:15px;
+     margin: 5px 0px 5px 0px;
+    display:block;
+    font-family: 'Barlow-Regular', Sans;
+    background-color: white;
+    color: charcoal;
+    font-size:0.75em;
+}
+
 
 
 /* form loader

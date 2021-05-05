@@ -9,10 +9,7 @@ In this case models are used to store everything from Application Data, to CSS s
 
 Relevant Models like ``Group``, ``User``, ``Recipe``, ``Notification``, ``Item``, ``Theme``. Have been added.
 
-The core API of our ``ModelObject`` can be found in the ``Model`` interface which it implements. Warning that all model properties
-, including the Model UID can be accessed through public members of the ``ModelObject`` class. This facilitates obtaining
-objects through our DB query engine, manipulating properties, committing with the public ``update()`` method available to 
-all models. 
+The core API of our ``ModelObject`` can be found in the ``Model`` interface which it implements.
 
 The implementation classes that extend ``ModelObject`` are relevant to the rest of
 the Web frameworks usage but currently assumptions such as what kind of Children you'd expect to find in a  ``Recipe`` model
@@ -49,10 +46,18 @@ public interface Model {
 }
 ```
 
+## ModelObjects
+`ModelObject` objects store the `UID` `ClassName` `Name` fields. `UID` is auto-generated for generic objects. And `ClassName`
+should always reference the actual `ModelObject` classname, non-pluralized. `Name` is a descriptive field but has no real functional consequences for 
+`ModelObject`'s themeselves. 
+
+Storing children in `ModelObjects` is done by `addModel` and the model is added by its `JSONObject` type to the tree under the key of the pluralized `ClassName` 
+parameter. 
+
 ### Model UID
 Model UIDs are generated for General Purpose models from a 512 bit random appended integer
 which is hashed by a random seed. You can't reconstruct ModelIDs. They are used to place unique
-keys into the internal HashMaps that our ``ModelObject`` uses. A the chances of a collision are 1 over
+keys into the internal HashMaps that our ``ModelObject`` uses. The chances of a collision are 1 over
 1.4×10^77. Essentially a collision is unlikely to happen in our lifetimes. 
 
 Some ``ModelObject`` classes, like users, naturally should be constructed with uniquely identifying data,
@@ -65,28 +70,16 @@ public class User extends ModelObject{
   }
 }
 ```
-This makes classes that naturally consist of key data easy to find. Otherwise you will
-generally have to list out and iterate through keys. 
+You must make sure that all constructor classes respect this assignment and call the
+`JSONObject.updateKey()` function to updated the internally mapped key when construction of the `ModelObject` involves a call to
+`super()` 
 
-### Model Children
-All models list the ``Model`` interface children they can have in the ``ModelObject.Children`` property. 
 
-This type is a ``HashMap<String,HashMap<String, Model>> ``
+###ModelObject Properties
+Since model objects are really abstract `JSONObject` types they can store any data they wish in their key fields. It is up to the user 
+to ensure that when they are creating objects from `JSONObjects` or Strings representing JSON, that the keyed data is in fact there.
+Otherwise and error will be thrown to the caller. 
 
-So we have a ``java.util`` ``HashMap`` of ``HashMaps``. This is an understandably indirect and obfuscated
-way to store children. But it allows us to store different tree branches by their ``ClassName`` property.
-Models can group these properties by adding their ClassNames to the ``xyz.Model.ModelKeys`` class method ``ModelKeys``. 
-When trying ``addModel(Model m)`` we first see if any object exists at the key with that Models classname.
-If not we create a new hash map and input the actual object into that internal map.
-
-Note that model creation
-is not that same as adding/removing a model from the system. You must call the ``addModel`` or ``Remove`` methods from some relevant parent model when
-we are thinking about having a model object system.
-
-Importantly Models don't describe the implementation of their Children or their relationship to those children.
-So anything can be added. A ``User`` can have a list of ``Recipe`` items. But there is nothing to stop a ``Item`` from having a ``User``
-child. It's really up to the controllers to have a full understanding of what Child relationships
-should mean, and whether certain relationships should be allowed. 
 
 ## Group/User Model
 Group models will be important when controllers/endpoints try to restrict access to certain
@@ -99,7 +92,7 @@ some sort.
 
 
 Other methods exist such as `ACL Trees` but these are typically difficult to create and 
-must be maintained. The juice I feel wasn't worth the squeeze.
+must be maintained. 
 
 Note that a ``User`` model here in this context obviously references a ``GroupID`` which is the
 ``Name`` of the group it is assigned to. 
@@ -110,22 +103,19 @@ as a ``SHA256`` hash result of that password. A ``User.UID`` is it's email key f
 Note that validation of the key existing previously should be handled by the controller. Otherwise the model will just
 create the new user in place. 
 
-### Notification System
+## Site/Pages/Theme Model
 
-I chose to add a ``Notification`` type for future since it would have to be integrated
-into the ``DBKit``. These Models are general use notification lists that specify the
-``UID`` and ``ClassName`` of the notifier and the subscriber. This relationship is simply
-an ``A -> B`` notification relationship and is stored independently likely in its own ``DBNode``.
+Sites, pages, and themes are interconnected models. Themes standalone as a model instance and are stored in their
+own DBNodes from how the controllers manage these models. `Site` objects will store a `ThemeID` to reference the theme.
+Since `Site` can reference multiple pages it makes sense to store theme within the Model itself. Multiple children of
+a model are stored by the `pluralize()` name of the `ModelObject.ClassName` field. So a site will reference the `Pages` key
+as a reference to the field of pages is holds. This is store as a reference to an internal `JSONObject` as a child node of the model object.
 
-Notifications have an attached ``Message`` and  boolean values on whether they have been
-``Sent`` or ``Read``.  If a notification has been sent it should be copied into the B object.
-If it has been Read it should be removed. This positive notification allows us to scan for notifications
-and perform updates and processing relevant to the system. 
+Since sites know they hold this field they reference specific pages with their `UID` and utilize the 
+`getPage()` method to get specific pages. 
 
-The DB will operate a separate processing thread that Scans the notification lists and
-appends notifications, and removes them if neccessary. 
 
-## Database (DBKit)
+### Integration with the Database
 
 
 Lastly, I will mention how these models get integrated into the larger system. Since
@@ -142,9 +132,7 @@ data in a separate database. For example it makes sense to have separate ``DBNod
 
 This graph database means that we have a reliable in memory view of the model graphs. And that
 we can update those graphs super fast as long as we know the keys we are looking for. The database
-provides an API that offers access to the model roots. And in a separate thread it can do ``I/O & Graph Processing``
-which allows the database to keep its primary work in a separate thread and merely provide a ``ModelObject``
-query interface on the other-side. 
+provides an API that offers access to the model roots. 
 
 
 

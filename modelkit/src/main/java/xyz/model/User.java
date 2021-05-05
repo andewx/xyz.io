@@ -9,6 +9,10 @@ import org.json.JSONObject;
 import java.nio.charset.Charset;
 import java.time.Instant;
 
+/**
+ * User model used by framework to identify user sessions and login with passsword. UID key is the email for users
+ * and users should be associated with GroupID for access priveleges
+ */
 public class User extends ModelObject{
     protected String Email;
     protected String Password;
@@ -17,7 +21,14 @@ public class User extends ModelObject{
     protected String LastName;
     protected String LoginLast;
 
-
+    /**
+     * User constructor
+     * @param email - prevalidated (HTML5) email string
+     * @param initialPassword - Non hashed password
+     * @param username - Username
+     * @param first - First name
+     * @param last - Last name
+     */
     public User(String email, String initialPassword, String username, String first, String last){
         //Verify Email Unique Before Creating User
         super();
@@ -46,6 +57,10 @@ public class User extends ModelObject{
 
     }
 
+    /**
+     * User Constructor from JSON string
+     * @param json User json string
+     */
     public User(String json){
         super(json);
         Email = (String)get("Email");
@@ -63,6 +78,11 @@ public class User extends ModelObject{
         put("Name", Name);
     }
 
+    /**
+     * User constructor from ModelObject
+     * @param mObj - User ModelObject
+     * @throws JSONException Not well formatted User ModelObject
+     */
     public User(ModelObject mObj)throws JSONException{
         super(mObj);
         try {
@@ -94,6 +114,11 @@ public class User extends ModelObject{
 
     }
 
+    /**
+     * Generates Password hash from sha256 algorithm. Uses Guava hash library
+     * @param pass - Password to be hashed
+     * @return - 256 bit hashed password
+     */
     public static String PasswordSHA(String pass){
         //Generate SHA256 Secure Hash
         HashFunction f =  Hashing.sha256();
@@ -101,6 +126,10 @@ public class User extends ModelObject{
         return passHash.toString();
     }
 
+    /**
+     * Construct User Model from JSONObject
+     * @param jObj - User JSONObject
+     */
     public User(JSONObject jObj){
         super(jObj);
         for(String key : jObj.keySet()){
@@ -127,67 +156,121 @@ public class User extends ModelObject{
 
     }
 
-
+    /**
+     * Getter Email
+     * @return Email
+     */
     public String getEmail() {
         return Email;
     }
 
+    /**
+     * Setter Email
+     * @param email Email
+     */
     public void setEmail(String email) {
         Email = email;
         updateKey("Email", email);
     }
 
+    /**
+     * Getter password
+     * @return hashed password
+     */
     public String getPassword() {
         return Password;
     }
 
+    /**
+     * Setter Password
+     * @param password - Prehashed password from sha256
+     */
     public void setPassword(String password) {
         Password = password;
         updateKey("Password", Password);
     }
 
+    /**
+     * Getter GroupID
+     * @return GroupID
+     */
     public String getGroupID() {
         return GroupID;
     }
 
+    /**
+     * Setter GroupID
+     * @param groupID GroupID
+     */
     public void setGroupID(String groupID) {
         GroupID = groupID;
         updateKey("GroupID", GroupID);
     }
 
+    /**
+     * Getter  First Name
+     * @return FirstName
+     */
     public String getFirstName() {
         return FirstName;
     }
 
+    /**
+     * Setter FirstName
+     * @param firstName FirstName
+     */
     public void setFirstName(String firstName) {
         FirstName = firstName;
         updateKey("FirstName", FirstName);
     }
 
+    /**
+     * Getter LastName
+     * @return LastName
+     */
     public String getLastName() {
         return LastName;
     }
 
+    /**
+     * Setter LastName
+     * @param lastName LastName
+     */
     public void setLastName(String lastName) {
         LastName = lastName;
         updateKey("LastName", lastName);
     }
 
+    /**
+     * Gets last user login
+     * @return TimeFormatted last login from Java Time library
+     */
     public String getLoginLast() {
         return LoginLast;
     }
 
+    /**
+     * Sets last login
+     * @param loginLast Well formatted Time of login last
+     */
     public void setLoginLast(String loginLast) {
         LoginLast = loginLast;
         updateKey("LoginLast", LoginLast);
     }
 
+    /**
+     * Sets UID Key identifier
+     * @return UID Key
+     */
     public String getKey(){
         return "Email";
     }
 
 
-
+    /**
+     * Form tags for User Object
+     * @return
+     */
     @Override
     public String Form(){ //Override for custom form element processing
         StringBuilder sb = new StringBuilder();
@@ -207,6 +290,11 @@ public class User extends ModelObject{
         return sb.toString();
     }
 
+    /**
+     * Input tags for User object
+     * @param key key value of input tag
+     * @return
+     */
     @Override
     public String GetInputTag(String key){
         String type = "<input class='col-1-2' type='text' maxLength='45'" +" value='" + get(key) + "' id='" + key + "' name='" + key + "'></input>";

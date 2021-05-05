@@ -49,7 +49,7 @@ class ReactTheme extends React.Component{
         var files = $("#files").val();
         formData.append("name", name);
         formData.append("palette", JSON.stringify(this.state.palette))
-        var url = '/themes/create';
+        var url = '/theme/create';
         $.ajax(url, {
             type: 'POST',
             data: formData,
@@ -90,8 +90,7 @@ class ReactTheme extends React.Component{
                  <div className="dash-element-2">
 
                        <div className="dash-item"><h3>Submit</h3><p className="caption">When you create a theme its own file directory is created under /themes/:name. Any files
-                       you add will either be rooted here (html), or exist in corresponding /js, /img, /css directories depending on the source type. html files are not required to be named
-                       index.html.</p>
+                       you add will either be rooted here (html), or exist in corresponding /js, /img, /css directories depending on the source type.  IMPORTANT! For now theme files should be added as index.html files</p>
                        <br></br>
                        <p className="caption">There is no requirement to add html files first. You can edit this theme later and add all the files required for your project</p></div>
 <br></br>

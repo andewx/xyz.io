@@ -7,6 +7,10 @@ repositories {
     mavenCentral()
 }
 
+javadoc{
+    source = sourceSets.main.allJava
+}
+
 dependencies {
     compile 'com.google.guava:guava:30.1-jre'
     implementation 'com.google.guava:guava:30.1-jre'

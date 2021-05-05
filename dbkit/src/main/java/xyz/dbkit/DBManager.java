@@ -4,9 +4,13 @@ import xyz.model.ModelObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import xyz.dbkit.DBNode;
 
-
+/**
+ * @author briananderson
+ * The Database Interface implemented by DBManager includes DBNode management and expected query operations. Please see
+ * the DBMain class for documentation of method implementation
+ * @see xyz.dbkit.DBMain
+ */
 public interface DBManager extends Runnable {
 
     //Database API

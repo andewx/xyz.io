@@ -11,12 +11,26 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Index controller handles the public facing index page site
+ */
 public class IndexController extends BaseController{
 
+    /**
+     * Instantiates a new Index controller.
+     *
+     * @param db_instance the db instance
+     * @param app         the app
+     */
     public IndexController(DBMain db_instance, AppManager app) {
         super(db_instance, app);
     }
 
+    /**
+     * Index Page display
+     *
+     * @param ctx the ctx
+     */
     public void Index(Context ctx){
         SiteTemplate templatizer = new SiteTemplate();
         StringBuilder htmlResponse = new StringBuilder();
@@ -26,7 +40,6 @@ public class IndexController extends BaseController{
         templatizer.AddKey("listening", WhatIP());
         templatizer.AddKey("dbnodes", mDB.NumberNodes());
         templatizer.AddKey("dbname", mDB.GetName());
-        templatizer.AddKey("endpoints", mApp.PrintApi());
 
         templatizer.AddKey("numnodes", mDB.NumberNodes());
         templatizer.AddKey("ip", WhatIP());
@@ -39,7 +52,11 @@ public class IndexController extends BaseController{
 
     }
 
-
+    /**
+     * Users page display
+     *
+     * @param ctx the ctx
+     */
     public void Users(Context ctx){
 
         SiteTemplate templatizer = new SiteTemplate();
@@ -68,6 +85,11 @@ public class IndexController extends BaseController{
         ctx.result(htmlResponse.toString());
     }
 
+    /**
+     * Resolves User IP (for funsies)
+     *
+     * @return string
+     */
     public String WhatIP(){
         URL whatismyip = null;
         String ip = "";

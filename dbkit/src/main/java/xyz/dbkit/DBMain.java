@@ -12,13 +12,37 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * @author briananderson
+ * @version 1.0
+ *  Framework internal high-level database API. Runs database operations asynchronously using JSON to database representation. Each Model specified from Model/ModelKeys static utility class is mapped to a gen'd DBNode which maintains its own internal mapping of a ModelObject tree for storage. Query functionality currently only exposed as Java class API with simple key or property value searches. Implements the DBManager interface for query operations
+ */
 public class DBMain extends Thread implements DBManager{
 
+    /**
+     * The Nodes.
+     */
     HashMap<String,DBNode> Nodes;
+    /**
+     * The Name.
+     */
     String Name;
+    /**
+     * The Exit condition.
+     */
     boolean ExitCondition;
+    /**
+     * The Src path.
+     */
     String SrcPath;
 
+    /**
+     * Constructs database from expected DBNodes associated with ModelKeys(). DBNodes then self-construct
+     * in the JVM resources directory from the Model.keys files. Throws error if DBNode can't be instantiated
+     *
+     * @param name Database name
+     * @throws IOException DBNode not found or able to be created throws error to caller
+     */
     public DBMain(String name) throws IOException {
         //Checks if node property files exists -- stored as .keys json files
         Name = name;
@@ -37,10 +61,21 @@ public class DBMain extends Thread implements DBManager{
 
     }
 
+    /**
+     * Getter Database name
+     *
+     * @return Database Name
+     */
     public String GetName(){
         return Name;
     }
 
+    /**
+     * Creates DBNode object whose root node is constructed from the ModelKeys default constructor
+     * @param nodeName - Name of the class of DBNode. Must be a ModelObject ClassName whose keys are stored inside the ModelKeys static class
+     * @return - Instantiated DBNode
+     * @throws IOException - Could not create DBNode because of ModelObject ClassName error
+     */
     @Override
     public DBNode CreateNode(String nodeName) throws IOException {
             DBNode myNode = DBUtils.InitNode(nodeName);
@@ -48,7 +83,12 @@ public class DBMain extends Thread implements DBManager{
             return myNode;
     }
 
-
+    /**
+     * Delete DBNode from the Database. Delegates deletion and updates to DBNode
+     * @param nodeName - ModelObject ClassName
+     * @return boolean on whether DBNode was deleted
+     * @throws IOException Could not find or delete a DBNode
+     */
     @Override
     public boolean DeleteNode(String nodeName) throws IOException {
         DBNode delNode = Nodes.get(nodeName);
@@ -74,12 +114,22 @@ public class DBMain extends Thread implements DBManager{
         return true;
     }
 
-
+    /**
+     * Gets a DBNode from a ModelObject ClassName
+     * @param nodeName ModelObject ClassName present in ModelKeys class
+     * @return Existing DBNode
+     */
     @Override
     public DBNode GetNode(String nodeName) {
         return Nodes.get(nodeName);
     }
 
+    /**
+     * Adds ModelObject to the top level of the ModelObject tree held by DBNode
+     * @param node - DBNode conducting the operation
+     * @param m ModelObject to be added
+     * @return the added ModelObject
+     */
     @Override
     public ModelObject AddModel(DBNode node, ModelObject m) {
         node.rootGraph.addModel(m);
@@ -88,6 +138,12 @@ public class DBMain extends Thread implements DBManager{
         return m;
     }
 
+    /**
+     * Flags the DBNode as requiring update so that the DB knows this Node is available for syncing
+     * @param node DBNode to be updated
+     * @param m ModelObject associated with DBNode
+     * @return ModelObject Associated
+     */
     @Override
     public ModelObject UpdateModel(DBNode node, ModelObject m) {
         
@@ -97,6 +153,13 @@ public class DBMain extends Thread implements DBManager{
 
     //--------------------------------- QUERY METHODS ---------------------------------//
 
+    /**
+     * Queries ModelObject m for matching set of Key Values using DFS
+     * @param model ModelObject to be searched
+     * @param ClassName ModelObject class of the searched type
+     * @param PropertyKeyValues Mapped Key/Value Pairs of the search parameters
+     * @return ArrayList of objects matching the query parameters
+     */
     @Override
     public ArrayList<ModelObject> findExact(ModelObject model, String ClassName, HashMap<String, String> PropertyKeyValues) {
         ArrayList<ModelObject> myMatches = new ArrayList<>();
@@ -126,11 +189,25 @@ public class DBMain extends Thread implements DBManager{
         return myMatches;
     }
 
+    /**
+     * Queries DBNode for exact matching parameters of a specific model type
+     * @param node DBNode to be searched
+     * @param ClassName ModelObject Class
+     * @param PropertyKeyValues Parameter list of key/value pairs
+     * @return List of ModelObjects with matching parameters
+     */
     @Override
     public ArrayList<ModelObject> findExact(DBNode node, String ClassName, HashMap<String, String> PropertyKeyValues) {
       return findExact(node.rootGraph, ClassName, PropertyKeyValues);
     }
 
+    /**
+     * Queries ModelObject for objects matching at least one of the key/value pair parameters
+     * @param model ModelObject to be searched
+     * @param ClassName Class of Object to be found
+     * @param PropertyKeyValues Parameter list of key/value pairs
+     * @return matching ModelObjects
+     */
     @Override
     public ArrayList<ModelObject> findSome(ModelObject model, String ClassName, HashMap<String, String> PropertyKeyValues) {
         ArrayList<ModelObject> myMatches = new ArrayList<>();
@@ -161,11 +238,26 @@ public class DBMain extends Thread implements DBManager{
         return myMatches;
     }
 
+    /**
+     * Finds ModelObjects matching at least one of the Parameter Key/Value search parameters from a DBNode
+     * @param node DBNode to be searched
+     * @param ClassName ModelObject class to be found
+     * @param PropertyKeyValues Parameter list of key/value pairs
+     * @return ArrayList of ModelObjects with at least one matching parameter
+     */
     @Override
     public ArrayList<ModelObject> findSome(DBNode node, String ClassName, HashMap<String, String> PropertyKeyValues) {
             return findSome(node.rootGraph, ClassName, PropertyKeyValues);
     }
 
+    /**
+     * Finds ModelObjects who partially match the corresponding key/value parameter using a distance metric algorithm to compare string similiarity
+     * @param model ModelObject to be searched
+     * @param ClassName Class of ModelObject to be found
+     * @param property Property Key
+     * @param value Value to be compared
+     * @return ModelObject list of similarily matching parameters
+     */
     @Override
     public ArrayList<ModelObject> findSimilar(ModelObject model, String ClassName, String property, String value) {
         ArrayList<ModelObject> myMatches = new ArrayList<>();
@@ -191,11 +283,26 @@ public class DBMain extends Thread implements DBManager{
         return myMatches;
     }
 
+    /**
+     * Finds ModelObjects from DBNode who partially match the corresponding key/value parameter using a distance metric algorithm to compare string similiarity
+     * @param node DBNode to be searhed
+     * @param ClassName Class of ModelObject to be found
+     * @param property Property Key
+     * @param value Value to be compared
+     * @return ModelObject list of similarily matching parameters
+     */
     @Override
     public ArrayList<ModelObject> findSimilar(DBNode node, String ClassName, String property, String value) {
        return findSimilar(node.rootGraph, ClassName, property,value);
     }
 
+    /**
+     * Finds a singular object by its key from a ModelObject by its UID
+     * @param model ModelObject to be searched
+     * @param ClassName Class of ModelObject to be found
+     * @param key Key to be compared
+     * @return ModelObject if found or null
+     */
     @Override
     public ModelObject findKey(ModelObject model, String ClassName, String key) {
         ModelObject findModel = ModelObject.GetModelObj(model, key);
@@ -216,11 +323,26 @@ public class DBMain extends Thread implements DBManager{
         return null;
     }
 
+    /**
+     * Finds a singular object by its key from a ModelObject by its UID
+     * @param node DBNode to be searched
+     * @param ClassName Class of ModelObject to be found
+     * @param key Key to be compared
+     * @return ModelObject if found or null
+     */
     @Override
     public ModelObject findKey(DBNode node, String ClassName, String key) {
         return findKey(node.rootGraph, ClassName, key);
     }
 
+    /**
+     * Finds a list of objects that start with the specified string in its UID
+     *
+     * @param model     ModelObject to be searched
+     * @param ClassName Class of ModelObject to be found
+     * @param value     The Prefix of the object to be compared
+     * @return List of ModelObjects with matching prefixes
+     */
     public ArrayList<ModelObject> findStartsWith(ModelObject model, String ClassName, String value) {
         ArrayList<ModelObject> myMatches = new ArrayList<>();
 
@@ -245,10 +367,27 @@ public class DBMain extends Thread implements DBManager{
         return myMatches;
     }
 
+    /**
+     * Finds a list of objects that start with the specified string in its UID
+     *
+     * @param node      DBNode to be searched
+     * @param ClassName Class of ModelObject to be found
+     * @param key       The Prefix of the object to be compared
+     * @return List of ModelObjects with matching prefixes
+     */
     public ArrayList<ModelObject> findStartsWith(DBNode node, String ClassName, String key) {
         return findStartsWith(node.rootGraph, ClassName, key);
     }
 
+    /**
+     * Finds a list of objects whose specific property is a suffix of that object
+     *
+     * @param model     ModelObject to be searched
+     * @param ClassName Class of ModelObject to be found
+     * @param property  Property parameter to be searched
+     * @param value     Value of suffix to be matched
+     * @return List of ModelObjects with matching suffixes for a given property
+     */
     public ArrayList<ModelObject> propStartsWith(ModelObject model, String ClassName, String property, String value) {
         ArrayList<ModelObject> myMatches = new ArrayList<>();
 
@@ -273,11 +412,26 @@ public class DBMain extends Thread implements DBManager{
         return myMatches;
     }
 
+    /**
+     * Finds a list of objects whose specific property is a suffix of that object
+     *
+     * @param node      DBNode to be searched
+     * @param ClassName Class of ModelObject to be found
+     * @param property  Property parameter to be searched
+     * @param value     Value of suffix to be matched
+     * @return List of ModelObjects with matching suffixes for a given property
+     */
     public ArrayList<ModelObject> propStartsWith(DBNode node, String ClassName, String property, String value) {
         return propStartsWith(node.rootGraph, ClassName, property,value);
     }
 
-
+    /**
+     * Deletes a ModelObject with the specified key UID
+     * @param model ModelObject to be searched
+     * @param ClassName Class of ModelObject to be found
+     * @param key Value to matched as the UID
+     * @return boolean of whether not the keyvalue was delete
+     */
     @Override
     public boolean deleteKey(ModelObject model, String ClassName, String key) {
 
@@ -311,15 +465,33 @@ public class DBMain extends Thread implements DBManager{
         return false;
     }
 
+
+    /**
+     * Deletes a ModelObject with the specified key UID
+     * @param node DBNode to be searched
+     * @param ClassName Class of ModelObject to be found
+     * @param key Value to matched as the UID
+     * @return boolean of whether not the keyvalue was delete
+     */
     @Override
     public boolean deleteKey(DBNode node, String ClassName, String key) {
         return deleteKey(node.rootGraph, ClassName, key);
     }
 
+    /**
+     * Number of nodes the DB has
+     *
+     * @return Number of DBNode keys
+     */
     public String NumberNodes(){
         return String.format("%d",Nodes.keySet().size());
     }
 
+    /**
+     * Run synchronization of DBNode, writes out DBNode into resources directory under the name of its DBNode class
+     * @param thisNode DBNode to be written
+     * @throws IOException File I/O Error Encountered throws to caller
+     */
     @Override
     public void SyncNode(DBNode thisNode) throws IOException {
 
@@ -335,11 +507,19 @@ public class DBMain extends Thread implements DBManager{
 
     }
 
+    /**
+     * Non implemented Notifications database async tasking
+     */
     @Override
     public synchronized void SyncNotifications() {
         //I don't do anything
     }
 
+    /**
+     * Synchronizes DB across all DBNodes calling SyncNode. If DBNode is flagged then DBNode should write itself.
+     * Method is sychronized in its own thread and completes before futher execution of the monitoring thread
+     * @throws IOException File I/O Error throws to caller
+     */
     @Override
     public synchronized void Sync() throws IOException {
         for(String nodeKey : Nodes.keySet()){
@@ -356,12 +536,17 @@ public class DBMain extends Thread implements DBManager{
 
     }
 
+    /**
+     * Causes DB to execute synchronized thread taskings via interrupt() main caller to Database thread
+     */
     public void RunSync(){
         this.interrupt();
     }
 
 
-
+    /**
+     * Initializes database and instantiates thread for Database sync
+     */
     @Override
     public void run() {
         System.out.println("\nDatabase: " + Name + " starting...");
@@ -380,6 +565,9 @@ public class DBMain extends Thread implements DBManager{
         }
     }
 
+    /**
+     * Exits database by setting flag for thread execution
+     */
     @Override
     public void Exit() {
         ExitCondition = true;

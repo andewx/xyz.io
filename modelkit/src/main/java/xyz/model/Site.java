@@ -133,6 +133,25 @@ public class Site extends ModelObject{
         }
     }
 
+    public Page getPage(String page){
+        try{
+            JSONObject pages = this.getJSONObject("Pages");
+            return new Page(pages.getJSONObject(page));
+        }catch(Exception e){
+            System.out.println("Could not find site " + Name + " page " + page);
+            return null;
+        }
+    }
+
+    public void removePage(String page){
+        try{
+            JSONObject pages = this.getJSONObject("Pages");
+            pages.remove(page);
+        }catch(Exception e){
+            System.out.println("Could not find page " + page);
+        }
+    }
+
     @Override
     public String Form(){ //Override for custom form element processing
         StringBuilder sb = new StringBuilder();

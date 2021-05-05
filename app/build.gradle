@@ -6,7 +6,9 @@ plugins {
     id 'xyz.java-application-conventions'
 }
 
-
+javadoc{
+    source = sourceSets.main.allJava
+}
 
 dependencies {
     compile 'io.javalin:javalin:3.13.0'
@@ -37,3 +39,4 @@ task xyzrun (type: JavaExec){
     mainClass = 'xyz.app.App'
     enableAssertions = true
 }
+

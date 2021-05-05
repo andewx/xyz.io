@@ -10,11 +10,29 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * General Model CRUD Controller Endpoint. Most models with non specific logic (i.e. filesystem isn't accessed or there are no
+ * secondary effects) can rely on the model crud enpoints for model creation. Models accessed with this controller will
+ * store in their own respective singular DBNodes in a flat layout. If you add a Model to the framework and register it within
+ * the xyz.modelkit.Model.ModelKeys class you must edit the creation/deletion endpoints here to include that model if you
+ * are using this endpoint for object generation.
+ */
 public class ModelsController extends BaseController{
+    /**
+     * Instantiates a new Models controller.
+     *
+     * @param db_instance the db instance
+     * @param app         the app
+     */
     public ModelsController(DBMain db_instance, AppManager app) {
         super(db_instance, app);
     }
 
+    /**
+     * Resolves default model with the given model classname passed as path parameter
+     *
+     * @param ctx the ctx
+     */
     public void DefaultModel(Context ctx){
         String ModelKey = ctx.pathParam("name");
         ModelObject myObj = ModelKeys.Default(ModelKey);
@@ -26,6 +44,12 @@ public class ModelsController extends BaseController{
         }
     }
 
+    /**
+     * Adds new model to the DB from POST call uses path param Model Class to determine CRUD section to
+     * construct model context
+     *
+     * @param ctx the ctx
+     */
     public void ModelCreate(Context ctx){
         String name = ctx.pathParam("name");
         if(name.equals("Group")){
@@ -124,6 +148,11 @@ public class ModelsController extends BaseController{
         mDB.interrupt();
     }
 
+    /**
+     * Model edit.
+     *
+     * @param ctx the ctx
+     */
     public void ModelEdit(Context ctx){
         String ModelKey = ctx.pathParam("id");
         String ModelName = ctx.pathParam("name");
@@ -137,6 +166,12 @@ public class ModelsController extends BaseController{
         }
     }
 
+    /**
+     * Model update.
+     *
+     * @param ctx the ctx
+     * @throws IOException the io exception
+     */
     public void ModelUpdate(Context ctx) throws IOException {
         String ModelKey = ctx.pathParam("id");
         String ModelName = ctx.pathParam("name");
@@ -229,6 +264,11 @@ public class ModelsController extends BaseController{
 
     }
 
+    /**
+     * Deletes model via CRUD operation
+     *
+     * @param ctx the ctx
+     */
     public void ModelDelete(Context ctx){
         String ModelKey = ctx.pathParam("id");
         String ModelName = ctx.pathParam("name");

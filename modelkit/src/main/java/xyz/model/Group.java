@@ -2,6 +2,11 @@ package xyz.model;
 
 import org.json.JSONObject;
 
+/**
+ * Group objects represent a group object usually used by Authentication storage for the backend router services
+ * @author briananderson
+ * @see xyz.model.ModelObject
+ */
 public class Group extends ModelObject {
 
     protected String GroupID;
@@ -9,6 +14,13 @@ public class Group extends ModelObject {
     protected int AccessLevel;
 
 
+    /**
+     * Group Constructor - constructs model Object as a extended class of model object
+     * @param GroupIDName - Name of the Group (UID Key)
+     * @param Description - Group description
+     * @param AccessSpecifier - Integer access level. Intended for authenticating routes based on ring security.
+     * @see xyz.model.ModelObject
+     */
     public Group(String GroupIDName, String Description, int AccessSpecifier) {
         super();
         ClassName = "Group";
@@ -28,6 +40,10 @@ public class Group extends ModelObject {
 
     }
 
+    /**
+     * Group constructor with a JSONObject
+     * @param jObj - The well formatted JSONObject of a Group
+     */
     public Group(JSONObject jObj){
         try {
             for (String key : jObj.keySet()) {
@@ -54,6 +70,10 @@ public class Group extends ModelObject {
 
     }
 
+    /**
+     * Group constructor
+     * @param json -- A well formatted JSON string of a group object
+     */
     public Group(String json){
         super(json);
         GroupID = (String)get("GroupID");
@@ -65,7 +85,10 @@ public class Group extends ModelObject {
         put("AccessLevel", AccessLevel);
     }
 
-
+    /**
+     * Returns HTML Form tags for creating a group object
+     * @return HTML Form tag strings for creating a group object
+     */
     @Override
     public String Form(){ //Too Coupled with HTML i.e. Forms need to know which classes to use.
         StringBuilder sb = new StringBuilder();
@@ -86,6 +109,11 @@ public class Group extends ModelObject {
         return sb.toString();
     }
 
+    /**
+     * Gets input tags for editing Group objects on a site page
+     * @param key
+     * @return - Input tags
+     */
     @Override
     public String GetInputTag(String key){ //too much coupling with - CSS/HTML Specifics
         String type = "<input class='col-1-2' type='text' maxLength='45' value='" + get(key)  + "' name='" + key + "'></input>";
@@ -98,32 +126,52 @@ public class Group extends ModelObject {
         return type;
     }
 
-    public String getKey(){
-        return "GroupID";
-    }
-
+    /**
+     * Getter GroupID
+     * @return this GroupID
+     */
     public String GetGroupID() {
         return GroupID;
     }
 
+    /**
+     * Getter Access Description
+     * @return this AccessDescription
+     */
     public String GetAccessDescription() {
         return AccessDescription;
     }
 
+    /**
+     * Getter AccessLevel
+     * @return this AccessLevel
+     */
     public int GetAccessLevel() {
         return AccessLevel;
     }
 
+    /**
+     * Setter Group ID
+     * @param groupID Group ID, which is also taken to be the name of the group
+     */
     public void setGroupID(String groupID) {
         GroupID = groupID;
         updateKey("GroupID", GroupID);
     }
 
+    /**
+     * Setter AccessDescription
+     * @param accessDescription Description of access intention for group
+     */
     public void setAccessDescription(String accessDescription) {
         AccessDescription = accessDescription;
         updateKey("AccessDescription", AccessDescription);
     }
 
+    /**
+     * Setter Access Level
+     * @param accessLevel the integer access level for the group for accessing routes
+     */
     public void setAccessLevel(int accessLevel) {
         AccessLevel = accessLevel;
         updateKey("AccessLevel", AccessLevel);

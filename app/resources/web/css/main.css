@@ -74,13 +74,13 @@ html, body {
 }
 
 body {
-    background: #111111;
+    background: var(--pal1);
     font-family: "lora-regular", serif;
     font-size: 1.7rem;
     font-style: normal;
     font-weight: normal;
     line-height: 1.765;
-    color: #757575;
+    color: var(--pal5);
     margin: 0;
     padding: 0;
 }
@@ -112,7 +112,7 @@ a:hover, a:active {
 h1, h2, h3, h4, h5, h6, 
 .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: "montserrat-medium", sans-serif;
-    color: #000000;
+    color: var(--pal5);
     font-style: normal;
     font-weight: normal;
     text-rendering: optimizeLegibility;
@@ -371,7 +371,7 @@ ul.disc li::before {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #39b54a;
+    background: var(--pal3);
     position: absolute;
     left: -17px;
     top: 11px;
@@ -506,7 +506,7 @@ form,
 }
 
 .pace .pace-progress {
-    background: #39b54a;
+    background: var(--pal2);
     position: fixed;
     z-index: 900;
     top: 0;
@@ -531,7 +531,7 @@ form,
     left: 0;
     right: 0;
     bottom: 0;
-    background: #050505;
+    background: var(--pal4);
     z-index: 800;
     height: 100%;
     width: 100%;
@@ -549,7 +549,7 @@ form,
 }
 
 .line-scale-pulse-out > div {
-    background-color: #39b54a;
+    background-color: var(--pal3);
     width: 4px;
     height: 35px;
     border-radius: 2px;
@@ -715,7 +715,7 @@ label, legend {
     font-weight: bold;
     margin-bottom: .9rem;
     line-height: 1.714;
-    color: #828282;
+    color: var(--pal4);
     display: block;
 }
 
@@ -837,8 +837,8 @@ button.btn--primary,
 input[type="submit"].btn--primary,
 input[type="reset"].btn--primary,
 input[type="button"].btn--primary {
-    background: #39b54a;
-    border-color: #39b54a;
+    background: var(--pal1);
+    border-color: var(--pal1);
     color: #FFFFFF;
 }
 
@@ -852,8 +852,8 @@ button.btn--primary:focus,
 input[type="submit"].btn--primary:focus,
 input[type="reset"].btn--primary:focus,
 input[type="button"].btn--primary:focus {
-    background: #33a242;
-    border-color: #33a242;
+    background: var(--pal2);
+    border-color: var(--pal3);
 }
 
 
@@ -877,7 +877,7 @@ input[type="button"].btn--primary:focus {
 
 .btn--stroke, button.btn--stroke {
     background: transparent !important;
-    border: 0.2rem solid #39b54a;
+    border: 0.2rem solid var(--pal3);
     color: #39b54a;
 }
 
@@ -1062,59 +1062,6 @@ button::-moz-focus-inner, input::-moz-focus-inner {
 
 .pull-quote blockquote:before {
     content: none;
-}
-
-
-/** 
- * Stats Tab
- * ---------
- * markup:
- *
- * <ul class="stats-tabs">
- *		<li><a href="#">[value]<em>[name]</em></a></li>
- *	</ul>
- *
- * Extend this object into your markup.
- *
- * --------------------------------------------------------------------- */
-
-.stats-tabs {
-    padding: 0;
-    margin: 3rem 0;
-}
-
-.stats-tabs li {
-    display: inline-block;
-    margin: 0 1.5rem 3rem 0;
-    padding: 0 1.5rem 0 0;
-    border-right: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.stats-tabs li:last-child {
-    margin: 0;
-    padding: 0;
-    border: none;
-}
-
-.stats-tabs li a {
-    display: inline-block;
-    font-size: 2.5rem;
-    font-family: "montserrat-regular", sans-serif;
-    font-weight: bold;
-    border: none;
-    color: #000000;
-}
-
-.stats-tabs li a:hover {
-    color: #39b54a;
-}
-
-.stats-tabs li a em {
-    display: block;
-    margin: .6rem 0 0 0;
-    font-size: 1.4rem;
-    font-family: "montserrat-regular", sans-serif;
-    color: #828282;
 }
 
 

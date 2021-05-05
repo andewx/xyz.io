@@ -9,13 +9,36 @@ import xyz.app.Security;
 import xyz.dbkit.DBMain;
 import xyz.model.User;
 
+/**
+ * BaseController contains the core controller functionality, all other controllers should inherit from
+ * this class. It extends handler which provides the Functional access of the called methods. Does pre and post
+ * checking on controller route access, and establishes the unique session for this call instance.
+ */
 public class BaseController implements Handler {
 
+    /**
+     * The M db.
+     */
     DBMain mDB;
+    /**
+     * The M route from.
+     */
     String mRouteFrom;
+    /**
+     * The M app.
+     */
     AppManager mApp;
+    /**
+     * The M security.
+     */
     Integer mSecurity;
 
+    /**
+     * Base controller constructor
+     *
+     * @param db_instance the db instance
+     * @param appManager  the app manager
+     */
     public BaseController(DBMain db_instance, AppManager appManager) {
         mDB = db_instance;
         mRouteFrom = "";
@@ -23,6 +46,12 @@ public class BaseController implements Handler {
         mSecurity = 6;
     }
 
+    /**
+     * Constructs user from session given cookie information
+     *
+     * @param ctx the ctx
+     * @return user
+     */
     public User UserFromSession(Context ctx){
         User thisUser;
         try{
@@ -35,6 +64,11 @@ public class BaseController implements Handler {
         }
     }
 
+    /**
+     * Pre route handling add to this for any additional logic for pre route calls
+     *
+     * @param ctx the ctx
+     */
     public void pre(Context ctx){
 
         try {
@@ -85,17 +119,32 @@ public class BaseController implements Handler {
 
     }
 
+    /**
+     * Post route handling add to this for any additional post route logic
+     *
+     * @param ctx the ctx
+     */
     public void post(Context ctx){
         mRouteFrom = ctx.url(); //Sets the last url
         ctx.removeCookie("MESSAGE");
         ctx.removeCookie("ERROR");
     }
 
+    /**
+     * Not implemented but provides a functional base if user wishes to provide unique resolvers to user owned
+     * not group owned routes
+     *
+     * @param ctx the ctx
+     */
     public void resolve(Context ctx){
         //Override resolver when objects needs to be owned by user.
     }
 
-
+    /**
+     * Handler entry point function for Javalin server calls
+     * @param ctx
+     * @throws Exception
+     */
     public void handle(@NotNull Context ctx) throws Exception {
 
     }

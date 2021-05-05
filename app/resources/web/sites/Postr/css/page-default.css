@@ -1,0 +1,26 @@
+body{
+    font-family: "Barlow-Thin";
+    background: var(--pal5);
+}
+
+h2{
+ color: var(--pal4);
+}
+
+h3{
+ color: var(--pal3);
+}
+
+h4{
+ color: var(--pal5);
+}
+
+.fig-cap{
+    font-family: "Barlow-Thin";
+    font-size: 0.8em;
+    margin: 10px;
+}
+
+footer{
+ color: var(--pal3);
+}

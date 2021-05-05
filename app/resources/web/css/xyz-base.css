@@ -30,8 +30,8 @@
  * # imports
  *
  * ------------------------------------------------------------------- */
-@import url("font-awesome/css/font-awesome.min.css");
-@import url("fonts.css");
+@import url("/css/font-awesome/css/font-awesome.min.css");
+@import url("/css/fonts.css");
 
 
 /***
@@ -68,6 +68,10 @@ section {
 h1 {
     font-size: 2em;
     margin: 0.67em 0;
+}
+
+h2 {
+    color: white;
 }
 
 figcaption,
@@ -115,6 +119,14 @@ strong {
 b,
 strong {
     font-weight: bolder;
+}
+
+.Header{
+    color: white;
+}
+
+.Header-Alt{
+    color: black;
 }
 
 code,

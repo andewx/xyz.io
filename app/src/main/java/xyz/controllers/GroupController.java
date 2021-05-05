@@ -12,11 +12,25 @@ import xyz.model.User;
 
 import java.util.ArrayList;
 
+/**
+ * Group controller manages group endpoint calls for managing group objects within the framework
+ */
 public class GroupController extends BaseController {
+    /**
+     * Instantiates a new Group controller.
+     *
+     * @param db_instance the db instance
+     * @param appManager  the app manager
+     */
     public GroupController(DBMain db_instance, AppManager appManager) {
         super(db_instance, appManager);
     }
 
+    /**
+     * Gets a group with starting prefix
+     *
+     * @param ctx the ctx
+     */
     public void GetGroupStarts(Context ctx){
         String name = ctx.pathParam("name");
         ArrayList<ModelObject> groupList;
@@ -44,6 +58,11 @@ public class GroupController extends BaseController {
         }
     }
 
+    /**
+     * Gets multiple groups with the specified key
+     *
+     * @param ctx the ctx
+     */
     public void GetGroups(Context ctx) {
         ArrayList<ModelObject> groupList = new ArrayList<>();
         JSONObject children;
@@ -77,6 +96,11 @@ public class GroupController extends BaseController {
         ctx.result(sb.toString());
     }
 
+    /**
+     * Default Group Form return
+     *
+     * @param ctx the ctx
+     */
     public void Form(Context ctx){
         User defaultUser = (User) ModelKeys.Default("Group");
         String content = defaultUser.Form();
