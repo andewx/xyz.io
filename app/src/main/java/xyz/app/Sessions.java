@@ -24,7 +24,7 @@ public class Sessions {
 
     /**
      * Add Session with a specified Key
-     *
+     * Requirement(App 2.0)
      * @param key UID Key to be added
      * @param grp GroupID Access level
      * @return GUID string
@@ -38,7 +38,7 @@ public class Sessions {
 
     /**
      * Sets message for UID
-     *
+     * Requirement(App 2.0)
      * @param s    Message
      * @param GUID User ID for Session
      */
@@ -52,7 +52,7 @@ public class Sessions {
 
     /**
      * Gets Session Message for User with Session UID
-     *
+     * Requirement(App 2.0)
      * @param GUID Session UID
      * @return Message string
      */
@@ -66,7 +66,7 @@ public class Sessions {
 
     /**
      * Gets session username
-     *
+     * Requirement(App 2.0)
      * @param GUID Session ID
      * @return Username string
      */
@@ -80,7 +80,7 @@ public class Sessions {
 
     /**
      * Gets session Map
-     *
+     * Requirement(App 2.0)
      * @return Set of keys for sessions
      */
     public Set<String> GetSessions(){
@@ -89,7 +89,7 @@ public class Sessions {
 
     /**
      * Gets access level of user
-     *
+     * Requirement(App 2.0)
      * @param GUID User Session ID
      * @return Access Level
      */
@@ -103,7 +103,7 @@ public class Sessions {
 
     /**
      * Gets last login
-     *
+     * Requirement(App 2.0)
      * @param GUID User session ID
      * @return Instant instant
      */
@@ -118,7 +118,7 @@ public class Sessions {
 
     /**
      * Removes session
-     *
+     * Requirement(App 2.0)
      * @param GUID User session ID
      */
     public void RemoveSession(String GUID){
@@ -156,7 +156,7 @@ public class Sessions {
 
         /**
          * Gets session message
-         *
+         * Requirement(App 2.0)
          * @return message
          */
         public String getMessage() {
@@ -165,7 +165,7 @@ public class Sessions {
 
         /**
          * Sets session message
-         *
+         * Requirement(App 2.0)
          * @param message Message
          */
         public void setMessage(String message) {
@@ -174,7 +174,7 @@ public class Sessions {
 
         /**
          * Gets session log
-         *
+         * Requirement(App 2.0)
          * @return returns log
          */
         public String getLog() {
@@ -183,7 +183,7 @@ public class Sessions {
 
         /**
          * Sets session log
-         *
+         * Requirement(App 2.0)
          * @param log new log
          */
         public void setLog(String log) {
@@ -192,7 +192,7 @@ public class Sessions {
 
         /**
          * Constructor
-         *
+         * Requirement(App 2.0)
          * @param k User Key
          * @param g User group access level
          */
@@ -204,7 +204,7 @@ public class Sessions {
 
         /**
          * Gets session key
-         *
+         * Requirement(App 2.0)
          * @return string
          */
         public String getKey(){
@@ -213,7 +213,7 @@ public class Sessions {
 
         /**
          * Gets last login
-         *
+         * Requirement(App 2.0)
          * @return instant
          */
         public Instant getLastLogin(){
@@ -222,7 +222,7 @@ public class Sessions {
 
         /**
          * Gets access Level for user key state
-         *
+         * Requirement(App 2.0)
          * @return integer
          */
         public Integer getAccess(){

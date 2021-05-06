@@ -28,7 +28,7 @@ public class GroupController extends BaseController {
 
     /**
      * Gets a group with starting prefix
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void GetGroupStarts(Context ctx){
@@ -60,7 +60,7 @@ public class GroupController extends BaseController {
 
     /**
      * Gets multiple groups with the specified key
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void GetGroups(Context ctx) {
@@ -98,7 +98,7 @@ public class GroupController extends BaseController {
 
     /**
      * Default Group Form return
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void Form(Context ctx){

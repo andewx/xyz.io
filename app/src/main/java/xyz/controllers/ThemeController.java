@@ -52,7 +52,7 @@ public class ThemeController extends BaseController{
 
     /**
      * Displays Theme
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void Display(Context ctx){
@@ -83,7 +83,7 @@ public class ThemeController extends BaseController{
 
     /**
      * Gets theme keys JSON return
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void GetKeys(Context ctx){
@@ -117,7 +117,7 @@ public class ThemeController extends BaseController{
 
     /**
      * Gets all themes JSON returns object
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void GetAll(Context ctx){
@@ -145,7 +145,7 @@ public class ThemeController extends BaseController{
 
     /**
      * Gets Theme By ID
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void GetID(Context ctx){
@@ -168,7 +168,7 @@ public class ThemeController extends BaseController{
 
     /**
      * Creates theme
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void CreateTheme(Context ctx){
@@ -267,7 +267,7 @@ public class ThemeController extends BaseController{
 
     /**
      * Converts a Palette JSON String into CSS and writes file to palette.css
-     *
+     * Requirement(App 1.1)
      * @param palette JSON generated palette array, [[0,0,0]...] Five palettes expected
      * @return string
      */
@@ -296,7 +296,7 @@ public class ThemeController extends BaseController{
 
     /**
      * Gets theme files
-     *
+     * Requirement(App 1.1)
      * @param themeId the theme id
      * @return string
      */
@@ -365,7 +365,7 @@ public class ThemeController extends BaseController{
 
     /**
      * Gets Files
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void GetFiles(Context ctx){
@@ -387,7 +387,7 @@ public class ThemeController extends BaseController{
 
     /**
      * Lists files
-     *
+     * Requirement(App 1.1)
      * @param dir Directory
      * @return File Set
      * @throws IOException BOOOOOOOO
@@ -404,7 +404,7 @@ public class ThemeController extends BaseController{
 
     /**
      * Lists filecontents
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void FileContents(Context ctx){
@@ -425,7 +425,7 @@ public class ThemeController extends BaseController{
 
     /**
      * Edits file contents
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void EditFileContents(Context ctx){
@@ -448,7 +448,7 @@ public class ThemeController extends BaseController{
 
     /**
      * Deletes Theme File
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void DeleteFile(Context ctx){
@@ -470,7 +470,7 @@ public class ThemeController extends BaseController{
 
     /**
      * Adds file to theme
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void AddFiles(Context ctx){
@@ -524,7 +524,7 @@ public class ThemeController extends BaseController{
 
     /**
      * Deletes a theme
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void DeleteTheme(Context ctx){

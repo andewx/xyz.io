@@ -35,7 +35,7 @@ public class BaseController implements Handler {
 
     /**
      * Base controller constructor
-     *
+     * Requirement(App 1.2)
      * @param db_instance the db instance
      * @param appManager  the app manager
      */
@@ -51,6 +51,7 @@ public class BaseController implements Handler {
      *
      * @param ctx the ctx
      * @return user
+     * Requirement(App 1.2)
      */
     public User UserFromSession(Context ctx){
         User thisUser;
@@ -66,7 +67,7 @@ public class BaseController implements Handler {
 
     /**
      * Pre route handling add to this for any additional logic for pre route calls
-     *
+     * Requirement(App 1.2)
      * @param ctx the ctx
      */
     public void pre(Context ctx){
@@ -121,7 +122,7 @@ public class BaseController implements Handler {
 
     /**
      * Post route handling add to this for any additional post route logic
-     *
+     * Requirement(App 1.2)Pre
      * @param ctx the ctx
      */
     public void post(Context ctx){
@@ -133,7 +134,7 @@ public class BaseController implements Handler {
     /**
      * Not implemented but provides a functional base if user wishes to provide unique resolvers to user owned
      * not group owned routes
-     *
+     * Requirement(App 1.2)
      * @param ctx the ctx
      */
     public void resolve(Context ctx){

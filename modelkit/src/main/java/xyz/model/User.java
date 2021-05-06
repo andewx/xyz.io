@@ -28,6 +28,7 @@ public class User extends ModelObject{
      * @param username - Username
      * @param first - First name
      * @param last - Last name
+     * Requirement(Modelkit 1.0)
      */
     public User(String email, String initialPassword, String username, String first, String last){
         //Verify Email Unique Before Creating User
@@ -60,6 +61,7 @@ public class User extends ModelObject{
     /**
      * User Constructor from JSON string
      * @param json User json string
+     * Requirement(Modelkit 1.1)
      */
     public User(String json){
         super(json);
@@ -82,6 +84,7 @@ public class User extends ModelObject{
      * User constructor from ModelObject
      * @param mObj - User ModelObject
      * @throws JSONException Not well formatted User ModelObject
+     * Requirement(Modelkit 1.1)
      */
     public User(ModelObject mObj)throws JSONException{
         super(mObj);
@@ -118,6 +121,7 @@ public class User extends ModelObject{
      * Generates Password hash from sha256 algorithm. Uses Guava hash library
      * @param pass - Password to be hashed
      * @return - 256 bit hashed password
+     * Requirement(App 2.0)
      */
     public static String PasswordSHA(String pass){
         //Generate SHA256 Secure Hash
@@ -129,6 +133,7 @@ public class User extends ModelObject{
     /**
      * Construct User Model from JSONObject
      * @param jObj - User JSONObject
+     * Requirement(Modelkit 1.1)
      */
     public User(JSONObject jObj){
         super(jObj);
@@ -159,6 +164,7 @@ public class User extends ModelObject{
     /**
      * Getter Email
      * @return Email
+    * Requirement(Modelkit 1.1)
      */
     public String getEmail() {
         return Email;
@@ -167,6 +173,7 @@ public class User extends ModelObject{
     /**
      * Setter Email
      * @param email Email
+     * Requirement(Modelkit 1.1)
      */
     public void setEmail(String email) {
         Email = email;
@@ -176,6 +183,7 @@ public class User extends ModelObject{
     /**
      * Getter password
      * @return hashed password
+     * Requirement(Modelkit 1.1)
      */
     public String getPassword() {
         return Password;
@@ -184,6 +192,7 @@ public class User extends ModelObject{
     /**
      * Setter Password
      * @param password - Prehashed password from sha256
+     * Requirement(Modelkit 1.1)
      */
     public void setPassword(String password) {
         Password = password;
@@ -193,6 +202,7 @@ public class User extends ModelObject{
     /**
      * Getter GroupID
      * @return GroupID
+     * Requirement(Modelkit 1.1)
      */
     public String getGroupID() {
         return GroupID;
@@ -201,6 +211,7 @@ public class User extends ModelObject{
     /**
      * Setter GroupID
      * @param groupID GroupID
+     * Requirement(Modelkit 1.1)
      */
     public void setGroupID(String groupID) {
         GroupID = groupID;
@@ -210,6 +221,7 @@ public class User extends ModelObject{
     /**
      * Getter  First Name
      * @return FirstName
+     * Requirement(Modelkit 1.1)
      */
     public String getFirstName() {
         return FirstName;
@@ -218,6 +230,7 @@ public class User extends ModelObject{
     /**
      * Setter FirstName
      * @param firstName FirstName
+     * Requirement(Modelkit 1.1)
      */
     public void setFirstName(String firstName) {
         FirstName = firstName;
@@ -227,6 +240,7 @@ public class User extends ModelObject{
     /**
      * Getter LastName
      * @return LastName
+     * Requirement(Modelkit 1.1)
      */
     public String getLastName() {
         return LastName;
@@ -244,6 +258,7 @@ public class User extends ModelObject{
     /**
      * Gets last user login
      * @return TimeFormatted last login from Java Time library
+     * Requirement(Modelkit 1.1)
      */
     public String getLoginLast() {
         return LoginLast;
@@ -252,19 +267,14 @@ public class User extends ModelObject{
     /**
      * Sets last login
      * @param loginLast Well formatted Time of login last
+     * Requirement(Modelkit 1.1)
      */
     public void setLoginLast(String loginLast) {
         LoginLast = loginLast;
         updateKey("LoginLast", LoginLast);
     }
 
-    /**
-     * Sets UID Key identifier
-     * @return UID Key
-     */
-    public String getKey(){
-        return "Email";
-    }
+
 
 
     /**

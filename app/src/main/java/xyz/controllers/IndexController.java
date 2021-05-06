@@ -18,7 +18,7 @@ public class IndexController extends BaseController{
 
     /**
      * Instantiates a new Index controller.
-     *
+     * Requirement(App 1.1)
      * @param db_instance the db instance
      * @param app         the app
      */
@@ -28,7 +28,7 @@ public class IndexController extends BaseController{
 
     /**
      * Index Page display
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void Index(Context ctx){
@@ -54,7 +54,7 @@ public class IndexController extends BaseController{
 
     /**
      * Users page display
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void Users(Context ctx){
@@ -87,7 +87,7 @@ public class IndexController extends BaseController{
 
     /**
      * Resolves User IP (for funsies)
-     *
+     * Requirement(App 1.1)
      * @return string
      */
     public String WhatIP(){

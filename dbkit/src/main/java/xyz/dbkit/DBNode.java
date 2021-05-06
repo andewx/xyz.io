@@ -25,6 +25,7 @@ public class DBNode {
      * DBNode Constructor
      * @param DBName DBNode Name
      * @param DBFilePath Filepath of DBNode
+     * Requirement(DBkit 2.0)
      */
     public DBNode(String DBName, String DBFilePath){ //Instantiates New DBNode Object
         super();
@@ -38,6 +39,7 @@ public class DBNode {
      * Stores the specified ModelObject - typically a dumb header node as its root
      * @param ModelName Root node to be held by DBNode
      * @throws JSONException Root not found
+     * Requirement(DBkit 2.0)
      */
     public JSONObject Root(String ModelName) throws JSONException {
         JSONObject retObj = rootGraph.getModels(ModelName);
@@ -50,6 +52,7 @@ public class DBNode {
     /**
      * Gets the root node
      * @return ModelObject RootNode
+     * Requirement(DBkit 2.0)
      */
     public ModelObject GetRoot(){
         return rootGraph;
@@ -62,6 +65,7 @@ public class DBNode {
      * @param path Path for storage
      * @return instantiated node
      * @throws IOException File I/O Errors thrown to caller
+     * Requirement(DBkit 2.0)
      */
     public static DBNode CreateDBNode(String name, String path) throws IOException {
         DBNode myNode = new DBNode(name, path);
@@ -78,6 +82,7 @@ public class DBNode {
 
     /**
      * Flags the DBNode as having modified
+     * Requirement(DBkit 2.0)
      * @param value value of flag
      */
     public void setChanged(boolean value){
@@ -85,7 +90,8 @@ public class DBNode {
     }
 
     /**
-     * Adds a Modelobject to the DBNode from the root
+     * Adds a Modelobject to the DBNode from the root\
+     * Requirement(DBkit 2.0)
      * @param m ModelObject to be Added
      * @return ModelObject added
      */
@@ -97,6 +103,7 @@ public class DBNode {
 
     /**
      * Updates the Model by removing and then re-adding a ModelObject
+     * Requirement(DBkit 2.0)
      * @param m ModelObject to be Updated
      * @return Updated ModelObject
      */
@@ -110,6 +117,7 @@ public class DBNode {
 
     /**
      * Deletes a ModelObject from the DBNode root graph
+     * Requirement(DBkit 2.0)
      * @param m ModelObject to be removed
      */
     public void DeleteModel(ModelObject m){
@@ -121,6 +129,7 @@ public class DBNode {
     /**
      * Deletes a model from this DBNode root Graph. Problematic if model is deeply stored this is not a DFS search
      * but assumes a flat search directory. Models internal to other model objects won't be removed
+     * Requirement(DBkit 2.0)
      * @param Class Class of Model to be removed
      * @param UID UID of Model to be removed
      */
@@ -128,6 +137,7 @@ public class DBNode {
 
     /**
      * Gets the DBNode filename
+     * Requirement(DBkit 2.0)
      * @return filename of DBNode (Model.keys)
      */
     public String GetFile(){
@@ -136,6 +146,7 @@ public class DBNode {
 
     /**
      * Writes a DBNode to the FileSystem
+     * Requirement(DBkit 2.0)
      * @param url URL of the Path to Be Written To
      * @throws IOException File/IO Exception thrown to caller
      */

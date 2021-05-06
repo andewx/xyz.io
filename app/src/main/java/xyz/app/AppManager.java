@@ -42,7 +42,7 @@ public class AppManager {
 
     /**
      * App Manager constructor, holds the Database, sessions, and the Route Manager
-     *
+     * Requirement(App 4.0)
      * @param db     DBMain Database
      * @param router RouteManager Router for holding route information
      */
@@ -74,7 +74,7 @@ public class AppManager {
 
     /**
      * Adds user session with the Key ID session
-     *
+     * Requirement(App 2.0)
      * @param email the email
      * @return string
      */
@@ -97,7 +97,7 @@ public class AppManager {
 
     /**
      * Adds a Get Route to the route manager uses default security level 6
-     *
+     * Requirement(App 4.0)
      * @param route  URL route for handling call
      * @param handle Call handler
      * @param desc   Route Description
@@ -108,7 +108,7 @@ public class AppManager {
 
     /**
      * Adds POST route to the RouteManager defaults security level 6
-     *
+     * Requirement(App 4.0)
      * @param route  URL Route
      * @param handle Route Handler
      * @param desc   Description
@@ -119,7 +119,7 @@ public class AppManager {
 
     /**
      * Adds Get Route to the Route Manager
-     *
+     * Requirement(App 4.0)
      * @param route       URL Route
      * @param handle      Hanlder
      * @param desc        Description
@@ -131,7 +131,7 @@ public class AppManager {
 
     /**
      * Adds POST Route to the Route Manager
-     *
+     * Requirement(App 4.0)
      * @param route       URL Route
      * @param handle      Hanlder
      * @param desc        Description
@@ -143,7 +143,7 @@ public class AppManager {
 
     /**
      * Removes Get Route
-     *
+     * Requirement(App 4.0)
      * @param route URL route to be removed
      */
     public void RemoveGetRoute(String route){
@@ -152,7 +152,7 @@ public class AppManager {
 
     /**
      * Removes POST Route
-     *
+     * Requirement(App 4.0)
      * @param route URL Route to be Removed
      */
     public void RemovePostRoute(String route){
@@ -161,7 +161,7 @@ public class AppManager {
 
     /**
      * Gets Java Handler for a given Route
-     *
+     * Requirement(App 4.0)
      * @param route URL Route
      * @return Hanlder handler
      */
@@ -171,7 +171,7 @@ public class AppManager {
 
     /**
      * Gets Java Handler for POST route
-     *
+     * Requirement(App 4.0)
      * @param route URL Route
      * @return Handler handler
      */
@@ -181,7 +181,7 @@ public class AppManager {
 
     /**
      * Gets Route Keys
-     *
+     * Requirement(App 4.0)
      * @return Route URL Keys
      */
     public Set<String> GetRouteKeys(){
@@ -190,7 +190,7 @@ public class AppManager {
 
     /**
      * Gets POST Route Keys
-     *
+     * Requirement(App 4.0)
      * @return POST Route KEys
      */
     public Set<String> PostRouteKeys(){
@@ -199,7 +199,7 @@ public class AppManager {
 
     /**
      * Gets current Session Security level with associated Cookie UID
-     *
+     * Requirement(App 2.0)
      * @param GUID the guid
      * @return integer
      */
@@ -209,7 +209,7 @@ public class AppManager {
 
     /**
      * Gets route security level for Application URL Route
-     *
+     * Requirement(App 2.0)
      * @param route URL Route
      * @return Int security level
      */
@@ -219,7 +219,7 @@ public class AppManager {
 
     /**
      * Gets a Route Description
-     *
+     * Requirement(App 2.0)
      * @param route URL Route Key
      * @return Route Description
      */
@@ -229,7 +229,7 @@ public class AppManager {
 
     /**
      * Gets User from session cookie UID
-     *
+     * Requirement(App 2.0)
      * @param GUID Session Cookie UID
      * @return Session Username
      */
@@ -239,7 +239,7 @@ public class AppManager {
 
     /**
      * Prints ROUTE Enpoint API
-     *
+     * Requirement(App 2.0)
      * @return string
      */
     public String PrintApi(){
@@ -248,7 +248,7 @@ public class AppManager {
 
     /**
      * Gets time elapsed from last login
-     *
+     * Requirement(App 2.0)
      * @param GUID User sessions cookie UID
      * @return Int milliseconds elapsed
      */
@@ -258,6 +258,7 @@ public class AppManager {
 
     /**
      * Removes session cookie UID
+     * Requirement(App 2.0)
      * @param guid
      */
    private synchronized void Remove(String guid){
@@ -266,7 +267,7 @@ public class AppManager {
 
     /**
      * Sets a session message for the current User ID
-     *
+     * Requirement(App 2.0)
      * @param msg  Message to be stored
      * @param GUID User session UID
      */
@@ -276,7 +277,7 @@ public class AppManager {
 
     /**
      * Gets session message for user ID
-     *
+     * Requirement(App 2.0)
      * @param GUID Session cookie UID
      * @return Session message
      */

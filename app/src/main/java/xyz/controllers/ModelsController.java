@@ -30,7 +30,7 @@ public class ModelsController extends BaseController{
 
     /**
      * Resolves default model with the given model classname passed as path parameter
-     *
+     * Requirement(App 1.2)
      * @param ctx the ctx
      */
     public void DefaultModel(Context ctx){
@@ -47,7 +47,7 @@ public class ModelsController extends BaseController{
     /**
      * Adds new model to the DB from POST call uses path param Model Class to determine CRUD section to
      * construct model context
-     *
+     * Requirement(App 1.2)
      * @param ctx the ctx
      */
     public void ModelCreate(Context ctx){
@@ -150,7 +150,7 @@ public class ModelsController extends BaseController{
 
     /**
      * Model edit.
-     *
+     * Requirement(App 1.2)
      * @param ctx the ctx
      */
     public void ModelEdit(Context ctx){
@@ -168,7 +168,7 @@ public class ModelsController extends BaseController{
 
     /**
      * Model update.
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      * @throws IOException the io exception
      */
@@ -266,7 +266,7 @@ public class ModelsController extends BaseController{
 
     /**
      * Deletes model via CRUD operation
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void ModelDelete(Context ctx){

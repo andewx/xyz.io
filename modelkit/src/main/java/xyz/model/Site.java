@@ -2,13 +2,27 @@ package xyz.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
+/**
+ * @author briananderson
+ * @version 1.0
+ * Represents site page in framework. Pages in the xyz framework are stored internal to the Site model
+ * therefore SiteID identifies the holding parent class of a page. Also stores the associated Page HTML representative filename
+ * and an associated CSS File. Most importantly, Pages as editable content store themselves in JSON format.
+ */
 public class Site extends ModelObject{
     protected String Description;
     protected String RestURL;
     protected String Title;
     protected String ThemeID;
 
+    /**
+     * Constructs Site
+     * @param name name of page
+     * @param description desc
+     * @param restURL URL for site
+     * @param title title for site
+     *  (Requirement 1.0)
+     */
     public Site(String name, String description, String restURL, String title){
         super();
         Description = description;
@@ -28,6 +42,14 @@ public class Site extends ModelObject{
         put("ThemeID", ThemeID);
     }
 
+    /**
+     * Constructs Site
+     * @param name name of page
+     * @param description desc
+     * @param restURL URL for site
+     * @param title title for site
+     *  (Requirement 1.0)
+     */
     public Site(String name, String description, String restURL, String title, String theme){
         super();
         Description = description;
@@ -47,6 +69,14 @@ public class Site extends ModelObject{
         put("ThemeID", ThemeID);
     }
 
+    /**
+     * Constructs Site
+     * @param name name of page
+     * @param description desc
+     * @param restURL URL for site
+     * @param title title for site
+     *  (Requirement 1.0)
+     */
     public Site(String json){
         super(json);
         Description = (String)get("Description");
@@ -61,6 +91,14 @@ public class Site extends ModelObject{
         put("ThemeID", ThemeID);
     }
 
+    /**
+     * Constructs Site
+     * @param name name of page
+     * @param description desc
+     * @param restURL URL for site
+     * @param title title for site
+     *  (Requirement 1.0)
+     */
     public Site(JSONObject jObj){
         super(jObj);
 
@@ -85,45 +123,76 @@ public class Site extends ModelObject{
         }
 
     }
-
+    /**
+     * Getter for description
+     *  (Requirement Modelkit 1.0)
+     */
     public String getDescription() {
         return Description;
     }
 
+    /**
+     * Setter for description
+     *  (Requirement Modelkit 1.0)
+     */
     public void setDescription(String description) {
         Description = description;
         updateKey("Description", Description);
     }
 
+    /**
+     * Getter for ThemeID
+     *  (Requirement Modelkit 1.0)
+     */
     public String getThemeID(){return ThemeID;}
 
+    /**
+     * Setter for description
+     *  (Requirement Modelkit 1.0)
+     */
     public void setThemeID(String theme){
         ThemeID = theme;
         updateKey("ThemeID", ThemeID);
     }
 
+    /**
+     * Getter for URL
+     *  (Requirement Modelkit 1.0)
+     */
     public String getRestURL() {
         return RestURL;
     }
 
+    /**
+     * Setter for URL
+     *  (Requirement Modelkit 1.0)
+     */
     public void setRestURL(String restURL) {
         RestURL = restURL;
         updateKey("RestURL", RestURL);
     }
 
+    /**
+     * Getter for Title
+     *  (Requirement Modelkit 1.0)
+     */
     public String getTitle() {
         return Title;
     }
 
+    /**
+     * Setter for title
+     *  (Requirement Modelkit 1.0)
+     */
     public void setTitle(String title) {
         Title = title;
         updateKey("Title", Title);
     }
 
-    public String getKey(){
-        return "Name";
-    }
-
+    /**
+     * Adds a page to the site
+     *  (Requirement Sites 1.2)
+     */
     public void AddPage(Page pgObj){
         try{
             JSONObject pages = this.getJSONObject("Pages");
@@ -133,6 +202,10 @@ public class Site extends ModelObject{
         }
     }
 
+    /**
+     * Gets a page from the site
+     *  (Requirement Sites 1.2)
+     */
     public Page getPage(String page){
         try{
             JSONObject pages = this.getJSONObject("Pages");
@@ -143,6 +216,10 @@ public class Site extends ModelObject{
         }
     }
 
+    /**
+     * Removes page
+     *  (Requirement Sites 1.2)
+     */
     public void removePage(String page){
         try{
             JSONObject pages = this.getJSONObject("Pages");
