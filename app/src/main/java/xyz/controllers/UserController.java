@@ -33,7 +33,7 @@ public class UserController extends BaseController{
 
     /**
      * Logs in user and establishes session
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void login(Context ctx){
@@ -75,7 +75,7 @@ public class UserController extends BaseController{
 
     /**
      * Registers new user.
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void Register(Context ctx){
@@ -87,7 +87,7 @@ public class UserController extends BaseController{
 
     /**
      * Submits new user
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void SubmitUser(Context ctx){
@@ -106,7 +106,7 @@ public class UserController extends BaseController{
 
     /**
      * Gets user login form
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void GetLogin(Context ctx){
@@ -118,7 +118,7 @@ public class UserController extends BaseController{
 
     /**
      * Gets a user by UID
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void GetUser(Context ctx){
@@ -139,7 +139,7 @@ public class UserController extends BaseController{
 
     /**
      * Gets a user whose name includes a suffix
-     *
+     * Requirement(App 1.1)
      * @param ctx the ctx
      */
     public void GetUserStarts(Context ctx){

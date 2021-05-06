@@ -32,7 +32,7 @@ public class Security {
 
     /**
      * Checks if the current user can access a given route security level
-     *
+     * Requirement(App 2.0)
      * @param UserSecurity  User security level
      * @param RouteSecurity Route Security level
      * @return Resolver for the route
@@ -67,7 +67,7 @@ public class Security {
 
         /**
          * Resolver state constructor
-         *
+         * Requirement(App 2.0)
          * @param a Valid Route Resolve
          * @param b Route needs further resolution
          */
@@ -78,7 +78,7 @@ public class Security {
 
         /**
          * Returns if Resolver is valid
-         *
+         * Requirement(App 2.0)
          * @return mIsValid boolean
          */
         public boolean IsValid(){
@@ -87,7 +87,7 @@ public class Security {
 
         /**
          * Getter does route need futher resolution
-         *
+         * Requirement(App 2.0)
          * @return mNeedsResolve boolean
          */
         public boolean NeedsResolve(){

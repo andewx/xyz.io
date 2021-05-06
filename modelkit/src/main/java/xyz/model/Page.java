@@ -6,7 +6,7 @@ import org.json.JSONObject;
 /**
  * @author briananderson
  * @version 1.0
- * Represents site page in framework. Pages in the xyz framework are stored internal to the Site model
+ * Represents page in framework. Pages in the xyz framework are stored internal to the Site model
  * therefore SiteID identifies the holding parent class of a page. Also stores the associated Page HTML representative filename
  * and an associated CSS File. Most importantly, Pages as editable content store themselves in JSON format.
  */
@@ -21,6 +21,7 @@ public class Page extends ModelObject{
      * @param name name of page
      * @param siteID Site UID Key
      * @param fileName HTML Filename associated with page
+     *  (Requirement 1.0)
      */
     public Page(String name, String siteID, String fileName){
         super();
@@ -43,6 +44,7 @@ public class Page extends ModelObject{
     /**
      * Constructs page model from JSON string
      * @param json - Well formatted JSON of Page
+     * (Requirement 1.0)
      */
     public Page(String json){
         super(json);
@@ -60,6 +62,7 @@ public class Page extends ModelObject{
     /**
      * Constructs page model of JSONOBject
      * @param jObj Page object in JSONObject form
+     *(Requirement 1.0)
      */
     public Page(JSONObject jObj){
         super(jObj);
@@ -88,6 +91,7 @@ public class Page extends ModelObject{
     /**
      * Getter for SiteID
      * @return SiteID
+     *(Requirement 1.4)
      */
     public String getSiteID(){
         return SiteID;
@@ -96,6 +100,7 @@ public class Page extends ModelObject{
     /**
      * Setter SiteID
      * @param siteID SiteID
+     *(Requirement 1.4)
      */
     public void setSiteID(String siteID){
         SiteID = siteID;
@@ -105,6 +110,7 @@ public class Page extends ModelObject{
     /**
      * Getter JsonData
      * @return JsonData
+     *(Requirement 1.1)
      */
     public String getJsonData(){
         return JsonData;
@@ -113,6 +119,7 @@ public class Page extends ModelObject{
     /**
      * Setter JsonData
      * @param data JsonData to be set
+     *(Requirement 1.1)
      */
     public void setJsonData(String data){
         JsonData = data;
@@ -122,12 +129,14 @@ public class Page extends ModelObject{
     /**
      * Getter filename
      * @return HTML filename associated with page
+     *(Requirement 1.1)
      */
     public String getFilename(){ return Filename;}
 
     /**
      * Setter Filename
      * @param file - filename to be set
+     *(Requirement 1.1)
      */
     public void setFilename(String file){
         Filename = file;
@@ -137,12 +146,14 @@ public class Page extends ModelObject{
     /**
      * Getter CSS File
      * @return Css Filename
+     *(Requirement 1.1)
      */
     public String getCssFile(){return CssFile;}
 
     /**
      * Setter CSS File
      * @param file Css filename
+     *(Requirement 1.1)
      */
     public void setCssFile(String file){
         CssFile = file;
@@ -151,6 +162,7 @@ public class Page extends ModelObject{
 
     /**
      * Form tag element for page if desired
+     *      *(Requirement None)
      * @return
      */
     @Override

@@ -38,6 +38,7 @@ public class ModelObject extends JSONObject {
      * Constructs a complete ModelObject from the key/value pairs present in JSONObject. Not all fields map to the ModelObject
      * fields so that inherited classes can make use of ModelObject construction through the super constructor
      * @param jObj - Well formatted JSONObject
+     * Requirement(Modelkit 1.1)
      */
     public ModelObject(JSONObject jObj){
 
@@ -67,6 +68,7 @@ public class ModelObject extends JSONObject {
      * otherwise the exception case is silently handled and an empty string is returned
      * @param Key - JSON Object key
      * @return String value from key or empty string
+     * Requirement(Modelkit 1.1)
      */
     public String GetString(String Key){
         try{
@@ -81,6 +83,7 @@ public class ModelObject extends JSONObject {
      * to use this class as it is not fully tested
      * @param mObj - Modelobject to be copied
      * @throws JSONException - JSON super error.
+     * Requirement(Modelkit 1.1)
      */
     public ModelObject(ModelObject mObj) throws JSONException{ //Shallow Copies
         super();
@@ -100,6 +103,7 @@ public class ModelObject extends JSONObject {
     /**
      * Creates a model object from a JSON String, initializes with the super JSONObject constructor first
      * @param json - JSON string to be copied
+     * Requirement(Modelkit 1.1)
      */
     public ModelObject(String json){
         super(json);
@@ -115,6 +119,7 @@ public class ModelObject extends JSONObject {
     /**
      * Creates a ModelObject of a specified size
      * @param size - Size of the model object to be created
+     * Requirement(Modelkit 1.1)
      */
     public ModelObject(int size){
         super(size);
@@ -131,6 +136,7 @@ public class ModelObject extends JSONObject {
      * @param obj - JSONObject to be copied from
      * @param uid - Key value of the ModelObject to be copied
      * @return - Constructed ModelObject
+     * Requirement(Modelkit 1.1)
      */
     public static ModelObject GetModelObj(JSONObject obj, String uid){
         ModelObject thisModel;
@@ -155,6 +161,7 @@ public class ModelObject extends JSONObject {
      * i.e. (Pages). This key is searched for a the resulting JSONObject is returned
      * @param Pluralized - pluralized Model class key
      * @return - JSONObject for child element
+     * Requirement(Modelkit 1.1)
      */
     public JSONObject getChildren(String Pluralized){ //Expects the Plura
         try {
@@ -179,6 +186,7 @@ public class ModelObject extends JSONObject {
      * Utility function for pluralizing names
      * @param str - String to be pluralized
      * @return - pluralized string
+     * Requirement(Modelkit 1.1)
      */
     public String pluralize(String str){
         int index = str.lastIndexOf(str);
@@ -192,6 +200,7 @@ public class ModelObject extends JSONObject {
     /**
      * Adds a model by its UID internally to this model, by replacing or updating existing JSONObject Keys
      * @param m - ModelObject to be added to this model
+     * Requirement(Modelkit 1.1)
      */
     public void addModel(ModelObject m) {
         JSONObject internal = getChildren(m.plural());
@@ -210,6 +219,7 @@ public class ModelObject extends JSONObject {
     /**
      * Setter for UID
      * @param UID - UID
+     * Requirement(Modelkit 1.1)
      */
     public void setUID(String UID) {
         this.UID = UID;
@@ -219,6 +229,7 @@ public class ModelObject extends JSONObject {
     /**
      * Gets UID Key
      * @return ModelObject UID
+     * Requirement(Modelkit 1.1)
      */
     public String getUID() {
         return UID;
@@ -227,6 +238,7 @@ public class ModelObject extends JSONObject {
     /**
      * Sets Name
      * @param name - ModelObject Name
+     * Requirement(Modelkit 1.1)
      */
     public void setName(String name) {
         Name = name;
@@ -236,6 +248,7 @@ public class ModelObject extends JSONObject {
     /**
      * Gets Name
      * @return ModelObject name
+     * Requirement(Modelkit 1.1)
      */
     public String getName() {
         return Name;
@@ -245,6 +258,7 @@ public class ModelObject extends JSONObject {
     /**
      * Getter ModelName
      * @return ModelObject ClassName
+     * Requirement(Modelkit 1.1)
      */
     public String getModelName() {
         return ClassName;
@@ -253,6 +267,7 @@ public class ModelObject extends JSONObject {
     /**
      * Sets ModelName
      * @param className - ModelObject ClassName
+     * Requirement(Modelkit 1.1)
      */
     public void setModelName(String className) {
         ClassName = className;
@@ -262,6 +277,7 @@ public class ModelObject extends JSONObject {
     /**
      * Returns the JSONObject super cast of this object
      * @return JSONObject cast of this object
+     * Requirement(Modelkit 1.2)
      */
     public JSONObject getJson() {
         return (JSONObject)this;
@@ -271,6 +287,7 @@ public class ModelObject extends JSONObject {
      * Updates internal JSONObject key value pair
      * @param key - Key to be updated
      * @param value - Value to be included
+     * Requirement(Modelkit 1.1)
      */
     public void updateKey(String key, Object value) {
         remove(key);
@@ -280,6 +297,7 @@ public class ModelObject extends JSONObject {
     /**
      * Removes key from ModelObject
      * @param key - Key to be removed
+     * Requirement(Modelkit 1.1)
      */
     public void removeKey(String key){
         remove(key);
@@ -290,6 +308,7 @@ public class ModelObject extends JSONObject {
      * @param mClass - Class of internal object
      * @param uid - UID of internal object
      * @return Found ModelObject or null if not found
+     * Requirement(Modelkit 1.3)
      */
     public ModelObject getModel(String mClass, String uid) {
         JSONObject internal = getChildren(pluralize(mClass));
@@ -309,6 +328,7 @@ public class ModelObject extends JSONObject {
      * @param mClass class of internal object
      * @param uid UID of internal object
      * @return True/False if model was removed
+     * Requirement(Modelkit 1.1)
      */
     public boolean Remove(String mClass, String uid){
         String collection = pluralize(mClass);
@@ -327,6 +347,7 @@ public class ModelObject extends JSONObject {
      * Gets JSONObject of internally held models of a specific class type
      * @param mClass internal class held by ModelObject
      * @return JSONObject holding stored models
+     * Requirement(Modelkit 1.3)
      */
     public JSONObject getModels(String mClass) {
       return getChildren(pluralize(mClass));

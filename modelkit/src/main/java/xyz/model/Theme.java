@@ -15,6 +15,7 @@ public class Theme extends ModelObject {
     /**
      * Palette setter
      * @param palette JSONArray string of palette values 1-5
+     * Requirement(Themes 1.3)
      */
     public void setPalette(String palette) {
         Palette = palette;
@@ -24,6 +25,7 @@ public class Theme extends ModelObject {
     /**
      * Getter HTML Filename
      * @return HTML filename associated with theme. For now this should be Index.html
+     * Requirement(Modelkit 1.0)
      */
     public String getHtmlFile() {
         return HtmlFile;
@@ -32,6 +34,7 @@ public class Theme extends ModelObject {
     /**
      * Setter for HTML Filename
      * @param HtmlFile Html Filename
+     * Requirement(Modelkit 1.0)
      */
     public void setHtmlFile(String HtmlFile) {
         HtmlFile = HtmlFile;
@@ -40,6 +43,7 @@ public class Theme extends ModelObject {
     /**
      * Getter for Palette Json Array String
      * @return Json Array String with palette values.
+     * Requirement(Modelkit 1.0)
      */
     public String getPalette() {
         return Palette;
@@ -51,6 +55,7 @@ public class Theme extends ModelObject {
      * @param name Theme name
      * @param html Html Filename
      * @param palette Json Array Palette string
+     * Requirement(Modelkit 1.0)
      */
     public Theme(String name,  String html, String palette) {
         super();
@@ -71,6 +76,7 @@ public class Theme extends ModelObject {
     /**
      * Theme constructor
      * @param json Json string
+     * Requirement(Modelkit 1.0)
      */
     public Theme(String json) {
         super(json);
@@ -87,6 +93,7 @@ public class Theme extends ModelObject {
     /**
      * Theme Constructor from JSONObject
      * @param jObj JSON OBject
+     * Requirement(Modelkit 1.0)
      */
     public Theme(JSONObject jObj) {
         super(jObj);

@@ -39,7 +39,7 @@ public class SiteController extends BaseController{
 
     /**
      * Constructor for the site controller
-     *
+     * Requirement(App 2.0)
      * @param db_instance DB
      * @param app         App manager
      */
@@ -50,6 +50,7 @@ public class SiteController extends BaseController{
 
     /**
      * Endpoint for submitting sites for creation
+     * Requirement(App 1.1)
      * @param ctx Javalin.io http server context
      */
     public void CreateSite(Context ctx){
@@ -112,6 +113,7 @@ public class SiteController extends BaseController{
 
     /**
      * Endpoint for AddPage requests
+     *      * Requirement(App 1.1)
      * @param ctx Javalin.io http server context
      */
     public void AddPage(Context ctx){
@@ -154,7 +156,7 @@ public class SiteController extends BaseController{
 
     /**
      * Gets page JSON Data representation for editor
-     *
+     * Requirement(App 1.1)
      * @param ctx Javalin.io http server context
      */
     public void GetPageData(Context ctx){
@@ -175,7 +177,7 @@ public class SiteController extends BaseController{
 
     /**
      * Display Site Editor for Given Page Site
-     *
+     * Requirement(App 1.1)
      * @param ctx Javalin.io http server context
      */
     public void EditSite(Context ctx){
@@ -221,7 +223,7 @@ public class SiteController extends BaseController{
 
     /**
      * Add Files to the site
-     *
+     * Requirement(App 1.1)
      * @param ctx Javalin.io http server context
      */
     public void AddFiles(Context ctx){
@@ -288,7 +290,7 @@ public class SiteController extends BaseController{
 
     /**
      * Delete Files from Site
-     *
+     * Requirement(App 1.1)
      * @param ctx Javalin.io http server context
      */
     public void DeleteFile(Context ctx){ //Shouldn't be able to delete HTML objects
@@ -346,7 +348,7 @@ public class SiteController extends BaseController{
 
     /**
      * Endpoint delete Site by UID
-     *
+     * Requirement(App 1.1)
      * @param ctx Javalin.io http server context
      */
     public void DeleteSite(Context ctx){
@@ -375,6 +377,7 @@ public class SiteController extends BaseController{
     /**
      * Endpoint Get sites - returns JSON Array of all Site JSON strings to the client
      * @param ctx Javalin.io http server context
+     * Requirement(App 1.1)
      */
     public void Get(Context ctx){
         ArrayList<ModelObject> siteList = new ArrayList<>();
@@ -399,7 +402,7 @@ public class SiteController extends BaseController{
     }
 
     /**
-     *
+     * Requirement(App 1.1)
      * Endpoint site pages - returns JSON Array of Page objects to the client
      * @param ctx Javalin.io http server context
      */
@@ -428,6 +431,7 @@ public class SiteController extends BaseController{
 
     /**
      * Endpoint Get Keys - returns JSON string array of all Sites
+     * Requirement(App 1.1)Site
      * @param ctx Javalin.io http server context
      */
     public void GetKeys(Context ctx){

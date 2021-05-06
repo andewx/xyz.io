@@ -681,6 +681,36 @@ label{
     height:80px;
 }
 
+.menu-tree{
+    display:block;
+    padding:20px;
+    font-size: 1.3em;
+    color: var(--charcoal);
+}
+
+.menu-tree-header{
+    background: var(--midnight);
+    color: white;
+    padding: 10px;
+}
+
+.submenu-1{
+    background: var(--light-olive);
+    padding: 10px;
+    color: black;
+    font-size:0.8em;
+}
+
+.submenu-2{
+    background: white;
+    padding: 20px;
+    color: black;
+    font-size:0.5em;
+}
+
+
+
+
 
 /* ===================================================================
  * # reusable and common theme styles

@@ -21,6 +21,7 @@ public class SiteTemplate {
 
     /**
      * Constructor for Site Template, looks to path folder templates when loading in Files
+     * Requirement(Webkit 1.0)
      */
     public SiteTemplate(){
         PathFolder = "templates";
@@ -42,6 +43,7 @@ public class SiteTemplate {
      * Adds a key/value pair identifier into the object for searching and replacing raw HTML string
      * @param key @:SomeKey
      * @param Value Value to replace with
+     * Requirement(Webkit 1.0)
      */
     public void AddKey(String key, String Value){
         String val = PropertyMap.get(key);
@@ -65,6 +67,7 @@ public class SiteTemplate {
      * Loads in a template file from the given string path
      * @param Name string path of the file to be loaded
      * @return loaded HTML
+     * Requirement(Webkit 1.1)
      */
     public String GetTemplate(String Name){
         String TemplateFile = Name;
@@ -90,6 +93,7 @@ public class SiteTemplate {
     /**
      * Replaces keys from the stored Key/Value pair map
      * @return HTML string
+     * Requirement(Webkit 1.0)
      */
     public String ReplaceKeys(){
         KeyMatcher = KeyPattern.matcher(HTML);

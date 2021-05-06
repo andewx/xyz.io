@@ -19,6 +19,7 @@ public final class ModelKeys { //Static Model Methods
     /**
      * Concatenates a random 512 bit hash code for UID usage. ModelObjects default behavior is to use this UID
      * @return
+     * Requirement(Modelkit 1.4)
      */
     public static String genUID(){
         //Generate sha256 Hash
@@ -40,6 +41,7 @@ public final class ModelKeys { //Static Model Methods
      * Decodes a JSONString into a ModelObject as a utlity tool - note this will only fill the values associated with base model objects
      * @param jsonString - ModelObject JSON String
      * @return
+     * Requirement(Modelkit 1.2)
      */
     public static ModelObject decode(String jsonString){
         return new ModelObject(jsonString);
@@ -50,6 +52,7 @@ public final class ModelKeys { //Static Model Methods
      * must add your Model name here to the <code>keySet</code> for the database to recognize that your model
      * exists.
      * @return
+     * Requirement(Modelkit 2.0)
      */
     public static ArrayList<String> ModelKeys(){
         //Add all model types to this set
@@ -68,6 +71,7 @@ public final class ModelKeys { //Static Model Methods
      * add in a default utility constructor here for the framework to run
      * @param name
      * @return
+     * Requirement(Modelkit 2.1)
      */
     public static ModelObject Default(String name){
         if(name.equals("Group")){
@@ -97,7 +101,7 @@ public final class ModelKeys { //Static Model Methods
     /**
      * Utility method for consistent pluralization of Model names. Used for example by the DBNode package
      * @param str - the string to be pluralized
-     * @return
+     * Requirement(Modelkit 3.0)
      */
     public static String pluralize(String str){
         int index = str.lastIndexOf(str);

@@ -42,6 +42,7 @@ public class DBMain extends Thread implements DBManager{
      *
      * @param name Database name
      * @throws IOException DBNode not found or able to be created throws error to caller
+     * Requirement(DBkit 1.0)
      */
     public DBMain(String name) throws IOException {
         //Checks if node property files exists -- stored as .keys json files
@@ -65,6 +66,7 @@ public class DBMain extends Thread implements DBManager{
      * Getter Database name
      *
      * @return Database Name
+     * Requirement(DBkit 1.0)
      */
     public String GetName(){
         return Name;
@@ -75,6 +77,7 @@ public class DBMain extends Thread implements DBManager{
      * @param nodeName - Name of the class of DBNode. Must be a ModelObject ClassName whose keys are stored inside the ModelKeys static class
      * @return - Instantiated DBNode
      * @throws IOException - Could not create DBNode because of ModelObject ClassName error
+     * Requirement(DBkit 2.0)
      */
     @Override
     public DBNode CreateNode(String nodeName) throws IOException {
@@ -88,6 +91,7 @@ public class DBMain extends Thread implements DBManager{
      * @param nodeName - ModelObject ClassName
      * @return boolean on whether DBNode was deleted
      * @throws IOException Could not find or delete a DBNode
+     * Requirement(DBkit 2.0)
      */
     @Override
     public boolean DeleteNode(String nodeName) throws IOException {
@@ -118,6 +122,7 @@ public class DBMain extends Thread implements DBManager{
      * Gets a DBNode from a ModelObject ClassName
      * @param nodeName ModelObject ClassName present in ModelKeys class
      * @return Existing DBNode
+     * Requirement(DBkit 2.0)
      */
     @Override
     public DBNode GetNode(String nodeName) {
@@ -129,6 +134,7 @@ public class DBMain extends Thread implements DBManager{
      * @param node - DBNode conducting the operation
      * @param m ModelObject to be added
      * @return the added ModelObject
+     * Requirement(DBkit 2.0)
      */
     @Override
     public ModelObject AddModel(DBNode node, ModelObject m) {
@@ -143,6 +149,7 @@ public class DBMain extends Thread implements DBManager{
      * @param node DBNode to be updated
      * @param m ModelObject associated with DBNode
      * @return ModelObject Associated
+     * Requirement(DBkit 2.0)
      */
     @Override
     public ModelObject UpdateModel(DBNode node, ModelObject m) {
@@ -159,6 +166,7 @@ public class DBMain extends Thread implements DBManager{
      * @param ClassName ModelObject class of the searched type
      * @param PropertyKeyValues Mapped Key/Value Pairs of the search parameters
      * @return ArrayList of objects matching the query parameters
+     * Requirement(DBkit 4.0)
      */
     @Override
     public ArrayList<ModelObject> findExact(ModelObject model, String ClassName, HashMap<String, String> PropertyKeyValues) {
@@ -195,6 +203,7 @@ public class DBMain extends Thread implements DBManager{
      * @param ClassName ModelObject Class
      * @param PropertyKeyValues Parameter list of key/value pairs
      * @return List of ModelObjects with matching parameters
+     * Requirement(DBkit 4.0)
      */
     @Override
     public ArrayList<ModelObject> findExact(DBNode node, String ClassName, HashMap<String, String> PropertyKeyValues) {
@@ -207,6 +216,7 @@ public class DBMain extends Thread implements DBManager{
      * @param ClassName Class of Object to be found
      * @param PropertyKeyValues Parameter list of key/value pairs
      * @return matching ModelObjects
+     * Requirement(DBkit 4.0)
      */
     @Override
     public ArrayList<ModelObject> findSome(ModelObject model, String ClassName, HashMap<String, String> PropertyKeyValues) {
@@ -244,6 +254,7 @@ public class DBMain extends Thread implements DBManager{
      * @param ClassName ModelObject class to be found
      * @param PropertyKeyValues Parameter list of key/value pairs
      * @return ArrayList of ModelObjects with at least one matching parameter
+     * Requirement(DBkit 4.0)
      */
     @Override
     public ArrayList<ModelObject> findSome(DBNode node, String ClassName, HashMap<String, String> PropertyKeyValues) {
@@ -257,6 +268,7 @@ public class DBMain extends Thread implements DBManager{
      * @param property Property Key
      * @param value Value to be compared
      * @return ModelObject list of similarily matching parameters
+     * Requirement(DBkit 4.0)
      */
     @Override
     public ArrayList<ModelObject> findSimilar(ModelObject model, String ClassName, String property, String value) {
@@ -290,6 +302,7 @@ public class DBMain extends Thread implements DBManager{
      * @param property Property Key
      * @param value Value to be compared
      * @return ModelObject list of similarily matching parameters
+     * Requirement(DBkit 4.0)
      */
     @Override
     public ArrayList<ModelObject> findSimilar(DBNode node, String ClassName, String property, String value) {
@@ -302,6 +315,7 @@ public class DBMain extends Thread implements DBManager{
      * @param ClassName Class of ModelObject to be found
      * @param key Key to be compared
      * @return ModelObject if found or null
+     * Requirement(DBkit 4.0)
      */
     @Override
     public ModelObject findKey(ModelObject model, String ClassName, String key) {
@@ -329,6 +343,7 @@ public class DBMain extends Thread implements DBManager{
      * @param ClassName Class of ModelObject to be found
      * @param key Key to be compared
      * @return ModelObject if found or null
+     * Requirement(DBkit 4.0)
      */
     @Override
     public ModelObject findKey(DBNode node, String ClassName, String key) {
@@ -342,6 +357,7 @@ public class DBMain extends Thread implements DBManager{
      * @param ClassName Class of ModelObject to be found
      * @param value     The Prefix of the object to be compared
      * @return List of ModelObjects with matching prefixes
+     * Requirement(DBkit 4.0)
      */
     public ArrayList<ModelObject> findStartsWith(ModelObject model, String ClassName, String value) {
         ArrayList<ModelObject> myMatches = new ArrayList<>();
@@ -374,6 +390,7 @@ public class DBMain extends Thread implements DBManager{
      * @param ClassName Class of ModelObject to be found
      * @param key       The Prefix of the object to be compared
      * @return List of ModelObjects with matching prefixes
+     * Requirement(DBkit 4.0)
      */
     public ArrayList<ModelObject> findStartsWith(DBNode node, String ClassName, String key) {
         return findStartsWith(node.rootGraph, ClassName, key);
@@ -387,6 +404,7 @@ public class DBMain extends Thread implements DBManager{
      * @param property  Property parameter to be searched
      * @param value     Value of suffix to be matched
      * @return List of ModelObjects with matching suffixes for a given property
+     * Requirement(DBkit 4.0)
      */
     public ArrayList<ModelObject> propStartsWith(ModelObject model, String ClassName, String property, String value) {
         ArrayList<ModelObject> myMatches = new ArrayList<>();
@@ -420,6 +438,7 @@ public class DBMain extends Thread implements DBManager{
      * @param property  Property parameter to be searched
      * @param value     Value of suffix to be matched
      * @return List of ModelObjects with matching suffixes for a given property
+     * Requirement(DBkit 4.0)
      */
     public ArrayList<ModelObject> propStartsWith(DBNode node, String ClassName, String property, String value) {
         return propStartsWith(node.rootGraph, ClassName, property,value);
@@ -431,6 +450,7 @@ public class DBMain extends Thread implements DBManager{
      * @param ClassName Class of ModelObject to be found
      * @param key Value to matched as the UID
      * @return boolean of whether not the keyvalue was delete
+     * Requirement(DBkit 4.0)
      */
     @Override
     public boolean deleteKey(ModelObject model, String ClassName, String key) {
@@ -468,6 +488,7 @@ public class DBMain extends Thread implements DBManager{
 
     /**
      * Deletes a ModelObject with the specified key UID
+     * Requirement(DBkit 3.0)
      * @param node DBNode to be searched
      * @param ClassName Class of ModelObject to be found
      * @param key Value to matched as the UID
@@ -480,7 +501,7 @@ public class DBMain extends Thread implements DBManager{
 
     /**
      * Number of nodes the DB has
-     *
+     * Requirement(DBkit 3.0)
      * @return Number of DBNode keys
      */
     public String NumberNodes(){
@@ -489,6 +510,7 @@ public class DBMain extends Thread implements DBManager{
 
     /**
      * Run synchronization of DBNode, writes out DBNode into resources directory under the name of its DBNode class
+     * Requirement(DBkit 3.0)
      * @param thisNode DBNode to be written
      * @throws IOException File I/O Error Encountered throws to caller
      */
@@ -519,6 +541,7 @@ public class DBMain extends Thread implements DBManager{
      * Synchronizes DB across all DBNodes calling SyncNode. If DBNode is flagged then DBNode should write itself.
      * Method is sychronized in its own thread and completes before futher execution of the monitoring thread
      * @throws IOException File I/O Error throws to caller
+     * Requirement(DBkit 3.0)
      */
     @Override
     public synchronized void Sync() throws IOException {
@@ -546,6 +569,7 @@ public class DBMain extends Thread implements DBManager{
 
     /**
      * Initializes database and instantiates thread for Database sync
+     * Requirement(DBkit 3.0)
      */
     @Override
     public void run() {
@@ -567,6 +591,7 @@ public class DBMain extends Thread implements DBManager{
 
     /**
      * Exits database by setting flag for thread execution
+     * Requirement(DBkit 3.0)
      */
     @Override
     public void Exit() {

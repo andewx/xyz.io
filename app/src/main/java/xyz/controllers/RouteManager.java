@@ -20,6 +20,7 @@ public class RouteManager {
 
     /**
      * Route Manager constructor
+     * Requirement(App 4.0)
      */
     public RouteManager(){
         RouteGetMethods = new HashMap<String, Handler>();
@@ -29,7 +30,7 @@ public class RouteManager {
 
     /**
      * Registers Get Route
-     *
+     * Requirement(App 4.0)
      * @param route URL GET route
      * @param func  Handler Function (Controller::Method)
      * @param desc  Description of Route
@@ -41,7 +42,7 @@ public class RouteManager {
 
     /**
      * Registers POST route
-     *
+     * Requirement(App 4.0)
      * @param route URL POST route
      * @param func  Handler Function (Controller::Method)
      * @param desc  Description of Route
@@ -53,7 +54,7 @@ public class RouteManager {
 
     /**
      * Registers Get route with security level specified
-     *
+     * Requirement(App 4.0)
      * @param route URL GET Route
      * @param func  Handler Function (Controller::Method)
      * @param desc  Route Description
@@ -67,7 +68,7 @@ public class RouteManager {
 
     /**
      * Registers POST route with security level specified
-     *
+     * Requirement(App 4.0)
      * @param route URL GET Route
      * @param func  Handler Function (Controller::Method)
      * @param desc  Route Description
@@ -80,7 +81,7 @@ public class RouteManager {
 
     /**
      * Removes GET Route
-     *
+     * Requirement(App 4.0)
      * @param route the route
      */
     public void RemoveGetRoute(String route){
@@ -89,7 +90,7 @@ public class RouteManager {
 
     /**
      * Removes POST Route
-     *
+     * Requirement(App 4.0)
      * @param route the route
      */
     public void RemovePostRoute(String route){
@@ -98,7 +99,7 @@ public class RouteManager {
 
     /**
      * Gets Route Keys
-     *
+     * Requirement(App 4.0)
      * @return GET Route Keys
      */
     public Set<String> GetKeySet(){
@@ -107,7 +108,7 @@ public class RouteManager {
 
     /**
      * Gets POST route keys
-     *
+     * Requirement(App 4.0)
      * @return POST Route Keys
      */
     public Set<String> PostKeySet(){
@@ -116,7 +117,7 @@ public class RouteManager {
 
     /**
      * Gets the Route Handler
-     *
+     * Requirement(App 4.0)
      * @param key Route Key (URL)
      * @return Handler handler
      */
@@ -126,7 +127,7 @@ public class RouteManager {
 
     /**
      * Gets the POST Route Handler
-     *
+     * Requirement(App 4.0)
      * @param key Route Key (URL)
      * @return Handler handler
      */
@@ -136,7 +137,7 @@ public class RouteManager {
 
     /**
      * Gets route security level
-     *
+     * Requirement(App 4.0)
      * @param route Route key URL
      * @return Security level
      */
@@ -152,7 +153,7 @@ public class RouteManager {
 
     /**
      * Gets route description
-     *
+     * Requirement(App 4.0)
      * @param route Route Key
      * @return string
      */
@@ -175,7 +176,7 @@ public class RouteManager {
 
         /**
          * Constructs route Configuration
-         *
+         * Requirement(App 2.0)
          * @param SecLevel    Security Level
          * @param Description Description of Route
          */
@@ -186,7 +187,7 @@ public class RouteManager {
 
         /**
          * Gets route Security
-         *
+         *     * Requirement(App 2.0)
          * @return integer
          */
         public Integer getSecurity(){
@@ -195,7 +196,7 @@ public class RouteManager {
 
         /**
          * Gets Route Description
-         *
+         * Requirement(App 2.0)
          * @return string
          */
         public String getDescription(){
@@ -204,7 +205,7 @@ public class RouteManager {
 
         /**
          * Sets Route Description
-         *
+         * Requirement(App 2.0)
          * @param desc Description
          */
         public void setDescription(String desc){
@@ -219,7 +220,7 @@ public class RouteManager {
 
     /**
      * Prints the Route API to Basic HTML
-     *
+     * Requirement(App 2.0)
      * @return string
      */
     public String PrintAPI(){
