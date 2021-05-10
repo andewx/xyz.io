@@ -1,0 +1,49 @@
+/* ===================================================================
+ * fonts.scss
+ *
+ * ------------------------------------------------------------------- */
+
+
+/*
+ * lora
+================================================================================ */
+
+
+@font-face {
+    font-family: "Barlow-Regular";
+    src: url("barlow/Barlow-Regular-webfont.woff") format("woff"), url("barlow/Barlow-Regular-webfont.woff") format("woff");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Barlow-Light";
+    src: url("barlow/Barlow-Light-webfont.woff") format("woff"), url("barlow/Barlow-Light-webfont.woff") format("woff");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Barlow-Thin";
+    src: url("barlow/Barlow-Thin-webfont.woff") format("woff"), url("barlow/Barlow-Thin-webfont.woff") format("woff");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Barlow-Bold";
+    src: url("barlow/Barlow-SemiBold-webfont.woff") format("woff"), url("barlow/Barlow-SemiBold-webfont.woff") format("woff");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Barlow-Italic";
+    src: url("barlow/Barlow-Italic-webfont.woff") format("woff"), url("barlow/Barlow-Italic-webfont.woff") format("woff");
+    font-style: normal;
+    font-weight: normal;
+}
+
+
+
+/*# sourceMappingURL=fonts.css.map */

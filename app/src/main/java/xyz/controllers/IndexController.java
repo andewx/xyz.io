@@ -32,9 +32,9 @@ public class IndexController extends BaseController{
      * @param ctx the ctx
      */
     public void Index(Context ctx){
-        SiteTemplate templatizer = new SiteTemplate();
+        SiteTemplate templatizer = new SiteTemplate(mApp.mRuntimeDir);
         StringBuilder htmlResponse = new StringBuilder();
-        templatizer.GetTemplate("templates/explore.html");
+        templatizer.GetTemplate(mApp.mRuntimeDir + "/templates/explore.html");
         templatizer.AddKey("servername", "xyz-javalin-server");
         templatizer.AddKey("port", String.format("%d",ctx.port()));
         templatizer.AddKey("listening", WhatIP());
@@ -59,8 +59,8 @@ public class IndexController extends BaseController{
      */
     public void Users(Context ctx){
 
-        SiteTemplate templatizer = new SiteTemplate();
-        SiteTemplate viewForms = new SiteTemplate();
+        SiteTemplate templatizer = new SiteTemplate(mApp.mRuntimeDir);
+        SiteTemplate viewForms = new SiteTemplate(mApp.mRuntimeDir);
         StringBuilder htmlResponse = new StringBuilder();
         String message = "";
 
@@ -72,8 +72,8 @@ public class IndexController extends BaseController{
         }catch(Exception e){
             //Do nothing
         }
-        templatizer.GetTemplate("templates/ion.html");
-        viewForms.GetTemplate("views/register-login.html");
+        templatizer.GetTemplate(mApp.mRuntimeDir + "/templates/ion.html");
+        viewForms.GetTemplate(mApp.mRuntimeDir + "/views/register-login.html");
         templatizer.AddKey("controllerTitle", "Framework Login/Registration");
         viewForms.AddKey("Message", message);
         viewForms.ReplaceKeys();

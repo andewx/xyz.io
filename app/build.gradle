@@ -4,6 +4,7 @@
 
 plugins {
     id 'xyz.java-application-conventions'
+    id 'distribution'
 }
 
 javadoc{
@@ -32,6 +33,23 @@ application {
     // Define the main class for the application.
     mainClass = 'xyz.app.App'
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'xyz.app.App'
+    }
+}
+
+distributions{
+    main{
+        distributionBaseName = 'xyz'
+        contents{
+            from "../app-resources"
+        }
+    }
+}
+
+
 
 task xyzrun (type: JavaExec){
     classpath = sourceSets.main.runtimeClasspath

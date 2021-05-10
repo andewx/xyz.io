@@ -16,7 +16,7 @@ public class TemplateTest {
         keys.add("title");
         keys.add("first");
         keys.add("last");
-        myTemplate = new SiteTemplate();
+        myTemplate = new SiteTemplate("");
         myTemplate.GetTemplate("index.html");
     }
 
@@ -47,7 +47,7 @@ public class TemplateTest {
         myTemplate.AddKey("first", "Brian");
         myTemplate.AddKey("last", "Anderson");
         myTemplate.ReplaceKeys();
-        SiteTemplate nTemplate = new SiteTemplate();
+        SiteTemplate nTemplate = new SiteTemplate("");
         nTemplate.GetTemplate("test-index.html");
         System.out.println(myTemplate.GetHtml());
         assertEquals(0, myTemplate.GetHtml().compareTo(nTemplate.GetHtml()));

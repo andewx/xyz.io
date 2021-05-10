@@ -33,13 +33,13 @@ public class AdminController extends BaseController{
             ctx.redirect("/");
             return;
         }
-        SiteTemplate templatizer = new SiteTemplate();
-        SiteTemplate dashView = new SiteTemplate();
-        dashView.GetTemplate("views/dash-main.html");
+        SiteTemplate templatizer = new SiteTemplate(mApp.mRuntimeDir);
+        SiteTemplate dashView = new SiteTemplate(mApp.mRuntimeDir);
+        dashView.GetTemplate(mApp.mRuntimeDir + "/views/dash-main.html");
         templatizer.AddKey("dashcontent",dashView.GetHtml());
         StringBuilder htmlResponse = new StringBuilder();
         String ini = thisUser.getFirstName().substring(0,1) + thisUser.getLastName().substring(0,1);
-        templatizer.GetTemplate("templates/dashboard.html");
+        templatizer.GetTemplate(mApp.mRuntimeDir + "/templates/dashboard.html");
         templatizer.AddKey("title", "Good Morning, " + thisUser.getFirstName());
         templatizer.AddKey("dashTitle", "Good Morning, " + thisUser.getFirstName());
         templatizer.AddKey("Init", ini);
@@ -64,13 +64,13 @@ public class AdminController extends BaseController{
             ctx.redirect("/");
             return;
         }
-        SiteTemplate templatizer = new SiteTemplate();
-        SiteTemplate dashView = new SiteTemplate();
-        dashView.GetTemplate("views/dash-main.html");
+        SiteTemplate templatizer = new SiteTemplate(mApp.mRuntimeDir);
+        SiteTemplate dashView = new SiteTemplate(mApp.mRuntimeDir);
+        dashView.GetTemplate(mApp.mRuntimeDir + "/views/dash-main.html");
         templatizer.AddKey("dashcontent",dashView.GetHtml());
         StringBuilder htmlResponse = new StringBuilder();
         String ini = thisUser.getFirstName().substring(0,1) + thisUser.getLastName().substring(0,1);
-        templatizer.GetTemplate("templates/dashboard.html");
+        templatizer.GetTemplate(mApp.mRuntimeDir + "/templates/dashboard.html");
         templatizer.AddKey("title", "Good Morning, " + thisUser.getFirstName());
         templatizer.AddKey("dashTitle", "Good Morning, " + thisUser.getFirstName());
         templatizer.AddKey("Init", ini);
@@ -95,12 +95,12 @@ public class AdminController extends BaseController{
             ctx.redirect("/");
             return;
         }
-        SiteTemplate templatizer = new SiteTemplate();
-        SiteTemplate dashView = new SiteTemplate();
-        dashView.GetTemplate("views/sites-page.html");
+        SiteTemplate templatizer = new SiteTemplate(mApp.mRuntimeDir);
+        SiteTemplate dashView = new SiteTemplate(mApp.mRuntimeDir);
+        dashView.GetTemplate(mApp.mRuntimeDir + "/views/sites-page.html");
         StringBuilder htmlResponse = new StringBuilder();
         String ini = thisUser.getFirstName().substring(0,1) + thisUser.getLastName().substring(0,1);
-        templatizer.GetTemplate("templates/dashboard.html");
+        templatizer.GetTemplate(mApp.mRuntimeDir + "/templates/dashboard.html");
         templatizer.AddKey("dashcontent",dashView.GetHtml());
         templatizer.AddKey("title", "Hi, " + thisUser.getFirstName());
         templatizer.AddKey("dashTitle", "Hello, " + thisUser.getFirstName());
@@ -126,12 +126,12 @@ public class AdminController extends BaseController{
             ctx.redirect("/");
             return;
         }
-        SiteTemplate templatizer = new SiteTemplate();
-        SiteTemplate dashView = new SiteTemplate();
-        dashView.GetTemplate("views/theme-page.html");
+        SiteTemplate templatizer = new SiteTemplate(mApp.mRuntimeDir);
+        SiteTemplate dashView = new SiteTemplate(mApp.mRuntimeDir);
+        dashView.GetTemplate(mApp.mRuntimeDir + "/views/theme-page.html");
         StringBuilder htmlResponse = new StringBuilder();
         String ini = thisUser.getFirstName().substring(0,1) + thisUser.getLastName().substring(0,1);
-        templatizer.GetTemplate("templates/dashboard.html");
+        templatizer.GetTemplate(mApp.mRuntimeDir + "/templates/dashboard.html");
         templatizer.AddKey("dashcontent",dashView.GetHtml());
         templatizer.AddKey("title", "Hi, " + thisUser.getFirstName());
         templatizer.AddKey("dashTitle", "Hello, " + thisUser.getFirstName());
@@ -161,10 +161,10 @@ public class AdminController extends BaseController{
         String guid = ctx.cookie("GUID");
         String message = mApp.GetSessionMessage(guid);
         String content = "<div class='complete'><h1 class='success'>"+message+". Congrats</h1></div>";
-        SiteTemplate templatizer = new SiteTemplate();
+        SiteTemplate templatizer = new SiteTemplate(mApp.mRuntimeDir);
         StringBuilder htmlResponse = new StringBuilder();
         String ini = thisUser.getFirstName().substring(0,1) + thisUser.getLastName().substring(0,1);
-        templatizer.GetTemplate("templates/dashboard.html");
+        templatizer.GetTemplate(mApp.mRuntimeDir + "/templates/dashboard.html");
         templatizer.AddKey("dashcontent",content);
         templatizer.AddKey("title", "Hi, " + thisUser.getFirstName());
         templatizer.AddKey("dashTitle", "Hello, " + thisUser.getFirstName());
@@ -188,10 +188,10 @@ public class AdminController extends BaseController{
                 return;
             }
 
-            SiteTemplate templatizer = new SiteTemplate();
+            SiteTemplate templatizer = new SiteTemplate(mApp.mRuntimeDir);
             StringBuilder htmlResponse = new StringBuilder();
             String ini = thisUser.getFirstName().substring(0,1) + thisUser.getLastName().substring(0,1);
-            templatizer.GetTemplate("templates/dashboard.html");
+            templatizer.GetTemplate(mApp.mRuntimeDir + "/templates/dashboard.html");
             templatizer.AddKey("dashcontent",mApp.PrintApi());
             templatizer.AddKey("title", "Hi, " + thisUser.getFirstName());
             templatizer.AddKey("dashTitle", "Hello, " + thisUser.getFirstName());
@@ -217,13 +217,13 @@ public class AdminController extends BaseController{
                 ctx.redirect("/");
                 return;
             }
-            SiteTemplate templatizer = new SiteTemplate();
-            SiteTemplate dashView = new SiteTemplate();
-            dashView.GetTemplate("views/dash-main.html");
+            SiteTemplate templatizer = new SiteTemplate(mApp.mRuntimeDir);
+            SiteTemplate dashView = new SiteTemplate(mApp.mRuntimeDir);
+            dashView.GetTemplate(mApp.mRuntimeDir + "/views/dash-main.html");
             templatizer.AddKey("dashcontent", mApp.PrintApi());
             StringBuilder htmlResponse = new StringBuilder();
             String ini = thisUser.getFirstName().substring(0, 1) + thisUser.getLastName().substring(0, 1);
-            templatizer.GetTemplate("templates/dashboard.html");
+            templatizer.GetTemplate(mApp.mRuntimeDir + "/templates/dashboard.html");
             templatizer.AddKey("title", "Good Morning, " + thisUser.getFirstName());
             templatizer.AddKey("dashTitle", "Good Morning, " + thisUser.getFirstName());
             templatizer.AddKey("Init", ini);

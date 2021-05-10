@@ -37,6 +37,11 @@ public class DBMain extends Thread implements DBManager{
     String SrcPath;
 
     /**
+     * The absolute application path to the database site nodes directory.
+     */
+    String PackageDirectory;
+
+    /**
      * Constructs database from expected DBNodes associated with ModelKeys(). DBNodes then self-construct
      * in the JVM resources directory from the Model.keys files. Throws error if DBNode can't be instantiated
      *
@@ -44,16 +49,17 @@ public class DBMain extends Thread implements DBManager{
      * @throws IOException DBNode not found or able to be created throws error to caller
      * Requirement(DBkit 1.0)
      */
-    public DBMain(String name) throws IOException {
+    public DBMain(String name, String PackageDir) throws IOException {
         //Checks if node property files exists -- stored as .keys json files
         Name = name;
         Nodes = new HashMap<>();
         ExitCondition = false;
-        SrcPath = "resources/";
-        
+
+        PackageDirectory = PackageDir;
+        SrcPath = PackageDir + "/resources/";
 
         for(String key : ModelKeys.ModelKeys()){
-            DBNode thisNode = DBUtils.InitNode(key);
+            DBNode thisNode = DBUtils.InitNode(key, PackageDir);
             if(thisNode == null){
                 throw new IOException("Model Node: " + key + " does not exist. Could not create DBNode object. Database creation failed!\n");
             }
@@ -81,7 +87,7 @@ public class DBMain extends Thread implements DBManager{
      */
     @Override
     public DBNode CreateNode(String nodeName) throws IOException {
-            DBNode myNode = DBUtils.InitNode(nodeName);
+            DBNode myNode = DBUtils.InitNode(nodeName, PackageDirectory);
             Nodes.put(ModelKeys.pluralize(nodeName), myNode);
             return myNode;
     }

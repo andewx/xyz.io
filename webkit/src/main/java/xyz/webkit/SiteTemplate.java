@@ -23,8 +23,8 @@ public class SiteTemplate {
      * Constructor for Site Template, looks to path folder templates when loading in Files
      * Requirement(Webkit 1.0)
      */
-    public SiteTemplate(){
-        PathFolder = "templates";
+    public SiteTemplate(String PkgDirectory){
+        PathFolder = PkgDirectory + "/templates";
         HTML = "";
         PropertyMap = new HashMap<String,String>();
         KeyPattern = Pattern.compile("@:([a-zA-Z0-9]+)");
@@ -77,7 +77,7 @@ public class SiteTemplate {
             return HTML;
 
         }catch(IOException e){
-            System.out.println("Could not get Template");
+            System.out.println("Could not get Template\n" + TemplatePath.toString());
             return "";
         }
     }

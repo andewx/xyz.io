@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","u":"allclasses-index.html"},{"p":"xyz.dbkit","l":"DBMain"},{"p":"xyz.dbkit","l":"DBManager"},{"p":"xyz.dbkit","l":"DBNode"},{"p":"xyz.dbkit","l":"DBUtils"}];updateSearchResults();
