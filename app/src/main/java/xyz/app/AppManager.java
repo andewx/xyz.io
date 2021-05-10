@@ -19,6 +19,7 @@ public class AppManager {
    private DBMain mDB;
    private RouteManager mRouteManager;
    private String mName;
+   public String mRuntimeDir;
 
     /**
      * Gets the remoteURL For the Server
@@ -46,11 +47,12 @@ public class AppManager {
      * @param db     DBMain Database
      * @param router RouteManager Router for holding route information
      */
-    public AppManager(DBMain db, RouteManager router){
+    public AppManager(DBMain db, RouteManager router, String directory){
        mSessions = new Sessions();
        mDB = db;
        mRouteManager = router;
        mName = "xyzServer";
+       mRuntimeDir = directory;
    }
 
     /**

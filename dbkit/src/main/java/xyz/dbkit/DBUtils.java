@@ -14,9 +14,9 @@ public final class DBUtils {
      * @param ModelName Class of ModelObject
      * @return Instantiated DBNode
      */
-    public static DBNode InitNode(String ModelName){
+    public static DBNode InitNode(String ModelName, String rootPath){
         String Name = ModelKeys.pluralize(ModelName);
-        String srcPath = "resources/";
+        String srcPath = rootPath + "/resources/";
         String modelPath = srcPath + Name + ".keys";
         try {
             return DBNode.CreateDBNode(Name, modelPath);

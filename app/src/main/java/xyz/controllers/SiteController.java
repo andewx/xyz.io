@@ -45,7 +45,7 @@ public class SiteController extends BaseController{
      */
     public SiteController(DBMain db_instance, AppManager app) {
         super(db_instance, app);
-        Root = "resources/web/sites";
+        Root = mApp.mRuntimeDir + "/resources/web/sites";
     }
 
     /**
@@ -190,17 +190,17 @@ public class SiteController extends BaseController{
             String cssFile = myPage.getCssFile();
             assert myPage != null;
             String rootDir = Root + "/" + siteName;
-            String themeFile = "resources/web/themes/" + mySite.getThemeID() + "/index.html";
+            String themeFile = mApp.mRuntimeDir + "/resources/web/themes/" + mySite.getThemeID() + "/index.html";
 
-            SiteTemplate editorHeader = new SiteTemplate();
-            SiteTemplate editorBody = new SiteTemplate();
-            SiteTemplate editorFooter = new SiteTemplate();
-            SiteTemplate themeTemplate = new SiteTemplate();
+            SiteTemplate editorHeader = new SiteTemplate(mApp.mRuntimeDir);
+            SiteTemplate editorBody = new SiteTemplate(mApp.mRuntimeDir);
+            SiteTemplate editorFooter = new SiteTemplate(mApp.mRuntimeDir);
+            SiteTemplate themeTemplate = new SiteTemplate(mApp.mRuntimeDir);
             themeTemplate.GetTemplate(themeFile);
             //Editor Inject
-            editorHeader.GetTemplate("templates/editor-header.html"); //Editor CSS
-            editorBody.GetTemplate("templates/editor-toolbar.html"); // Editor Body
-            editorFooter.GetTemplate("templates/editor-footer.html"); //JS Scripts
+            editorHeader.GetTemplate(mApp.mRuntimeDir + "/templates/editor-header.html"); //Editor CSS
+            editorBody.GetTemplate(mApp.mRuntimeDir + "/templates/editor-toolbar.html"); // Editor Body
+            editorFooter.GetTemplate(mApp.mRuntimeDir + "/templates/editor-footer.html"); //JS Scripts
             editorBody.AddKey("SiteName", mySite.getUID());
             editorBody.AddKey("SitePage", myPage.getUID());
             editorBody.ReplaceKeys();
@@ -271,7 +271,7 @@ public class SiteController extends BaseController{
             if(!hasFile){ //Simple Image Upload
                 UploadedFile fileImage = ctx.uploadedFile("image");
                 assert fileImage != null;
-                FileUtil.streamToFile(fileImage.getContent(), "resources/web/images/" + fileImage.getFilename());
+                FileUtil.streamToFile(fileImage.getContent(), mApp.mRuntimeDir + "/resources/web/images/" + fileImage.getFilename());
                 uploadedURL = "http://localhost:8080/images/" + fileImage.getFilename();
             }
 
@@ -545,10 +545,10 @@ public class SiteController extends BaseController{
             DBNode SiteNode = mDB.GetNode("Sites");
             Site mSite = new Site(mDB.findKey(SiteNode, "Site",ctx.pathParam("site")));
             Page mPage = new Page(mSite.getPage(ctx.pathParam("page")));
-            String themeFile = "resources/web/themes/" + mSite.getThemeID() + "/index.html";
-            SiteTemplate PageTemplate = new SiteTemplate();
-            SiteTemplate ThemeTemplate = new SiteTemplate();
-            PageTemplate.GetTemplate("resources/web/sites/"+ctx.pathParam("site")+"/"+mPage.getFilename());
+            String themeFile = mApp.mRuntimeDir + "/resources/web/themes/" + mSite.getThemeID() + "/index.html";
+            SiteTemplate PageTemplate = new SiteTemplate(mApp.mRuntimeDir);
+            SiteTemplate ThemeTemplate = new SiteTemplate(mApp.mRuntimeDir);
+            PageTemplate.GetTemplate(mApp.mRuntimeDir + "/resources/web/sites/"+ctx.pathParam("site")+"/"+mPage.getFilename());
             ThemeTemplate.GetTemplate(themeFile);
             ThemeTemplate.AddKey("Title", mSite.getName());
             ThemeTemplate.AddKey("EditorCSS", "");
@@ -588,7 +588,7 @@ public class SiteController extends BaseController{
             Site mySite = new Site(mDB.findKey(SiteNode, "Site", SiteName));
             Page myPage = mySite.getPage(PageName);
 
-            String srcPath = "resources/web/sites/" + SiteName + "/" + myPage.getFilename();
+            String srcPath = mApp.mRuntimeDir + "/resources/web/sites/" + SiteName + "/" + myPage.getFilename();
 
             if(Files.exists(Path.of(srcPath))){
                 ctx.contentType("text/html");
@@ -657,7 +657,7 @@ public class SiteController extends BaseController{
             Site mysite = new Site(mDB.findKey(siteNode, "Site", siteName));
 
             //List Directories
-            String srcPath = "/sites/" + siteName;
+            String srcPath = mApp.mRuntimeDir + "/sites/" + siteName;
             JSONObject fileStructure = new JSONObject();
             fileStructure.put("SRC", srcPath);
             JSONObject htmlRoot = fileStructure.put("HTML", new JSONObject());

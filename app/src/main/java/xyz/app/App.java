@@ -6,7 +6,11 @@ import io.javalin.http.staticfiles.Location;
 import xyz.controllers.*;
 import xyz.dbkit.DBMain;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Main application entry point. Instantiates a Javalin server on the specified port, configures the static file
@@ -24,12 +28,32 @@ public class App {
     public static void main(String[] args) throws IOException {
 
         //Initiate Controllers - Form API
+        Path currentRelativePath = Paths.get("");
+        String s = currentRelativePath.toAbsolutePath().toString();
         Javalin app = Javalin.create();
-        app.config.addStaticFiles("resources/web", Location.EXTERNAL);
+
+        /*We need to reconstruct the package directories here*/
+        String JAR_DIRECTORY = "";
+        String PACKAGE_DIRECTORY = "";
+        try {
+            //Get the directory of the classpath JAR file - java you are wonderful - Reconstruct the bundled file location
+            JAR_DIRECTORY = new File(App.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+            String[] listDirs = JAR_DIRECTORY.split("/");
+            System.out.println("JAR_DIRECTORY: " + JAR_DIRECTORY);
+            for(int i = 0; i < listDirs.length - 2; i++){
+                if(i !=0){ PACKAGE_DIRECTORY = PACKAGE_DIRECTORY.concat("/");}
+                PACKAGE_DIRECTORY = PACKAGE_DIRECTORY.concat(listDirs[i]);
+            }
+            System.out.println("PACAKGE DIRECTORY CONFIGURED: " + PACKAGE_DIRECTORY);
+            app.config.addStaticFiles(PACKAGE_DIRECTORY + "/resources/web", Location.EXTERNAL);
+        }catch(RuntimeException | URISyntaxException e){
+            System.out.println("Warning: We are serving content from the application classpath directory, updates to the site may be static");
+           app.config.addStaticFiles(PACKAGE_DIRECTORY + "/resources/web");
+        }
         app.start(8080);
-        DBMain myDB = new DBMain("xyz-db");
+        DBMain myDB = new DBMain("xyz-db", PACKAGE_DIRECTORY);
         RouteManager myRouter = new RouteManager();
-        AppManager myApp = new AppManager(myDB, myRouter);
+        AppManager myApp = new AppManager(myDB, myRouter, PACKAGE_DIRECTORY);
         myApp.setRemoteURL("http://localhost:8080");
         BaseController BaseEndpoint = new BaseController(myDB, myApp);
         IndexController IndexEndpoint = new IndexController(myDB, myApp);

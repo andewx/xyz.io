@@ -47,7 +47,7 @@ public class ThemeController extends BaseController{
      */
     public ThemeController(DBMain db_instance, AppManager app) {
         super(db_instance, app);
-        Root = "resources/web/themes";
+        Root = mApp.mRuntimeDir + "/resources/web/themes";
     }
 
     /**
@@ -61,12 +61,12 @@ public class ThemeController extends BaseController{
             ctx.redirect("/");
             return;
         }
-        SiteTemplate templatizer = new SiteTemplate();
-        SiteTemplate dashView = new SiteTemplate();
-        dashView.GetTemplate("views/themes-display.html");
+        SiteTemplate templatizer = new SiteTemplate(mApp.mRuntimeDir);
+        SiteTemplate dashView = new SiteTemplate(mApp.mRuntimeDir);
+        dashView.GetTemplate(mApp.mRuntimeDir + "/views/themes-display.html");
         StringBuilder htmlResponse = new StringBuilder();
         String ini = thisUser.getFirstName().substring(0,1) + thisUser.getLastName().substring(0,1);
-        templatizer.GetTemplate("templates/dashboard.html");
+        templatizer.GetTemplate(mApp.mRuntimeDir + "/templates/dashboard.html");
         templatizer.AddKey("dashcontent",dashView.GetHtml());
         templatizer.AddKey("title", "Hi, " + thisUser.getFirstName());
         templatizer.AddKey("dashTitle", "Hello, " + thisUser.getFirstName());
@@ -390,7 +390,7 @@ public class ThemeController extends BaseController{
      * Requirement(App 1.1)
      * @param dir Directory
      * @return File Set
-     * @throws IOException BOOOOOOOO
+     * @throws IOException
      */
     Set<Path> listFiles(String dir) throws IOException {
         Stream<Path> list = Files.list(Path.of(dir));
