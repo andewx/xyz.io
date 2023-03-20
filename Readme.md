@@ -65,6 +65,14 @@ To run the latest build clone the repository, cd into the main project folder, a
 server which can be accessed on ``http://localhost:8080/`` in your browser of choice. 
 
 
+## ``Future Work``
+XYZ is a successful self-contained web servlet application. Since the database modeling is not handled by a conventional RDMS storage model there is a scaling issue with regards to storage and sync services. With that being said we are looking to build our own databse storage solution which serializes JSON objects, introduces a new query language, and handles micro service architectures. The service will be called `Xdb`
+
+Our storage solution will work by classifying data requests in permanence tiers [IMMUTABLE, LIGHTLY_IMMUTABLE, LIGHTLY_MUTABLE, MUTABLE, DYNAMIC_STATIC, DYNAMIC_NON_STATIC]. This solution allows different depths of service nodes to be accessed and uses modification flags to distribute database workloads, a servers
+
+Also we want to be able to integrate existing frameworks into local private network distributors under a delegation services endpoint. This services endpoint and routing handler will be called `Xmini-route`
+
+
 
 
 
